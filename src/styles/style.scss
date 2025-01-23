@@ -1,0 +1,310 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+
+$font-family-base: "Roboto", sans-serif;
+// $font-size-base: 0.9rem;
+
+$primary: #dbb635;
+$dark: #222222;
+
+$grid-columns: 12 !default; // Tetap 12 kolom
+$grid-gutter-width: 1.5rem !default; // Spasi antar kolom
+$grid-row-columns: 5 !default; // Ubah menjadi 5 kolom per baris
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+// Then add additional custom code here
+@import "./responsive.scss";
+
+@each $name, $color in $grays {
+  .text-gray-#{$name} {
+    color: $color !important;
+  }
+
+  .bg-gray-#{$name} {
+    background-color: $color !important;
+  }
+}
+
+// Then add additional custom code here
+body {
+  font-family: "Roboto", serif;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// Header
+.top__bar {
+  padding: 5px 0;
+  border-bottom: 1px solid $gray-300;
+
+  .top__bar-left a {
+    text-decoration: none;
+    color: $gray-800;
+    font-weight: 500;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .top__bar-right p {
+    text-decoration: none;
+    color: $gray-800;
+    margin: 0 !important;
+  }
+}
+
+.navbar {
+  border-bottom: 1px solid $gray-300;
+
+  .navbar-brand {
+    max-width: 125px;
+  }
+
+  .nav-link {
+    color: $gray-900;
+    font-weight: 500;
+  }
+
+  .navbar-toggler {
+    border: none;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .search__bar {
+    .input-group {
+      border: 1px solid $gray-500;
+      border-radius: 5px;
+
+      input,
+      button {
+        border: none;
+        &:active,
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
+// End Header
+
+// Dropdown
+.dropdown-toggle::after {
+  display: inline-block;
+  margin-left: 0.255em;
+  vertical-align: middle;
+  content: "\f107";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  border: 0 !important;
+  color: $gray-700;
+}
+
+.dropdown-toggle[aria-expanded="true"]::after {
+  content: "\f106";
+}
+// End Dropdown
+
+// Footer
+footer {
+  a {
+    color: $white;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+// End Footer
+
+// Banner Carousel
+.banner__carousel {
+  .carousel-inner {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .carousel-item {
+    max-height: 380px;
+    aspect-ratio: 16/9;
+  }
+
+  .control__prev-icon,
+  .control__next-icon {
+    background-color: $white;
+    color: $gray-700;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    cursor: pointer;
+    border: none;
+  }
+
+  .carousel-indicators button {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50%;
+    margin: 0 5px;
+  }
+}
+
+.section__title {
+  font-weight: 700;
+  margin-bottom: 25px;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 5px;
+    background-color: $primary;
+    margin-bottom: 5px;
+  }
+}
+
+// .card__product-item-name {
+//   display: -webkit-box;
+//   -webkit-box-orient: vertical;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   -webkit-line-clamp: 2;
+// }
+
+.product__image-carousel {
+  .carousel-item {
+    aspect-ratio: 3/2;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .carousel-indicators li {
+    width: 60px;
+    height: 60px;
+    border: 1px solid $gray-500;
+
+    &.active {
+      border-color: $primary;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      object-fit: fill;
+    }
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// .product__filter {
+//   .accordion-button,
+//   .accordion-body {
+//     padding: 0;
+//   }
+
+//   .accordion-button {
+//     margin-bottom: 15px;
+//   }
+
+//   .accordion-button:not(.collapsed) {
+//     color: inherit;
+//     background: transparent;
+//     box-shadow: none;
+//   }
+// }
+
+.product__filter,
+.blog__filter {
+  .accordion {
+    border-bottom: 1px solid $gray-300;
+  }
+
+  .accordion-header {
+    .accordion-button {
+      font-weight: 700;
+      color: $gray-800 !important;
+
+      &:not(.collapsed) {
+        color: inherit;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+
+  .accordion-button,
+  .accordion-body,
+  .list-group-item {
+    padding: 0.5rem 0;
+  }
+}
+
+.nav__account {
+  .nav-link {
+    color: $gray-900 !important;
+    font-weight: 500;
+    border-radius: 5px;
+
+    &.active {
+      background-color: $primary !important;
+      color: $white !important;
+    }
+  }
+}
+
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.step {
+  text-align: center;
+  flex: 1;
+}
+.step .icon {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #6c757d;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+}
+.step.active .icon {
+  background-color: #007bff;
+}
+.step.completed .icon {
+  background-color: #28a745;
+}
+.step .timestamp {
+  font-size: 12px;
+  color: #6c757d;
+}

@@ -1,0 +1,30 @@
+import { UserTypes } from "./user";
+
+export interface RegisterReqTypes {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
+export type RegisterTypes = UserTypes;
+
+export interface LoginReqTypes {
+  email: string;
+  password: string;
+}
+
+export interface LoginTypes extends UserTypes {
+  auth_token: string;
+}
+
+export interface ForgotPasswordReqTypes {
+  email: string;
+}
+
+export interface ResetPasswordReqTypes {
+  email: string;
+  token: string;
+  password: string;
+  password_confirmation: string;
+}
