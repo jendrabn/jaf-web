@@ -99,6 +99,7 @@ export interface OrderDetailTypes {
   total_amount: number;
   payment_due_date: string;
   confirmed_at: string;
+  shipped_at: string;
   completed_at: string;
   cancelled_at: string;
   created_at: string;

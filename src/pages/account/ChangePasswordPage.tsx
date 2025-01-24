@@ -2,30 +2,18 @@ import { Col, Form, InputGroup, Row } from "react-bootstrap";
 import AccountLayout from "../../layouts/AccountLayout";
 import useForm from "../../hooks/useForm";
 import { PasswordReqTypes } from "../../types/user";
-import { useMutation } from "@tanstack/react-query";
-import User, { useUpdatePassword } from "../../services/api/user";
-import { toast } from "react-toastify";
+import { useUpdatePassword } from "../../services/api/user";
 import { useState } from "react";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
 
 function ChangePassword() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const { values, resetForm, handleChange, handleSubmit } =
-    useForm<PasswordReqTypes>({
-      current_password: "",
-      password: "",
-      password_confirmation: "",
-    });
-
-  // const { mutate, isPending, error, reset } = useMutation({
-  //   mutationFn: (data: PasswordReqTypes) => User.updatePassword(data),
-  //   onSuccess() {
-  //     toast.success("Password changed successfully.");
-
-  //     resetForm();
-  //   },
-  // });
+  const { values, handleChange, handleSubmit } = useForm<PasswordReqTypes>({
+    current_password: "",
+    password: "",
+    password_confirmation: "",
+  });
 
   const { mutate, isPending, error, reset } = useUpdatePassword();
 

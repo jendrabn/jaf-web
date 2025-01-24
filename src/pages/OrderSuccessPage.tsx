@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Layout from "../layouts/Layout";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { OrderSuccessTypes } from "../types/order";
+import { formatDate } from "../utils/functions";
 
 function OrderSuccessPage() {
   const location = useLocation();
@@ -24,18 +25,6 @@ function OrderSuccessPage() {
     total_amount,
     created_at,
   }: OrderSuccessTypes = location.state || {};
-
-  const formatDate = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
   return (
     <Layout title="Order Success">
       <div className="container py-5">

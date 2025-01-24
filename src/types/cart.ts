@@ -7,14 +7,14 @@ export interface CartItemTypes {
 }
 
 export interface CartReqTypes {
-  product_id: number;
-  quantity: number;
+  product_id?: number;
+  quantity?: number;
 }
 
 export interface deleteReqTypes {
-  cart_ids: Array<number>;
+  cart_ids?: Array<number>;
 }
 
 export interface updateReqTypes {
-  quantity: number;
+  quantity?: number;
 }

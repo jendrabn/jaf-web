@@ -98,7 +98,7 @@ export function useCart() {
     if (data.quantity === 0) return;
 
     createMutation.mutate(data, {
-      onSuccess(data, variables, context) {
+      onSuccess() {
         toast.success("Item has been added to your shopping cart.");
 
         queryClient.invalidateQueries({ queryKey: ["carts"] });
@@ -111,7 +111,7 @@ export function useCart() {
     updateMutation.mutate(
       { id, data: { quantity: quantity } },
       {
-        onSuccess(data, variables, context) {
+        onSuccess() {
           toast.success("Item quantity has been updated.");
 
           dispatch({
@@ -162,7 +162,7 @@ export function useCart() {
         cart_ids: [id],
       },
       {
-        onSuccess(data, variables, context) {
+        onSuccess() {
           toast.success("Item has been removed from your shopping cart.");
 
           dispatch({
@@ -187,7 +187,7 @@ export function useCart() {
         cart_ids: state.selectedIds,
       },
       {
-        onSuccess(data, variables, context) {
+        onSuccess() {
           toast.success("Items has been removed from your shopping cart.");
 
           dispatch({

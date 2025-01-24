@@ -1,13 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  CheckoutReqTypes,
-  CheckoutTypes,
-  ShippingCostReqTypes,
-} from "../../types/checkout";
+import { CheckoutReqTypes, ShippingCostReqTypes } from "../../types/checkout";
 import {
   ConfirmPaymentReqTypes,
   OrderDetailTypes,
-  OrderItemTypes,
   OrderReqTypes,
   OrderTypes,
 } from "../../types/order";

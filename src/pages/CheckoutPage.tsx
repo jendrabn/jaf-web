@@ -5,11 +5,10 @@ import { useCreateOrder, useFetchShippingCosts } from "../services/api/order";
 import { useEffect, useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
 import { formatToRupiah } from "../utils/functions";
-import { useCart, useCartDispatch } from "../contexts/CartContext";
 import { toast } from "react-toastify";
 import DeliveryAddressModal from "../components/Checkout/DeliveryAddressModal";
 import { OrderReqTypes } from "../types/order";
-import { BankTypes } from "../types/payment-method";
+// import { BankTypes, EwalletTypes } from "../types/payment-method";
 import DeliveryAddress from "../components/Checkout/DeliveryAddress";
 import ProductOrderedList from "../components/Checkout/ProductOrderedList";
 import PaymentMethod from "../components/Checkout/PaymentMethod";
@@ -19,7 +18,6 @@ function CheckoutPage() {
   const createMutation = useCreateOrder();
   const shippingCostMutation = useFetchShippingCosts();
   const navigate = useNavigate();
-  const dispatch = useCartDispatch();
 
   const {
     shipping_address,
@@ -36,9 +34,11 @@ function CheckoutPage() {
   );
   const [selectedShipping, setSelectedShipping] =
     useState<ShippingCostTypes | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedPaymentBank, setSelectedPaymentBank] =
-    useState<BankTypes | null>();
+  // const [selectedPaymentBank, setSelectedPaymentBank] =
+  //   useState<BankTypes | null>();
+  // const [selectedPaymentEwallet, setSelectedPaymentEwallet] =
+  //   useState<EwalletTypes | null>();
+
   const [showAddressModal, setShowAddressModal] = useState(false);
 
   const [data, setData] = useState<OrderReqTypes>({
@@ -145,6 +145,7 @@ function CheckoutPage() {
             <PaymentMethod
               paymentMethod={data.payment_method}
               paymentBanks={payment_methods?.bank || []}
+              paymentEwallets={payment_methods?.ewallet || []}
               bankId={data.bank_id}
               onChangePaymentMethod={(method) => {
                 setData((prevData) => ({
@@ -153,11 +154,19 @@ function CheckoutPage() {
                 }));
               }}
               onChangePaymentBank={(bank) => {
-                setSelectedPaymentBank(bank);
+                // setSelectedPaymentBank(bank);
 
                 setData((prevData) => ({
                   ...prevData,
                   bank_id: bank.id,
+                }));
+              }}
+              onChangePaymentEwallet={(ewallet) => {
+                // setSelectedPaymentEwallet(ewallet);
+
+                setData((prevData) => ({
+                  ...prevData,
+                  ewallet_id: ewallet.id,
                 }));
               }}
             />

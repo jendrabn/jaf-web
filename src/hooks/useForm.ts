@@ -4,7 +4,7 @@ function useForm<T>(initialValues: T) {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState({});
 
-  const handleChange = (event: ChangeEvent) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setValues((prevValues) => ({
       ...prevValues,

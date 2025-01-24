@@ -1,13 +1,14 @@
 import { Form } from "react-bootstrap";
-import { BankTypes } from "../../types/payment-method";
+import { BankTypes, EwalletTypes } from "../../types/payment-method";
 
 interface PaymentMethodProps {
   className?: string;
   onChangePaymentMethod: (method: string) => void;
   onChangePaymentBank: (bank: BankTypes) => void;
+  onChangePaymentEwallet: (ewallet: EwalletTypes) => void;
   paymentMethod?: string;
   paymentBanks: BankTypes[];
-  paymentEWallets?: unknown[];
+  paymentEwallets?: EwalletTypes[];
   bankId?: number;
   ewalletId?: number;
 }
@@ -16,11 +17,13 @@ function PaymentMethod({
   className,
   onChangePaymentMethod,
   onChangePaymentBank,
+  onChangePaymentEwallet,
   paymentMethod,
   paymentBanks,
+  paymentEwallets,
   bankId,
-}: //   ewalletId,
-PaymentMethodProps) {
+  ewalletId,
+}: PaymentMethodProps) {
   return (
     <div className={`card ${className}`}>
       <div className="card-body">
@@ -42,10 +45,11 @@ PaymentMethodProps) {
               <Form.Check
                 inline
                 type="radio"
-                label="EWallet"
+                label="E-Wallet"
                 name="payment_method"
                 value="ewallet"
-                disabled
+                checked={paymentMethod === "ewallet"}
+                onChange={(e) => onChangePaymentMethod?.(e.target.value)}
               />
 
               <Form.Check
@@ -78,6 +82,31 @@ PaymentMethodProps) {
                 {paymentBanks?.map((bank) => (
                   <option value={bank.id} key={`bank-${bank.id}`}>
                     {`${bank.name} - ${bank.account_number} - a.n ${bank.account_name}`}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          )}
+
+          {paymentMethod === "ewallet" && (
+            <Form.Group className="mb-3" controlId="ewallet">
+              <Form.Label className="fw-bold">E-Wallet Option</Form.Label>
+              <Form.Select
+                value={ewalletId}
+                onChange={(e) => {
+                  const ewallet = paymentEwallets?.find(
+                    (ewallet) => ewallet.id === +e.target.value!
+                  );
+
+                  if (ewallet) {
+                    onChangePaymentEwallet?.(ewallet);
+                  }
+                }}
+              >
+                <option>Choose E-Wallet</option>
+                {paymentEwallets?.map((ewallet) => (
+                  <option value={ewallet.id} key={`ewallet-${ewallet.id}`}>
+                    {`${ewallet.name} - ${ewallet.phone} - a.n ${ewallet.account_username}`}
                   </option>
                 ))}
               </Form.Select>

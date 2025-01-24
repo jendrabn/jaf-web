@@ -100,7 +100,7 @@ function OrderDetailPage() {
                 <i className="fas fa-truck"></i>
               </div>
               <div>Order Shipped Out</div>
-              <div className="timestamp"></div>
+              <div className="timestamp">{formatDate(order.shipped_at)}</div>
             </div>
             <div
               className={`step ${

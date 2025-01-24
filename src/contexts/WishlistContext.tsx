@@ -48,7 +48,7 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(reducers, initialState);
-  const { data: wishlists, isLoading } = useFetchWishlist();
+  const { data: wishlists } = useFetchWishlist();
 
   useEffect(() => {
     if (wishlists) {
@@ -158,7 +158,7 @@ export function useWishlist() {
     deleteMutation.mutate(
       { wishlist_ids: state.selectedIds },
       {
-        onSuccess(data, variables, context) {
+        onSuccess() {
           toast.success("Items has been removed from your wishlist.");
 
           dispatch({

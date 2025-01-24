@@ -6,3 +6,12 @@ export interface BankTypes {
   account_number: string;
   logo: string;
 }
+
+export interface EwalletTypes {
+  id: number;
+  name: string;
+  // code: string;
+  account_username: string;
+  phone: string;
+  logo: string;
+}
