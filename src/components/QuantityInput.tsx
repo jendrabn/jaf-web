@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "react-bootstrap";
 
 interface QuantityInputProps {
   width?: number;
@@ -31,30 +32,32 @@ function QuantityInput({
         size ? `input-group-${size}` : ""
       }`}
     >
-      <button
-        className="btn btn-outline-secondary rounded-0"
+      <Button
+        variant="outline-secondary"
+        className="rounded-0"
         type="button"
         onClick={() => handleChange(quantity - 1)}
         disabled={quantity <= 1 || disabled}
       >
         <i className="fa-solid fa-minus"></i>
-      </button>
+      </Button>
       <input
         type="text"
         className="form-control text-center rounded-0"
         value={quantity}
-        style={{ width: `${width}px` }}
+        style={{ width }}
         onChange={(e) => handleChange(Number(e.target.value))}
         disabled={disabled}
       />
-      <button
-        className="btn btn-outline-secondary rounded-0"
+      <Button
+        variant="outline-secondary"
+        className="rounded-0"
         type="button"
         onClick={() => handleChange(quantity + 1)}
-        disabled={(maxValue != undefined && quantity >= maxValue) || disabled}
+        disabled={(maxValue && quantity >= maxValue) || disabled}
       >
         <i className="fa-solid fa-plus"></i>
-      </button>
+      </Button>
     </div>
   );
 }

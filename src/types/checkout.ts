@@ -3,7 +3,7 @@ import { BankTypes, EwalletTypes } from "./payment-method";
 import { CityTypes, ProvinceTypes } from "./region";
 
 export interface CheckoutTypes {
-  shipping_address: ShippingAddressTypes;
+  shipping_address: AddressTypes;
   carts: Array<CartItemTypes>;
   shipping_methods: Array<ShippingCostTypes>;
   payment_methods: {
@@ -42,4 +42,24 @@ export interface ShippingCostReqTypes {
 
 export interface CheckoutReqTypes {
   cart_ids?: Array<number>;
+}
+
+export interface DeliveryAddressTypes {
+  name: string;
+  phone: string;
+  province: ProvinceTypes;
+  city: CityTypes;
+  district: string;
+  postal_code: string;
+  address: string;
+}
+
+export interface AddressTypes {
+  name: string;
+  phone: string;
+  province?: ProvinceTypes;
+  city?: CityTypes;
+  district: string;
+  postal_code: string;
+  address: string;
 }

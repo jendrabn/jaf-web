@@ -5,10 +5,11 @@ import {
   WishlistTypes,
 } from "../../types/wishlist";
 import { callApi, getAuthToken } from "../../utils/functions";
+import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchWishlist = () =>
   useQuery<WishlistTypes[]>({
-    queryKey: ["wishlists"],
+    queryKey: [QUERY_KEYS.WISHLISTS],
     queryFn: () =>
       callApi({
         method: "GET",

@@ -1,32 +1,37 @@
 import { Link, NavLink } from "react-router";
 import SearchBar from "./SearchBar";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuthDispatch, useAuthState } from "../../contexts/AuthContext";
 import {
   useFetchProductBrands,
   useFetchProductCategories,
 } from "../../services/api/product";
 import { useLogout } from "../../services/api/auth";
-import { removeAuthToken } from "../../utils/functions";
 import { MouseEvent } from "react";
-import { useCart } from "../../contexts/CartContext";
+import { useCartState } from "../../contexts/CartContext";
+import { removeAuthToken } from "../../utils/functions";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Navbar() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user } = useAuthState();
+  const queryClient = useQueryClient();
+  const dispatch = useAuthDispatch();
 
   const logoutMutation = useLogout();
 
   const { data: categories } = useFetchProductCategories();
   const { data: brands } = useFetchProductBrands();
-  const { carts } = useCart();
+  const { carts } = useCartState();
 
   const handleLogout = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
     logoutMutation.mutate(undefined, {
-      onSuccess: () => {
+      onSettled: () => {
         removeAuthToken();
 
-        window.location.reload();
+        queryClient.clear();
+
+        dispatch({ type: "RESET" });
       },
     });
   };

@@ -1,42 +1,35 @@
-import { useQueryClient } from "@tanstack/react-query";
 import AccountLayout from "../../layouts/AccountLayout";
-import { useCreateCart } from "../../services/api/cart";
-import { toast } from "react-toastify";
-import { useWishlist } from "../../contexts/WishlistContext";
+import {
+  useWishlistDispatch,
+  useWishlistState,
+} from "../../contexts/WishlistContext";
 import { Button, Form, Table } from "react-bootstrap";
-import ProductImage from "../../components/ProductImage";
-import { formatToRupiah } from "../../utils/functions";
+import WishlistItem from "../../components/WishlistItem";
+import { useDeleteWishlist } from "../../services/api/wishlist";
 
 function WishlistPage() {
-  const queryClient = useQueryClient();
-  const createCartMutation = useCreateCart();
+  const deleteWishlistMutation = useDeleteWishlist();
+  const { wishlists, selectedIds } = useWishlistState();
+  const dispatch = useWishlistDispatch();
 
-  const {
-    wishlists,
-    selectedIds,
-    handleSelect,
-    handleSelectAll,
-    handleDelete,
-    handleDeleteSelected,
-  } = useWishlist();
+  const handleSelectAll = () => {
+    dispatch({ type: "SELECT_ALL" });
+  };
 
-  const handleMoveToCart = (productId: number, wishlistId: number) => {
-    createCartMutation.mutate(
-      { product_id: productId, quantity: 1 },
+  const handleDeleteSelected = () => {
+    deleteWishlistMutation.mutate(
+      { wishlist_ids: selectedIds },
       {
         onSuccess: () => {
-          toast.success("Item has been moved to your shopping cart.");
-
-          handleDelete(wishlistId);
-
-          queryClient.invalidateQueries({ queryKey: ["carts"] });
+          dispatch({ type: "DELETE_SELECTED" });
         },
       }
     );
   };
+
   return (
     <AccountLayout title="My Wishlist">
-      {wishlists && wishlists?.length > 0 && (
+      {wishlists && wishlists?.length > 0 ? (
         <>
           <Table responsive className="align-middle">
             <thead>
@@ -55,44 +48,7 @@ function WishlistPage() {
             </thead>
             <tbody>
               {wishlists?.map((item) => (
-                <tr key={item.id}>
-                  <td className="text-center">
-                    <Form.Check
-                      type="checkbox"
-                      onChange={() => handleSelect(item.id)}
-                      checked={selectedIds.includes(item.id)}
-                    />
-                  </td>
-                  <td>
-                    <ProductImage
-                      url={item.product.image}
-                      alt={item.product.name}
-                      className="me-2"
-                    />
-                    <span>{item.product.name}</span>
-                  </td>
-                  <td className="text-center">
-                    {formatToRupiah(item.product.price)}
-                  </td>
-                  <td className="text-center">
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      className="me-2"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <i className="bi bi-trash"></i>
-                    </Button>
-
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={() => handleMoveToCart(item.product.id, item.id)}
-                    >
-                      <i className="bi bi-cart-plus"></i>
-                    </Button>
-                  </td>
-                </tr>
+                <WishlistItem key={`wishlist-item-${item.id}`} item={item} />
               ))}
             </tbody>
           </Table>
@@ -107,6 +63,8 @@ function WishlistPage() {
             </Button>
           </div>
         </>
+      ) : (
+        <p className="text-center text-muted ">Your wishlist is empty</p>
       )}
     </AccountLayout>
   );

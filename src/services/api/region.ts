@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { callApi } from "../../utils/functions";
 import { CityTypes, ProvinceTypes } from "../../types/region";
+import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchProvinces = () =>
   useQuery<ProvinceTypes[]>({
-    queryKey: ["provinces"],
+    queryKey: [QUERY_KEYS.PROVINCES],
     queryFn: () =>
       callApi({
         method: "GET",
@@ -15,7 +16,7 @@ export const useFetchProvinces = () =>
 
 export const useFetchCities = (provinceId?: number | null) =>
   useQuery<CityTypes[]>({
-    queryKey: ["cities", provinceId],
+    queryKey: [QUERY_KEYS.CITIES, provinceId],
     queryFn: () =>
       callApi({
         method: "GET",

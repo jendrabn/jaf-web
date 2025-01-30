@@ -1,77 +1,78 @@
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import Layout from "../layouts/Layout";
-import { CheckoutTypes, ShippingCostTypes } from "../types/checkout";
-import { useCreateOrder, useFetchShippingCosts } from "../services/api/order";
-import { useEffect, useState } from "react";
+import { useCreateOrder } from "../services/api/order";
+import { useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
-import { formatToRupiah } from "../utils/functions";
+import { formatPrice } from "../utils/functions";
 import { toast } from "react-toastify";
 import DeliveryAddressModal from "../components/Checkout/DeliveryAddressModal";
-import { OrderReqTypes } from "../types/order";
-// import { BankTypes, EwalletTypes } from "../types/payment-method";
 import DeliveryAddress from "../components/Checkout/DeliveryAddress";
 import ProductOrderedList from "../components/Checkout/ProductOrderedList";
 import PaymentMethod from "../components/Checkout/PaymentMethod";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  useCheckoutDispatch,
+  useCheckoutState,
+} from "../contexts/CheckoutContext";
+import { OrderReqTypes } from "../types/order";
+import { useCartDispatch } from "../contexts/CartContext";
 
 function CheckoutPage() {
-  const location = useLocation();
+  const queryClient = useQueryClient();
   const createMutation = useCreateOrder();
-  const shippingCostMutation = useFetchShippingCosts();
   const navigate = useNavigate();
-
-  const {
-    shipping_address,
-    carts,
-    payment_methods,
-    shipping_methods,
-    total_price,
-    total_weight,
-    total_quantity,
-  }: CheckoutTypes = location.state || {};
-
-  const [shippingCosts, setShippingCosts] = useState<ShippingCostTypes[]>(
-    shipping_methods || []
-  );
-  const [selectedShipping, setSelectedShipping] =
-    useState<ShippingCostTypes | null>(null);
-  // const [selectedPaymentBank, setSelectedPaymentBank] =
-  //   useState<BankTypes | null>();
-  // const [selectedPaymentEwallet, setSelectedPaymentEwallet] =
-  //   useState<EwalletTypes | null>();
-
+  const state = useCheckoutState();
+  const dispatch = useCheckoutDispatch();
+  const cartDispatch = useCartDispatch();
   const [showAddressModal, setShowAddressModal] = useState(false);
 
-  const [data, setData] = useState<OrderReqTypes>({
-    cart_ids: carts?.map((cart) => cart.id) || [],
-    shipping_address: {
-      name: shipping_address?.name || "",
-      phone: shipping_address?.phone || "",
-      city_id: shipping_address?.city?.id || 0,
-      district: shipping_address?.district || "",
-      postal_code: shipping_address?.postal_code || "",
-      address: shipping_address?.address || "",
-    },
-    shipping_courier: undefined,
-    shipping_service: "",
-    payment_method: undefined,
-    bank_id: undefined,
-    notes: "",
-  });
-
-  useEffect(() => {
-    if (!location.state) navigate("/cart");
-  }, [location.state, navigate]);
-
   const handleCreateOrder = () => {
-    createMutation.mutate(data, {
-      onSuccess: (data) => {
-        // dispatch({ type: "DELETE_SELECTED_CARTS" });
+    if (!state.address) {
+      toast.error("Please add a delivery address");
+      return;
+    }
 
+    if (!state.shipping) {
+      toast.error("Please select a shipping method");
+      return;
+    }
+
+    if (!state.paymentMethod) {
+      toast.error("Please select a payment method");
+      return;
+    }
+
+    const requestData = {
+      cart_ids: state.checkout?.carts.map((cart) => cart.id),
+      shipping_address: {
+        name: state.address?.name,
+        phone: state.address?.phone,
+        city_id: state.address?.city?.id,
+        district: state.address?.district,
+        postal_code: state.address?.postal_code,
+        address: state.address?.address,
+      },
+      shipping_courier: state.shipping?.courier,
+      shipping_service: state.shipping?.service,
+      payment_method: state.paymentMethod,
+      bank_id: state.bank?.id,
+      ewallet_id: state.ewallet?.id,
+      notes: state.note,
+    };
+
+    createMutation.mutate(requestData as OrderReqTypes, {
+      onSuccess: (data) => {
         toast.success("Order created successfully");
 
-        navigate("/order-success", {
+        queryClient.invalidateQueries({ queryKey: ["carts"] });
+
+        cartDispatch({ type: "SET_SELECTED_IDS", payload: [] });
+
+        navigate(`/account/orders/${data.id}`, {
           replace: true,
-          state: data,
+          state: {
+            new_order_created: true,
+          },
         });
       },
     });
@@ -81,37 +82,11 @@ function CheckoutPage() {
     setShowAddressModal(true);
   };
 
-  const handleSubmitAddressModal = (
-    data: OrderReqTypes["shipping_address"]
-  ) => {
-    setShowAddressModal(false);
-
-    setData((prev) => ({
-      ...prev,
-      shipping_address: data,
-    }));
-
-    shippingCostMutation.mutate(
-      {
-        destination: data.city_id,
-        weight: total_weight || 0,
-      },
-      {
-        onSuccess: (data) => {
-          setShippingCosts(data);
-          setSelectedShipping(null);
-        },
-      }
-    );
-  };
-
   return (
     <Layout title="Checkout">
       <DeliveryAddressModal
-        address={shipping_address}
         show={showAddressModal}
         onClose={() => setShowAddressModal(false)}
-        onSubmit={handleSubmitAddressModal}
       />
 
       <div className="container">
@@ -119,57 +94,12 @@ function CheckoutPage() {
           <div className="col-lg-8">
             <DeliveryAddress
               className="mb-3"
-              address={shipping_address}
               handleShowAddressModal={handleShowAddressModal}
             />
 
-            <ProductOrderedList
-              className="mb-3"
-              carts={carts}
-              shippingCosts={shippingCosts}
-              notes={data.notes}
-              onChangeNotes={(notes) => setData((prev) => ({ ...prev, notes }))}
-              onChangeShipping={(shipping) => {
-                setSelectedShipping(shipping);
+            <ProductOrderedList className="mb-3" />
 
-                setData((prevData) => ({
-                  ...prevData,
-                  shipping_courier:
-                    shipping.courier as OrderReqTypes["shipping_courier"],
-                  shipping_service:
-                    shipping.service as OrderReqTypes["shipping_service"],
-                }));
-              }}
-            />
-
-            <PaymentMethod
-              paymentMethod={data.payment_method}
-              paymentBanks={payment_methods?.bank || []}
-              paymentEwallets={payment_methods?.ewallet || []}
-              bankId={data.bank_id}
-              onChangePaymentMethod={(method) => {
-                setData((prevData) => ({
-                  ...prevData,
-                  payment_method: method as OrderReqTypes["payment_method"],
-                }));
-              }}
-              onChangePaymentBank={(bank) => {
-                // setSelectedPaymentBank(bank);
-
-                setData((prevData) => ({
-                  ...prevData,
-                  bank_id: bank.id,
-                }));
-              }}
-              onChangePaymentEwallet={(ewallet) => {
-                // setSelectedPaymentEwallet(ewallet);
-
-                setData((prevData) => ({
-                  ...prevData,
-                  ewallet_id: ewallet.id,
-                }));
-              }}
-            />
+            <PaymentMethod />
           </div>
           <div className="col-lg-4">
             <div className="card mb-3">
@@ -179,29 +109,32 @@ function CheckoutPage() {
                   <tbody>
                     <tr>
                       <td className="text-gray-700">
-                        Total Price ({total_quantity})
+                        Total Price ({state.checkout?.total_quantity})
                       </td>
                       <td className="text-end">
-                        {formatToRupiah(total_price || 0)}
+                        {formatPrice(state.checkout?.total_price || 0)}
                       </td>
                     </tr>
                     <tr>
                       <td className="text-gray-700">
-                        Shipping Cost ({Math.round(total_weight / 1000)}kg)
+                        Shipping Cost (
+                        {Math.round(state.checkout?.total_weight || 0 / 1000)}
+                        kg)
                       </td>
                       <td className="text-end">
-                        {formatToRupiah(selectedShipping?.cost || 0)}
+                        {formatPrice(state.shipping?.cost || 0)}
                       </td>
                     </tr>
                     <tr>
                       <td className="text-gray-700">Tax</td>
-                      <td className="text-end">{formatToRupiah(0)}</td>
+                      <td className="text-end">{formatPrice(0)}</td>
                     </tr>
                     <tr>
                       <td className="text-gray-700">Total Amount</td>
                       <td className="text-end">
-                        {formatToRupiah(
-                          (total_price || 0) + (selectedShipping?.cost || 0)
+                        {formatPrice(
+                          (state.checkout?.total_price || 0) +
+                            (state.shipping?.cost || 0)
                         )}
                       </td>
                     </tr>
@@ -210,11 +143,11 @@ function CheckoutPage() {
 
                 <Form.Group>
                   <Form.Control
-                    value={data.notes}
+                    value={state.note}
                     placeholder="Please leave a message for seller..."
-                    onChange={(e) =>
-                      setData((prev) => ({ ...prev, notes: e.target.value }))
-                    }
+                    onChange={(e) => {
+                      dispatch({ type: "SET_NOTE", payload: e.target.value });
+                    }}
                   />
                 </Form.Group>
               </div>

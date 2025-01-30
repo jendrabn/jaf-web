@@ -1,6 +1,6 @@
-import { Tab, Tabs } from "react-bootstrap";
+import { Button, Tab, Tabs } from "react-bootstrap";
 import { useParams } from "react-router";
-import { getGenderLabel, formatToRupiah } from "../utils/functions";
+import { getGenderLabel, formatPrice } from "../utils/functions";
 import ProductItem from "../components/ProductItem";
 import { useState } from "react";
 import { useCreateCart } from "../services/api/cart";
@@ -13,26 +13,55 @@ import {
 import { useCreateWishlist } from "../services/api/wishlist";
 import Loading from "../components/Loading";
 import QuantityInput from "../components/QuantityInput";
-import { useCart } from "../contexts/CartContext";
-import { useWishlist } from "../contexts/WishlistContext";
+import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
+import ProductImagesCarousel from "../components/ProductImagesCarousel";
+import StarRating from "../components/StarRating";
 
 export default function ProductDetailPage() {
   const { productId } = useParams();
-
   const [quantity, setQuantity] = useState<number>(1);
+  const queryClient = useQueryClient();
 
-  const { data: product, isLoading } = useFetchProduct(+productId!);
-  const { data: relatedProducts, isLoading: isLoadingRelatedProducts } =
-    useFetchRelatedProducts(+productId!);
+  const { data: product, isLoading } = useFetchProduct(productId);
+  const { data: relatedProducts } = useFetchRelatedProducts(productId);
 
   const cartMutation = useCreateCart();
-  const wishlistMutation = useCreateWishlist();
+  const createWishlistMutation = useCreateWishlist();
 
-  const { handleCreate: handleCreateCart } = useCart();
-  const { handleCreate: handleCreateWishlist } = useWishlist();
+  const handleQuantityChange = (quantity: number) => setQuantity(quantity);
 
-  const handleChangeQuantity = (quantity: number) => {
-    setQuantity(quantity);
+  const handleAddToCart = () => {
+    if (!product?.id) return;
+
+    cartMutation.mutate(
+      {
+        product_id: product.id,
+        quantity,
+      },
+      {
+        onSuccess() {
+          queryClient.invalidateQueries({ queryKey: ["carts"] });
+
+          toast.success("Item has been added to your shopping cart.");
+        },
+      }
+    );
+  };
+
+  const handleAddToWishlist = () => {
+    if (!product?.id) return;
+
+    createWishlistMutation.mutate(
+      { product_id: product.id },
+      {
+        onSuccess() {
+          toast.success("Item has been added to your wishlist.");
+
+          queryClient.invalidateQueries({ queryKey: ["wishlists"] });
+        },
+      }
+    );
   };
 
   if (!isLoading && !product) return <NotFoundPage />;
@@ -41,104 +70,36 @@ export default function ProductDetailPage() {
     <Layout title={product?.name}>
       {isLoading && <Loading className="py-5" />}
 
-      {product && (
+      {!isLoading && product && (
         <>
           <div className="container">
             <div className="row gx-5">
               <div className="col-lg-6">
-                <div
-                  id="productImageCarousel"
-                  className="carousel slide product__image-carousel"
-                >
-                  <div className="position-relative">
-                    <div className="carousel-inner">
-                      {product?.images.map((image: string, index: number) => (
-                        <div
-                          key={index}
-                          className={`carousel-item bg-dark bg-gradient text-center ${
-                            index === 0 ? "active" : ""
-                          }`}
-                        >
-                          <picture>
-                            <img
-                              src={image}
-                              alt={`Product Image`}
-                              className="h-100 w-auto object-fit-contain"
-                            />
-                          </picture>
-                        </div>
-                      ))}
-                    </div>
-                    <button
-                      className="carousel-control-prev"
-                      type="button"
-                      data-bs-target="#productImageCarousel"
-                      data-bs-slide="prev"
-                    >
-                      <span
-                        className="carousel-control-prev-icon"
-                        aria-hidden="true"
-                      ></span>
-                      <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button
-                      className="carousel-control-next"
-                      type="button"
-                      data-bs-target="#productImageCarousel"
-                      data-bs-slide="next"
-                    >
-                      <span
-                        className="carousel-control-next-icon"
-                        aria-hidden="true"
-                      ></span>
-                      <span className="visually-hidden">Next</span>
-                    </button>
-                  </div>
-
-                  <div className="carousel-indicators position-static justify-content-center mt-2">
-                    <ul className="d-flex list-unstyled m-0">
-                      {product?.images.map((image: string, index: number) => (
-                        <li
-                          className={`position-relative  ${
-                            index === 0 ? "active" : ""
-                          }`}
-                          key={image}
-                          data-bs-target="#productImageCarousel"
-                          data-bs-slide-to={index}
-                        >
-                          <picture>
-                            <img
-                              src={image}
-                              alt={`Product Image ${index + 1}`}
-                            />
-                          </picture>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                <ProductImagesCarousel images={product?.images || []} />
               </div>
               <div className="col-lg-6">
-                <h1 className="h2 mb-1">{product?.name}</h1>
+                <h1 className="h2 mb-2">{product?.name}</h1>
                 <div className="d-flex align-items-center fs-6 mb-3">
                   <div className="px-3 ps-0 border-end border-2">
-                    <span className="me-2">5</span>
-                    <small></small>
+                    <span className="me-2 text-underline">0</span>
+                    <span>
+                      <StarRating rate={4} />
+                    </span>
                   </div>
                   <div className="px-3 border-end border-2">
-                    <span className="me-2">3333</span>
-                    <small className="text-gray-600">Ratings</small>
+                    <span className="me-2">0</span>
+                    <span className="text-gray-600">Ratings</span>
                   </div>
                   <div className="px-3">
                     <span className="me-2">{product?.sold_count}</span>
-                    <small className="text-gray-600">Sold</small>
+                    <span className="text-gray-600">Sold</span>
                   </div>
                 </div>
                 <div>
                   <div className="row py-2">
                     <div className="col-md-3 fw-bold">Price</div>
                     <div className="col-md-9 h4 mb-0">
-                      {formatToRupiah(product?.price)}
+                      {formatPrice(product?.price)}
                     </div>
                   </div>
 
@@ -163,29 +124,33 @@ export default function ProductDetailPage() {
                     <div className="col-md-3 fw-bold">Quantity</div>
                     <div className="col-md-9">
                       <QuantityInput
-                        onChange={handleChangeQuantity}
+                        onChange={handleQuantityChange}
+                        size="sm"
                         maxValue={product?.stock}
                       />
+                      <span className="text-gray-700 ms-3">
+                        {product?.stock} pieces available
+                      </span>
                     </div>
                   </div>
 
                   <div className="d-flex gap-2 mt-3 mb-3 fs-6 fw-bold text-gray-600 align-items-center ">
-                    <button
-                      className="btn btn-primary py-2 w-100"
+                    <Button
+                      variant="primary"
+                      className="py-2 w-100"
                       disabled={cartMutation.isPending}
-                      onClick={() =>
-                        handleCreateCart({ product_id: +productId!, quantity })
-                      }
+                      onClick={handleAddToCart}
                     >
-                      <i className="fa-solid fa-cart-plus me-1"></i> Add to Cart
-                    </button>
-                    <button
-                      className="btn btn-outline-primary py-2 w-100"
-                      onClick={() => handleCreateWishlist(+productId!)}
-                      disabled={wishlistMutation.isPending}
+                      <i className="fa-solid fa-cart-plus"></i> Add to Cart
+                    </Button>
+                    <Button
+                      variant="outline-primary"
+                      className="py-2 w-100"
+                      onClick={handleAddToWishlist}
+                      disabled={createWishlistMutation.isPending}
                     >
-                      <i className="fa-solid fa-heart me-1"></i> Add to Wishlist
-                    </button>
+                      <i className="fa-solid fa-heart"></i> Add to Wishlist
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -214,10 +179,8 @@ export default function ProductDetailPage() {
             <section className="mt-5">
               <h2 className="section__title">Related Products</h2>
 
-              {isLoadingRelatedProducts && <Loading className="py-4" />}
-
               {relatedProducts?.length === 0 && (
-                <p className="text-center text-gray-700 py-4">
+                <p className="text-center text-gray-700">
                   No related products found
                 </p>
               )}

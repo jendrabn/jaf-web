@@ -7,10 +7,11 @@ import {
   ProductItemTypes,
 } from "../../types/product";
 import { PageTypes } from "../../types";
+import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchProductCategories = () =>
   useQuery<ProductCategoryTypes[]>({
-    queryKey: ["product_categories"],
+    queryKey: [QUERY_KEYS.PRODUCT_CATEGORIES],
     queryFn: () =>
       callApi({
         method: "GET",
@@ -21,7 +22,7 @@ export const useFetchProductCategories = () =>
 
 export const useFetchProductBrands = () =>
   useQuery<ProductBrandTypes[]>({
-    queryKey: ["product_brands"],
+    queryKey: [QUERY_KEYS.PRODUCT_BRANDS],
     queryFn: () =>
       callApi({
         method: "GET",
@@ -32,7 +33,7 @@ export const useFetchProductBrands = () =>
 
 export const useFetchProducts = (queryString?: string) =>
   useQuery<{ data: ProductItemTypes[]; page: PageTypes }>({
-    queryKey: ["producs", queryString],
+    queryKey: [QUERY_KEYS.PRODUCTS, queryString],
     queryFn: () =>
       callApi({
         method: "GET",
@@ -40,22 +41,24 @@ export const useFetchProducts = (queryString?: string) =>
       }),
   });
 
-export const useFetchProduct = (productId: number) =>
+export const useFetchProduct = (productId?: string) =>
   useQuery<ProductDetailTypes>({
-    queryKey: ["product", productId],
+    queryKey: [QUERY_KEYS.PRODUCT, productId],
     queryFn: () =>
       callApi({
         method: "GET",
         url: `/products/${productId}`,
       }),
+    enabled: !!productId,
   });
 
-export const useFetchRelatedProducts = (productId: number) =>
+export const useFetchRelatedProducts = (productId?: string) =>
   useQuery<ProductItemTypes[]>({
-    queryKey: ["related_products", productId],
+    queryKey: [QUERY_KEYS.RELATED_PRODUCTS, productId],
     queryFn: () =>
       callApi({
         method: "GET",
         url: `/products/${productId}/similars`,
       }),
+    enabled: !!productId,
   });

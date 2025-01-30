@@ -1,25 +1,31 @@
 import { Form, Table } from "react-bootstrap";
-import { CartItemTypes } from "../../types/cart";
-import { formatToRupiah } from "../../utils/functions";
-import { ShippingCostTypes } from "../../types/checkout";
-import { OrderReqTypes } from "../../types/order";
+import { formatPrice } from "../../utils/functions";
 import ProductImage from "../ProductImage";
+import {
+  useCheckoutDispatch,
+  useCheckoutState,
+} from "../../contexts/CheckoutContext";
+import { ChangeEvent } from "react";
 
 interface ProductOrderedListProps {
   className?: string;
-  carts: CartItemTypes[];
-  shippingCosts: ShippingCostTypes[];
-  notes: OrderReqTypes["notes"];
-  onChangeShipping: (shipping: ShippingCostTypes) => void;
-  onChangeNotes: (notes: OrderReqTypes["notes"]) => void;
 }
 
-function ProductOrderedList({
-  carts,
-  shippingCosts,
-  onChangeShipping,
-  className,
-}: ProductOrderedListProps) {
+function ProductOrderedList({ className }: ProductOrderedListProps) {
+  const state = useCheckoutState();
+  const dispatch = useCheckoutDispatch();
+
+  const carts = state.checkout?.carts || [];
+  const shippingCosts = state.shippingCosts || [];
+
+  const handleShippingChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedShipping = shippingCosts[parseInt(e.target.value)];
+
+    if (selectedShipping) {
+      dispatch({ type: "SET_SHIPPING", payload: selectedShipping });
+    }
+  };
+
   return (
     <div className={`card ${className}`}>
       <div className="card-body">
@@ -46,10 +52,10 @@ function ProductOrderedList({
                     />
                     {cart.product.name}
                   </td>
-                  <td>{formatToRupiah(cart.product.price)}</td>
+                  <td>{formatPrice(cart.product.price)}</td>
                   <td className="text-center">{cart.quantity}</td>
                   <td className="text-end">
-                    {formatToRupiah(cart.product.price * cart.quantity)}
+                    {formatPrice(cart.product.price * cart.quantity)}
                   </td>
                 </tr>
               ))}
@@ -57,7 +63,7 @@ function ProductOrderedList({
                 <td colSpan={3}></td>
                 <td>
                   <strong className="float-end">
-                    {formatToRupiah(
+                    {formatPrice(
                       carts.reduce(
                         (acc, cart) => acc + cart.product.price * cart.quantity,
                         0
@@ -73,21 +79,13 @@ function ProductOrderedList({
         <Form.Group>
           <Form.Label className="fw-bold">Shipping Option</Form.Label>
 
-          <Form.Select
-            onChange={(e) => {
-              const shipping = shippingCosts[Number(e.target.value)];
-
-              if (shipping) {
-                onChangeShipping(shipping);
-              }
-            }}
-          >
+          <Form.Select onChange={handleShippingChange}>
             <option>Choose Shipping Service</option>
             {shippingCosts.map((cost, index) => (
               <option key={`shipping-${index}`} value={index}>
-                {`${cost.courier_name} - ${
-                  cost.service_name
-                } - ${formatToRupiah(cost.cost)}`}
+                {`${cost.courier_name} - ${cost.service_name} - ${formatPrice(
+                  cost.cost
+                )}`}
               </option>
             ))}
           </Form.Select>

@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { OrderTypes } from "../../types/order";
 import { ORDER_STATUS_COLORS, ORDER_STATUSES } from "../../utils/constans";
-import { formatToRupiah } from "../../utils/functions";
+import { formatPrice } from "../../utils/functions";
 import { Alert, Button } from "react-bootstrap";
 import ProductImage from "../ProductImage";
 
@@ -87,7 +87,7 @@ function OrderItem({
                 </div>
                 <div>
                   <span style={{ fontSize: "0.9rem" }}>
-                    {formatToRupiah(item.price * item.quantity)}
+                    {formatPrice(item.price * item.quantity)}
                   </span>
                 </div>
               </li>
@@ -121,7 +121,7 @@ function OrderItem({
           </div>
           <div>
             <span className="fw-bold me-2">Total Amount:</span>
-            <span className="fw-bold">{formatToRupiah(total_amount)}</span>
+            <span className="fw-bold">{formatPrice(total_amount)}</span>
           </div>
         </div>
       </div>

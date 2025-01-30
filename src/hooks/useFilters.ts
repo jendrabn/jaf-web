@@ -17,8 +17,13 @@ function useFilters<T = Record<string, string | number>>() {
   };
 
   const setFilter = (name: string, value: string | number): void => {
-    searchParams.set(name, value as string);
-    setSearchParams(searchParams);
+    if (value) {
+      searchParams.set(name, value as string);
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete(name);
+      setSearchParams(searchParams);
+    }
   };
 
   return { params, queryString, clearFilters, setFilter };

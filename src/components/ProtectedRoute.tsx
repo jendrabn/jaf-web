@@ -1,9 +1,9 @@
-import { useAuth } from "../contexts/AuthContext";
+import { useAuthState } from "../contexts/AuthContext";
 import { Navigate, Outlet } from "react-router";
 import Loading from "./Loading";
 
 function ProtectedRoute() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuthState();
 
   if (isLoading) return <Loading className="min-vh-100" />;
 

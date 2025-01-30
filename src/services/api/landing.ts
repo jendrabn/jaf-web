@@ -3,6 +3,7 @@ import { callApi } from "../../utils/functions";
 import { ProductItemTypes } from "../../types/product";
 import { BannerTypes } from "../../types/banner";
 import { BlogItemTypes } from "../../types/blog";
+import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchLanding = () =>
   useQuery<{
@@ -10,7 +11,7 @@ export const useFetchLanding = () =>
     banners: BannerTypes[];
     blogs: BlogItemTypes[];
   }>({
-    queryKey: ["landing"],
+    queryKey: [QUERY_KEYS.LANDING],
     queryFn: () =>
       callApi({
         method: "GET",

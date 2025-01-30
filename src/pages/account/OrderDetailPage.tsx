@@ -3,30 +3,23 @@ import AccountLayout from "../../layouts/AccountLayout";
 import { useFetchOrder } from "../../services/api/order";
 import NotFoundPage from "../NotFoundPage";
 import Loading from "../../components/Loading";
-import { formatToRupiah } from "../../utils/functions";
+import { formatDateTime, formatPrice } from "../../utils/functions";
 import { Alert, Button } from "react-bootstrap";
 import { ORDER_STATUS_COLORS, ORDER_STATUSES } from "../../utils/constans";
 import ProductImage from "../../components/ProductImage";
 import { useState } from "react";
 import ConfirmPaymentModal from "../../components/Order/ConfirmPaymentModal";
 import ConfirmOrderReceivedModal from "../../components/Order/ConfirmOrderReceivedModal";
-
-// format date example: 18 Jan 2025, 10:00
-const formatDate = (date?: string): string => {
-  if (!date) return "";
-
-  return new Date(date).toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-};
+import { useLocation } from "react-router";
 
 function OrderDetailPage() {
   const { id } = useParams();
   const { data: order, isLoading } = useFetchOrder(Number(id));
+  const location = useLocation();
 
-  const [showConfirmPaymentModal, setShowConfirmPaymentModal] = useState(false);
+  const [showConfirmPaymentModal, setShowConfirmPaymentModal] = useState(
+    !!location.state?.new_order_created
+  );
   const [showConfirmOrderReceivedModal, setShowConfirmOrderReceivedModal] =
     useState(false);
 
@@ -46,23 +39,28 @@ function OrderDetailPage() {
     setShowConfirmOrderReceivedModal(false);
   };
 
-  if ((!isLoading && !order) || !id) return <NotFoundPage />;
+  if (isLoading) return <Loading className="min-vh-100" />;
+
+  if (!isLoading && !order) return <NotFoundPage />;
 
   return (
     <AccountLayout title="Order Detail">
-      <ConfirmPaymentModal
-        show={showConfirmPaymentModal}
-        onClose={handleCloseConfirmPaymentModal}
-        orderId={+id!}
-      />
+      {/* <OrderSuccessModal /> */}
 
-      <ConfirmOrderReceivedModal
-        orderId={+id!}
-        show={showConfirmOrderReceivedModal}
-        onClose={handleCloseConfirmOrderDeliveredModal}
-      />
-
-      {isLoading && <Loading className="py-5" />}
+      {order && (
+        <>
+          <ConfirmPaymentModal
+            show={showConfirmPaymentModal}
+            onClose={handleCloseConfirmPaymentModal}
+            orderId={order.id}
+          />
+          <ConfirmOrderReceivedModal
+            orderId={order.id}
+            show={showConfirmOrderReceivedModal}
+            onClose={handleCloseConfirmOrderDeliveredModal}
+          />
+        </>
+      )}
 
       {order && (
         <>
@@ -72,7 +70,9 @@ function OrderDetailPage() {
                 <i className="fas fa-check"></i>
               </div>
               <div>Order Created</div>
-              <div className="timestamp">{formatDate(order.created_at)}</div>
+              <div className="timestamp">
+                {formatDateTime(order.created_at)}
+              </div>
             </div>
             <div
               className={`step ${order.status === "pending" ? "active" : ""} ${
@@ -87,9 +87,11 @@ function OrderDetailPage() {
                 <i className="fas fa-check"></i>
               </div>
               <div>
-                Order Paid <br /> ({formatToRupiah(order.total_amount)})
+                Order Paid <br /> ({formatPrice(order.total_amount)})
               </div>
-              <div className="timestamp">{formatDate(order.confirmed_at)}</div>
+              <div className="timestamp">
+                {formatDateTime(order.confirmed_at)}
+              </div>
             </div>
             <div
               className={`step ${
@@ -100,7 +102,9 @@ function OrderDetailPage() {
                 <i className="fas fa-truck"></i>
               </div>
               <div>Order Shipped Out</div>
-              <div className="timestamp">{formatDate(order.shipped_at)}</div>
+              <div className="timestamp">
+                {formatDateTime(order.shipped_at)}
+              </div>
             </div>
             <div
               className={`step ${
@@ -111,7 +115,9 @@ function OrderDetailPage() {
                 <i className="fas fa-box"></i>
               </div>
               <div>Order Completed</div>
-              <div className="timestamp">{formatDate(order.completed_at)}</div>
+              <div className="timestamp">
+                {formatDateTime(order.completed_at)}
+              </div>
             </div>
           </div>
 
@@ -132,7 +138,7 @@ function OrderDetailPage() {
                 <div className="row">
                   <div className="col">
                     <strong>Order Date</strong> <br />{" "}
-                    {formatDate(order.created_at)}
+                    {formatDateTime(order.created_at)}
                   </div>
                   <div className="col border-start border-end">
                     <strong>Order ID</strong> <br /> {order.id}
@@ -169,7 +175,7 @@ function OrderDetailPage() {
                         <p>
                           <strong>Shipping Cost</strong>
                           <br />
-                          {formatToRupiah(order.shipping_cost)}
+                          {formatPrice(order.shipping_cost)}
                         </p>
                       </div>
                       <div className="col-md-6">
@@ -191,29 +197,31 @@ function OrderDetailPage() {
                 </div>
               </div>
 
-              {/* <div className="row">
-                <div className="col-md-4">
-                  <p>
-                    <strong>Toko</strong>
-                    <br />
-                    {order.items[0].product.brand.name}
-                  </p>
+              <div className="order__payment border-top py-3">
+                <div className="row">
+                  <div className="col border-end d-flex justify-content-between">
+                    <div>
+                      <strong>Payment Method</strong> <br />
+                      {order.payment.method.toUpperCase()} -{" "}
+                      {order.payment.info.name}
+                    </div>
+                  </div>
+                  <div className="col">
+                    <strong>Payment Status</strong> <br />
+                    {order.invoice.status.toUpperCase()}
+                    {order.status === "pending_payment" && (
+                      <>
+                        <br />
+                        <span className="text-danger">
+                          {`Payment due date at ${formatDateTime(
+                            order.payment_due_date
+                          )}`}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <div className="col-md-4">
-                  <p>
-                    <strong>Tanggal Pesanan</strong>
-                    <br />
-                    {new Date(order.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="col-md-4">
-                  <p>
-                    <strong>Sales Order</strong>
-                    <br />
-                    {order.invoice.number}
-                  </p>
-                </div>
-              </div> */}
+              </div>
 
               <div className="order__product py-3 border-top">
                 <ul className="list-unstyled mb-0">
@@ -236,40 +244,31 @@ function OrderDetailPage() {
                         <div>
                           <p className="mb-0 fw-bold">{item.name}</p>
                           <small className="text-muted">
-                            {item.quantity} x {formatToRupiah(item.price)} (
+                            {item.quantity} x {formatPrice(item.price)} (
                             {(item.weight / 1000).toFixed(2)} Kg)
                           </small>
                         </div>
                       </div>
                       <div>
                         <span style={{ fontSize: "0.9rem" }}>
-                          {formatToRupiah(item.price * item.quantity)}
+                          {formatPrice(item.price * item.quantity)}
                         </span>
                       </div>
                     </li>
                   ))}
                 </ul>
+                <p className="mt-3 mb-0 border-top border-bottom py-2">
+                  <b>Note:</b> {order.notes || "-"}
+                </p>
               </div>
 
-              <div className="order__summary py-3 border-top">
-                <div className="row mb-2">
-                  <div className="col-md-9 text-end">
-                    <span>Payment Method</span>
-                  </div>
-                  <div className="col-md-3 text-end">
-                    <span>
-                      {order.payment.method.toLocaleUpperCase()} -{" "}
-                      {order.invoice.status.toLocaleUpperCase()}
-                    </span>
-                  </div>
-                </div>
-
+              <div className="order__summary py-3">
                 <div className="row mb-2">
                   <div className="col-md-9 text-end">
                     <span>Total Price</span>
                   </div>
                   <div className="col-md-3 text-end">
-                    <span>{formatToRupiah(order.total_price)}</span>
+                    <span>{formatPrice(order.total_price)}</span>
                   </div>
                 </div>
 
@@ -278,7 +277,7 @@ function OrderDetailPage() {
                     <span>Shipping Cost</span>
                   </div>
                   <div className="col-md-3 text-end">
-                    <span>{formatToRupiah(order.shipping_cost)}</span>
+                    <span>{formatPrice(order.shipping_cost)}</span>
                   </div>
                 </div>
 
@@ -287,7 +286,7 @@ function OrderDetailPage() {
                     <span>Tax</span>
                   </div>
                   <div className="col-md-3 text-end">
-                    <span>{formatToRupiah(0)}</span>
+                    <span>{formatPrice(0)}</span>
                   </div>
                 </div>
 
@@ -297,7 +296,7 @@ function OrderDetailPage() {
                   </div>
                   <div className="col-md-3 text-end">
                     <span className="fw-bold fs-5">
-                      {formatToRupiah(order.total_amount)}
+                      {formatPrice(order.total_amount)}
                     </span>
                   </div>
                 </div>

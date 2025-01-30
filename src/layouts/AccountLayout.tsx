@@ -31,10 +31,10 @@ function AccountLayout({ children, title, description }: AuthLayoutProps) {
 
       <Navbar />
 
-      <main className="py-5">
-        <div className="container-fluid">
+      <main className="py-3 py-md-5">
+        <div className="container">
           <div className="row">
-            <div className="col-lg-2">
+            <div className="col-lg-2 mb-3">
               <Nav
                 defaultActiveKey="/account/profile"
                 className="flex-column nav__account"
@@ -101,7 +101,7 @@ function AccountLayout({ children, title, description }: AuthLayoutProps) {
             <div className="col-lg-10">
               <div className="card border-0 shadow bg-text-white">
                 <h5 className="card-header">{title}</h5>
-                <div className="card-body p-5">{children}</div>
+                <div className="card-body p-md-5">{children}</div>
               </div>
             </div>
           </div>

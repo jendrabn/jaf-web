@@ -8,8 +8,9 @@ import {
 } from "../../types/order";
 import { callApi, getAuthToken } from "../../utils/functions";
 import { PageTypes } from "../../types";
+import { QUERY_KEYS } from "../../utils/constans";
 
-export const useCheckout = () =>
+export const useCheckoutState = () =>
   useMutation({
     mutationFn: (data: CheckoutReqTypes) =>
       callApi({
@@ -33,7 +34,7 @@ export const useFetchShippingCosts = () =>
 
 export const useFetchOrders = (queryString?: string) =>
   useQuery<{ data: OrderTypes[]; page: PageTypes }>({
-    queryKey: ["orders", queryString],
+    queryKey: [QUERY_KEYS.ORDERS, queryString],
     queryFn: () =>
       callApi({
         method: "GET",
@@ -54,16 +55,16 @@ export const useCreateOrder = () =>
       }),
   });
 
-export const useFetchOrder = (orderId: number) =>
+export const useFetchOrder = (orderId?: number) =>
   useQuery<OrderDetailTypes>({
-    queryKey: ["order", orderId],
+    queryKey: [QUERY_KEYS.ORDER, orderId],
     queryFn: () =>
       callApi({
         method: "GET",
         url: `/orders/${orderId}`,
         token: true,
       }),
-    enabled: !!getAuthToken(),
+    enabled: !!getAuthToken() && !!orderId,
   });
 
 export const useConfirmPayment = () =>

@@ -21,3 +21,28 @@ export const SEXS: Record<number, string> = {
   2: "Female",
   3: "Unisex",
 };
+
+export const PAYMENT_METHOD_BANK = "bank";
+export const PAYMENT_METHOD_EWALLET = "ewallet";
+
+export const KEY_SELECTED_CART_IDS = "SELECTED_CART_IDS";
+
+export const QUERY_KEYS = {
+  USER: "user",
+  PRODUCTS: "products",
+  PRODUCT: "product",
+  PRODUCT_CATEGORIES: "product_categories",
+  PRODUCT_BRANDS: "product_brands",
+  RELATED_PRODUCTS: "related_products",
+  BLOG_CATEGORIES: "blog_categories",
+  BLOG_TAGS: "blog_tags",
+  BLOGS: "blogs",
+  BLOG: "blog",
+  CARTS: "carts",
+  WISHLISTS: "wishlists",
+  LANDING: "landing",
+  ORDERS: "orders",
+  ORDER: "order",
+  PROVINCES: "provinces",
+  CITIES: "cities",
+};

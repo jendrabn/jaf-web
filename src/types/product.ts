@@ -40,7 +40,7 @@ export interface ProductDetailTypes {
   id: number;
   name: string;
   slug: string;
-  images: Array<string>;
+  images: string[];
   category: ProductCategoryTypes;
   description: string;
   brand: ProductBrandTypes;

@@ -5,18 +5,18 @@ import {
   deleteReqTypes,
   updateReqTypes,
 } from "../../types/cart";
-import { callApi, getAuthToken } from "../../utils/functions";
+import { callApi } from "../../utils/functions";
+import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchCarts = () =>
   useQuery<CartItemTypes[]>({
-    queryKey: ["carts"],
+    queryKey: [QUERY_KEYS.CARTS],
     queryFn: () =>
       callApi({
         method: "GET",
         url: "/carts",
         token: true,
       }),
-    enabled: !!getAuthToken(),
   });
 
 export const useCreateCart = () =>

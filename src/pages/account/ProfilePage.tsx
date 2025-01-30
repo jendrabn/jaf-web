@@ -1,5 +1,5 @@
 import { Row, Col, Button, Form } from "react-bootstrap";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuthState } from "../../contexts/AuthContext";
 import { UserTypes } from "../../types/user";
 import useForm from "../../hooks/useForm";
 import AccountLayout from "../../layouts/AccountLayout";
@@ -10,7 +10,7 @@ import { ChangeEvent, FormEvent, useRef } from "react";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
 
 function ProfilePage() {
-  const { user } = useAuth();
+  const { user } = useAuthState();
 
   const queryClient = useQueryClient();
 
@@ -19,9 +19,7 @@ function ProfilePage() {
 
   const { mutate, isPending, error, reset } = useUpdateUser();
 
-  const { values, resetForm, handleChange } = useForm<UserTypes>(
-    user as UserTypes
-  );
+  const { values, resetForm, handleChange } = useForm<UserTypes | null>(user);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,7 +73,7 @@ function ProfilePage() {
                 <Col sm="9">
                   <Form.Control
                     type="text"
-                    value={values.name}
+                    value={values?.name}
                     name="name"
                     onChange={handleChange}
                   />
@@ -89,7 +87,7 @@ function ProfilePage() {
                 <Col sm="9">
                   <Form.Control
                     type="email"
-                    value={values.email}
+                    value={values?.email}
                     name="email"
                     onChange={handleChange}
                   />
@@ -103,7 +101,7 @@ function ProfilePage() {
                 <Col sm="9">
                   <Form.Control
                     type="text"
-                    value={values.phone}
+                    value={values?.phone || ""}
                     name="phone"
                     onChange={handleChange}
                   />
@@ -120,7 +118,7 @@ function ProfilePage() {
                     inline
                     label="Male"
                     name="sex"
-                    defaultChecked={values.sex === 1}
+                    defaultChecked={values?.sex === 1}
                     onChange={handleChange}
                     value={1}
                   />
@@ -129,7 +127,7 @@ function ProfilePage() {
                     label="Female"
                     inline
                     name="sex"
-                    defaultChecked={values.sex === 2}
+                    defaultChecked={values?.sex === 2}
                     onChange={handleChange}
                     value={2}
                   />
@@ -143,7 +141,7 @@ function ProfilePage() {
                 <Col sm="9">
                   <Form.Control
                     type="date"
-                    value={values.birth_date}
+                    value={values?.birth_date || ""}
                     name="birth_date"
                     onChange={handleChange}
                   />

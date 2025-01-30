@@ -19,17 +19,17 @@ export interface OrderTypes {
 }
 
 export interface OrderReqTypes {
-  cart_ids: number[];
+  cart_ids?: number[];
   shipping_address: {
-    name: string;
-    phone: string;
-    city_id: number;
-    district: string;
-    postal_code: string;
-    address: string;
+    name?: string;
+    phone?: string;
+    city_id?: number;
+    district?: string;
+    postal_code?: string;
+    address?: string;
   };
   shipping_courier?: "jne" | "pos" | "tiki";
-  shipping_service: string;
+  shipping_service?: string;
   payment_method?: "bank" | "ewallet";
   bank_id?: number;
   ewallet_id?: number;
@@ -55,18 +55,13 @@ export interface OrderDetailTypes {
     id: number;
     number: string;
     amount: number;
-    due_date: Date;
+    due_date: string;
     status: string;
   };
   payment: {
     id: number;
     method: string;
-    info: {
-      name: string;
-      code: string;
-      account_name: number;
-      account_number: string;
-    };
+    info: PaymentInfoTypes;
     amount: number;
     status: string;
   };
@@ -120,34 +115,28 @@ export interface CheckoutTypes {
   total_amount: number;
 }
 
-// "id": 0,
-// "total_amount": 0,
-// "payment_method": "string",
-// "payment_info": {
-//   "name": "string",
-//   "code": "string",
-//   "account_name": 0,
-//   "account_number": "string"
-// },
-// "payment_due_date": "2025-01-19T06:47:16.282Z",
-// "created_at": "2025-01-19T06:47:16.282Z"
-
 export interface OrderSuccessTypes {
   id: number;
   total_amount: number;
   payment_method: string;
-  payment_info: {
-    name: string;
-    code: string;
-    account_name: number;
-    account_number: string;
-  };
+  payment_info: PaymentInfoTypes;
   payment_due_date: string;
   created_at: string;
 }
 
+export interface PaymentInfoTypes {
+  name?: string;
+  code?: string;
+  account_name?: string;
+  account_number?: string;
+  account_username?: string;
+  phone?: string;
+}
+
 export interface ConfirmPaymentReqTypes {
-  name: string;
-  account_name: string;
-  account_number: string;
+  name?: string;
+  account_name?: string;
+  account_number?: string;
+  account_username?: string;
+  phone?: string;
 }

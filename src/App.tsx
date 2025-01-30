@@ -1,7 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import HomePage from "./pages/HomePage.tsx";
-import "bootstrap";
-import "./styles/style.scss";
 import ProductDetailPage from "./pages/ProductDetailPage.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
@@ -11,12 +9,8 @@ import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage.tsx";
 import LoginPage from "./pages/auth/LoginPage.tsx";
 import RegisterPage from "./pages/auth/RegisterPage.tsx";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage.tsx";
-import { AuthProvider } from "./contexts/AuthContext.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-import "bootstrap";
-import "./styles/style.scss";
 import CartPage from "./pages/CartPage.tsx";
 import WishlistPage from "./pages/account/WishlistPage.tsx";
 import ProfilePage from "./pages/account/ProfilePage.tsx";
@@ -25,13 +19,16 @@ import ChangePassword from "./pages/account/ChangePasswordPage.tsx";
 import AddressPage from "./pages/account/AddressPage.tsx";
 import BlogPage from "./pages/BlogPage.tsx";
 import BlogDetailPage from "./pages/BlogDetailPage.tsx";
-import { HelmetProvider } from "react-helmet-async";
 import { AxiosError } from "axios";
-import { CartProvider } from "./contexts/CartContext.tsx";
 import CheckoutPage from "./pages/CheckoutPage.tsx";
 import OrderSuccessPage from "./pages/OrderSuccessPage.tsx";
 import OrderDetailPage from "./pages/account/OrderDetailPage.tsx";
+import "bootstrap";
+import "./styles/style.scss";
+import { AuthProvider } from "./contexts/AuthContext.tsx";
+import { CartProvider } from "./contexts/CartContext.tsx";
 import { WishlistProvider } from "./contexts/WishlistContext.tsx";
+import { CheckoutProvider } from "./contexts/CheckoutContext.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -59,16 +56,17 @@ function App() {
         <ToastContainer
           limit={10}
           theme="light"
-          position="top-right"
+          position="top-center"
+          closeButton={false}
           autoClose={3000}
           newestOnTop
         />
         <ReactQueryDevtools initialIsOpen={true} />
         <BrowserRouter>
-          <HelmetProvider>
-            <AuthProvider>
-              <CartProvider>
-                <WishlistProvider>
+          <AuthProvider>
+            <CartProvider>
+              <WishlistProvider>
+                <CheckoutProvider>
                   <Routes>
                     <Route path="*" element={<NotFoundPage />} />
                     <Route index element={<HomePage />} />
@@ -116,10 +114,10 @@ function App() {
                       element={<ForgotPasswordPage />}
                     />
                   </Routes>
-                </WishlistProvider>
-              </CartProvider>
-            </AuthProvider>
-          </HelmetProvider>
+                </CheckoutProvider>
+              </WishlistProvider>
+            </CartProvider>
+          </AuthProvider>
         </BrowserRouter>
       </QueryClientProvider>
     </>

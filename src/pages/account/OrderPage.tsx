@@ -23,8 +23,9 @@ function OrderPage() {
   };
 
   const handleCloseConfirmPaymentModal = () => {
-    setSelectedOrderId(null);
     setShowConfirmPaymentModal(false);
+
+    setTimeout(() => setSelectedOrderId(null), 100);
   };
 
   const handleShowConfirmOrderReceivedModal = (orderId: number) => {

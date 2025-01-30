@@ -7,7 +7,7 @@ import { useLogin } from "../../services/api/auth";
 import { LoginReqTypes } from "../../types/auth";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
 import { useLocation } from "react-router";
-import { setAuthToken } from "../../utils/functions";
+import { setAuthToken, setSelectedCartIds } from "../../utils/functions";
 import PasswordInput from "../../components/PasswordInput";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -31,6 +31,8 @@ function LoginPage() {
     mutate(values, {
       onSuccess({ auth_token }) {
         setAuthToken(auth_token);
+
+        setSelectedCartIds([]);
 
         queryClient.invalidateQueries({ queryKey: ["user"] });
         queryClient.invalidateQueries({ queryKey: ["carts"] });

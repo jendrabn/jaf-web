@@ -1,42 +1,73 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useEffect, useReducer } from "react";
 import { WishlistTypes } from "../types/wishlist";
-import {
-  useCreateWishlist,
-  useDeleteWishlist,
-  useFetchWishlist,
-} from "../services/api/wishlist";
-import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { useFetchWishlist } from "../services/api/wishlist";
 
+// Action type
 type WishlistAction =
   | { type: "SET_WISHLISTS"; payload: WishlistTypes[] }
-  | { type: "SET_SELECTED_IDS"; payload: number[] };
+  | { type: "SET_SELECTED_IDS"; payload: number[] }
+  | { type: "SELECT"; payload: number }
+  | { type: "SELECT_ALL" }
+  | { type: "DELETE"; payload: number }
+  | { type: "DELETE_SELECTED" };
 
+// State type
 interface WishlistState {
   wishlists: WishlistTypes[];
   selectedIds: number[];
-  isLoading?: boolean;
 }
 
+// Initial state
 const initialState: WishlistState = {
   wishlists: [],
   selectedIds: [],
-  isLoading: false,
 };
 
+// Reducer function
 function reducers(state: WishlistState, action: WishlistAction): WishlistState {
   switch (action.type) {
     case "SET_WISHLISTS":
       return { ...state, wishlists: action.payload };
     case "SET_SELECTED_IDS":
       return { ...state, selectedIds: action.payload };
+    case "SELECT":
+      return {
+        ...state,
+        selectedIds: state.selectedIds.includes(action.payload)
+          ? state.selectedIds.filter(
+              (selectedId) => selectedId !== action.payload
+            )
+          : [...state.selectedIds, action.payload],
+      };
+    case "SELECT_ALL":
+      return {
+        ...state,
+        selectedIds:
+          state.selectedIds.length === state.wishlists.length
+            ? []
+            : state.wishlists.map((wishlist) => wishlist.id),
+      };
+    case "DELETE":
+      return {
+        ...state,
+        wishlists: state.wishlists.filter(
+          (wishlist) => wishlist.id !== action.payload
+        ),
+      };
+    case "DELETE_SELECTED":
+      return {
+        wishlists: state.wishlists.filter(
+          (wishlist) => !state.selectedIds.includes(wishlist.id)
+        ),
+        selectedIds: [],
+      };
     default:
       return state;
   }
 }
 
+// Context
 const WishlistStateContext = createContext<WishlistState | undefined>(
   undefined
 );
@@ -44,6 +75,7 @@ const WishlistDispatchContext = createContext<
   React.Dispatch<WishlistAction> | undefined
 >(undefined);
 
+// Provider
 export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -65,7 +97,8 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-const useWishlistState = () => {
+// Custom hooks
+export const useWishlistState = () => {
   const context = React.useContext(WishlistStateContext);
   if (context === undefined) {
     throw new Error("useWishlistState must be used within a WishlistProvider");
@@ -73,7 +106,7 @@ const useWishlistState = () => {
   return context;
 };
 
-const useWishlistDispatch = () => {
+export const useWishlistDispatch = () => {
   const context = React.useContext(WishlistDispatchContext);
   if (context === undefined) {
     throw new Error(
@@ -82,107 +115,3 @@ const useWishlistDispatch = () => {
   }
   return context;
 };
-
-export function useWishlist() {
-  const state = useWishlistState();
-  const dispatch = useWishlistDispatch();
-  const queryClient = useQueryClient();
-  const createMutation = useCreateWishlist();
-  const deleteMutation = useDeleteWishlist();
-
-  const handleCreate = (id: number) => {
-    createMutation.mutate(
-      { product_id: id },
-      {
-        onSuccess: () => {
-          toast.success("Item has been added to your wishlist.");
-
-          queryClient.invalidateQueries({ queryKey: ["wishlists"] });
-        },
-      }
-    );
-  };
-
-  const handleSelect = (id: number) => {
-    if (state.selectedIds.includes(id)) {
-      return dispatch({
-        type: "SET_SELECTED_IDS",
-        payload: state.selectedIds.filter((selectedId) => selectedId !== id),
-      });
-    } else {
-      return dispatch({
-        type: "SET_SELECTED_IDS",
-        payload: [...state.selectedIds, id],
-      });
-    }
-  };
-
-  const handleSelectAll = () => {
-    if (state.selectedIds.length === state.wishlists.length) {
-      return dispatch({
-        type: "SET_SELECTED_IDS",
-        payload: [],
-      });
-    } else {
-      return dispatch({
-        type: "SET_SELECTED_IDS",
-        payload: state.wishlists.map((wishlist) => wishlist.id),
-      });
-    }
-  };
-
-  const handleDelete = (id: number) => {
-    deleteMutation.mutate(
-      { wishlist_ids: [id] },
-      {
-        onSuccess: () => {
-          toast.success("Item has been removed from your wishlist.");
-
-          dispatch({
-            type: "SET_WISHLISTS",
-            payload: state.wishlists.filter((wishlist) => wishlist.id !== id),
-          });
-
-          dispatch({
-            type: "SET_SELECTED_IDS",
-            payload: state.selectedIds.filter(
-              (selectedId) => selectedId !== id
-            ),
-          });
-        },
-      }
-    );
-  };
-
-  const handleDeleteSelected = () => {
-    deleteMutation.mutate(
-      { wishlist_ids: state.selectedIds },
-      {
-        onSuccess() {
-          toast.success("Items has been removed from your wishlist.");
-
-          dispatch({
-            type: "SET_WISHLISTS",
-            payload: state.wishlists.filter(
-              (wishlist) => !state.selectedIds.includes(wishlist.id)
-            ),
-          });
-
-          dispatch({
-            type: "SET_SELECTED_IDS",
-            payload: [],
-          });
-        },
-      }
-    );
-  };
-
-  return {
-    ...state,
-    handleCreate,
-    handleSelect,
-    handleSelectAll,
-    handleDelete,
-    handleDeleteSelected,
-  };
-}

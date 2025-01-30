@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { Accordion } from "react-bootstrap";
 import {
   useFetchProductBrands,
@@ -27,32 +27,24 @@ function ProductListFilters() {
         <Accordion.Item eventKey="0">
           <Accordion.Header>Category</Accordion.Header>
           <Accordion.Body>
-            {categories?.map((category) => (
-              <div className="form-check mb-2" key={`category-${category.id}`}>
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value={category.id}
-                  id={`category-${category.id}`}
-                  checked={category.id == params.category_id}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    e.preventDefault();
-
-                    if (e.target.checked) {
-                      setFilter("category_id", e.target.value);
-                    } else {
-                      clearFilters("category_id");
+            <ul className="list-unstyled mb-0">
+              {categories?.map((category) => (
+                <li className="mb-2" key={`category-${category.id}`}>
+                  <span
+                    role="button"
+                    className={
+                      category.id == params.category_id
+                        ? "text-primary fw-bold"
+                        : "text-dark"
                     }
-                  }}
-                />
-                <label
-                  className="form-check-label"
-                  htmlFor={`category-${category.id}`}
-                >
-                  {category.name}
-                </label>
-              </div>
-            ))}
+                    onClick={() => setFilter("category_id", category.id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {category.name}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
@@ -61,30 +53,24 @@ function ProductListFilters() {
         <Accordion.Item eventKey="1">
           <Accordion.Header>Brand</Accordion.Header>
           <Accordion.Body>
-            {brands?.map((brand) => (
-              <div className="form-check mb-2" key={`brand-${brand.id}`}>
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value={brand.id}
-                  id={`brand-${brand.id}`}
-                  checked={brand.id == params.brand_id}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setFilter("brand_id", e.target.value);
-                    } else {
-                      clearFilters("brand_id");
+            <ul className="list-unstyled mb-0">
+              {brands?.map((brand) => (
+                <li className="mb-2" key={`brand-${brand.id}`}>
+                  <span
+                    role="button"
+                    className={
+                      brand.id == params.brand_id
+                        ? "text-primary fw-bold"
+                        : "text-dark"
                     }
-                  }}
-                />
-                <label
-                  className="form-check-label"
-                  htmlFor={`brand-${brand.id}`}
-                >
-                  {brand.name}
-                </label>
-              </div>
-            ))}
+                    onClick={() => setFilter("brand_id", brand.id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {brand.name}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>

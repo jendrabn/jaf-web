@@ -67,9 +67,7 @@ function ProductPage() {
             {isLoading && <Loading className="py-5" />}
 
             {products?.data?.length === 0 && (
-              <p className="text-center text-gray-700 my-5">
-                No products found
-              </p>
+              <p className="text-center text-gray-700">No products found</p>
             )}
 
             {products?.data && products?.data?.length > 0 && (

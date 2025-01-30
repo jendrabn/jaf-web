@@ -1,5 +1,5 @@
 import { Link, Navigate } from "react-router";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuthState } from "../contexts/AuthContext";
 import { useLocation } from "react-router";
 import { PropsWithChildren, useEffect } from "react";
 import Loading from "../components/Loading";
@@ -12,7 +12,7 @@ type AuthLayoutProps = PropsWithChildren & {
 
 function AuthLayout({ children, title, description }: AuthLayoutProps) {
   const location = useLocation();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuthState();
 
   useEffect(() => {
     window.scrollTo({
@@ -42,14 +42,13 @@ function AuthLayout({ children, title, description }: AuthLayoutProps) {
           <div className="row justify-content-center">
             <div className="col-12 col-md-6 col-lg-4">
               <Link to="/" className="mb-4 d-block text-center">
-                <picture>
+                <figure style={{ maxWidth: 200 }} className="mx-auto">
                   <img
                     src="/img/logo.png"
                     alt="Logo"
-                    className="img-fluid"
-                    style={{ maxWidth: 200 }}
+                    className="img-fluid w-100"
                   />
-                </picture>
+                </figure>
               </Link>
 
               <div className="card bg-gray-100 shadow">

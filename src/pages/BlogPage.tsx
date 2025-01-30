@@ -80,7 +80,7 @@ function BlogPage() {
 
             {blogs?.data?.length === 0 && (
               <p className="text-center text-gray-700 mb-0 py-5">
-                No products found
+                No blogs found
               </p>
             )}
 

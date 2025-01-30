@@ -7,10 +7,11 @@ import {
   BlogTagTypes,
 } from "../../types/blog";
 import { PageTypes } from "../../types";
+import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchBlogCategories = () =>
   useQuery<BlogCategoryTypes[]>({
-    queryKey: ["blog_categories"],
+    queryKey: [QUERY_KEYS.BLOG_CATEGORIES],
     queryFn: () =>
       callApi({
         method: "GET",
@@ -21,7 +22,7 @@ export const useFetchBlogCategories = () =>
 
 export const useFetchBlogTags = () =>
   useQuery<BlogTagTypes[]>({
-    queryKey: ["blog_tags"],
+    queryKey: [QUERY_KEYS.BLOG_TAGS],
     queryFn: () =>
       callApi({
         method: "GET",
@@ -35,7 +36,7 @@ export const useFetchBlogs = (queryString?: string) =>
     data: BlogItemTypes[];
     page: PageTypes;
   }>({
-    queryKey: ["blogs", queryString],
+    queryKey: [QUERY_KEYS.BLOGS, queryString],
     queryFn: () =>
       callApi({
         method: "GET",
@@ -44,13 +45,14 @@ export const useFetchBlogs = (queryString?: string) =>
     staleTime: Infinity,
   });
 
-export const useFetchBlog = (slug: string) =>
+export const useFetchBlog = (slug?: string) =>
   useQuery<BlogDetailTypes>({
-    queryKey: ["blog", slug],
+    queryKey: [QUERY_KEYS.BLOG, slug],
     queryFn: () =>
       callApi({
         method: "GET",
         url: `/blogs/${slug}`,
       }),
     staleTime: Infinity,
+    enabled: !!slug,
   });

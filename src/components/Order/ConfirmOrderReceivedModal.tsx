@@ -33,7 +33,7 @@ function ConfirmOrderReceivedModal({
 
   return (
     <Modal onHide={() => onClose()} show={show} backdrop="static" centered>
-      <Modal.Header>
+      <Modal.Header closeButton>
         <Modal.Title>Confirm Order Received</Modal.Title>
       </Modal.Header>
       <Modal.Body>
