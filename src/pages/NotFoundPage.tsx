@@ -6,6 +6,7 @@ function NotFoundPage() {
     <>
       <Helmet>
         <title>404 | {import.meta.env.VITE_APP_NAME}</title>
+        <meta name="description" content="Page Not Found" />
       </Helmet>
 
       <section className="d-flex align-items-center min-vh-100">

@@ -19,7 +19,8 @@ function ProductListFilters() {
 
   return (
     <div className="product__filter ">
-      <h5 className="mb-4">
+      {/* only show on desktop */}
+      <h5 className="mb-4 d-none d-lg-block">
         <i className="fa-solid fa-filter"></i> Filter
       </h5>
 

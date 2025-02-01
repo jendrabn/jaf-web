@@ -27,68 +27,66 @@ function HomePage() {
       <Navbar />
 
       <main>
-        {landing?.banners && landing?.banners?.length > 0 && (
-          <section className="mt-0 mt-md-3 mt-lg-5">
-            <div className="container-lg">
-              <div
-                id="bannerCarousel"
-                className="carousel slide banner__carousel"
-              >
-                <div className="carousel-indicators">
-                  {landing?.banners?.map((banner, index: number) => (
-                    <button
-                      key={`indicator-${banner.id}`}
-                      type="button"
-                      data-bs-target="#bannerCarousel"
-                      data-bs-slide-to={index}
-                      className={index === 0 ? "active" : ""}
-                      aria-label={`Slide ${index + 1}`}
-                      aria-current={index === 0 ? "true" : "false"}
-                    ></button>
-                  ))}
-                </div>
-                <div className="carousel-inner">
-                  {landing?.banners?.map((banner, index: number) => (
-                    <div
-                      className={`carousel-item ${index === 0 ? "active" : ""}`}
-                      key={`banner-${banner.id}`}
-                    >
-                      <img
-                        src={banner.image}
-                        className="d-block w-100 h-100 object-fit-fill"
-                        alt={banner.image_description}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <button
-                  className="carousel-control-prev"
-                  type="button"
-                  data-bs-target="#bannerCarousel"
-                  data-bs-slide="prev"
-                >
-                  <span className="control__prev-icon">
-                    <i className="fa-solid fa-chevron-left"></i>
-                  </span>
-                  <span className="visually-hidden">Previous</span>
-                </button>
-                <button
-                  className="carousel-control-next"
-                  type="button"
-                  data-bs-target="#bannerCarousel"
-                  data-bs-slide="next"
-                >
-                  <span className="control__next-icon">
-                    <i className="fa-solid fa-chevron-right"></i>
-                  </span>
-                  <span className="visually-hidden">Next</span>
-                </button>
+        <section className="mt-0 mt-md-4 mt-lg-5">
+          <div className="container-lg">
+            <div
+              id="bannerCarousel"
+              className="carousel slide banner__carousel-wrapper"
+            >
+              <div className="carousel-indicators">
+                {landing?.banners?.map((banner, index: number) => (
+                  <button
+                    key={`indicator-${banner.id}`}
+                    type="button"
+                    data-bs-target="#bannerCarousel"
+                    data-bs-slide-to={index}
+                    className={index === 0 ? "active" : ""}
+                  ></button>
+                ))}
               </div>
-            </div>
-          </section>
-        )}
 
-        <section className="mt-5">
+              <div className="carousel-inner">
+                {landing?.banners?.map((banner, index: number) => (
+                  <div
+                    className={`carousel-item ${index === 0 ? "active" : ""}`}
+                    key={`banner-${banner.id}`}
+                  >
+                    <img
+                      src={banner.image}
+                      className="d-block w-100 h-100 object-fit-fill"
+                      alt={banner.image_description}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <button
+                className="carousel-control-prev"
+                type="button"
+                data-bs-target="#bannerCarousel"
+                data-bs-slide="prev"
+              >
+                <span className="control__prev-icon">
+                  <i className="fa-solid fa-chevron-left"></i>
+                </span>
+                <span className="visually-hidden">Previous</span>
+              </button>
+              <button
+                className="carousel-control-next"
+                type="button"
+                data-bs-target="#bannerCarousel"
+                data-bs-slide="next"
+              >
+                <span className="control__next-icon">
+                  <i className="fa-solid fa-chevron-right"></i>
+                </span>
+                <span className="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-4 mt-lg-5">
           <div className="container">
             <h2 className="section__title">New Arrivals</h2>
 
@@ -112,7 +110,7 @@ function HomePage() {
           </div>
         </section>
 
-        <section className="mt-5 mb-5">
+        <section className="mt-4 mt-lg-5 mb-4 mb-lg-5">
           <div className="container">
             <h2 className="section__title">New Blogs</h2>
 

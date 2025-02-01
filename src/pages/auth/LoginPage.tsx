@@ -36,6 +36,8 @@ function LoginPage() {
 
         queryClient.invalidateQueries({ queryKey: ["user"] });
         queryClient.invalidateQueries({ queryKey: ["carts"] });
+        queryClient.invalidateQueries({ queryKey: ["orders"] });
+        queryClient.invalidateQueries({ queryKey: ["wishlists"] });
 
         navigate(location.state?.from || "/", {
           replace: true,

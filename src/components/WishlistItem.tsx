@@ -59,34 +59,95 @@ function WishlistItem({ item: { id, product } }: WishlistItemProps) {
   };
 
   return (
-    <tr>
-      <td className="text-center">
-        <Form.Check
-          type="checkbox"
-          onChange={handleSelect}
-          checked={selectedIds.includes(id)}
-        />
-      </td>
-      <td>
-        <ProductImage url={product.image} alt={product.name} className="me-2" />
-        <span>{product.name}</span>
-      </td>
-      <td className="text-center">{formatPrice(product.price)}</td>
-      <td className="text-center">
-        <Button
-          variant="outline-danger"
-          size="sm"
-          className="me-2"
-          onClick={handleDelete}
+    <>
+      {/* Mobile */}
+      <div className="d-flex p-2 mb-2 border shadow-sm d-lg-none">
+        <div
+          className="d-flex justify-content-center align-items-center me-2"
+          style={{ width: "5%" }}
         >
-          <i className="bi bi-trash"></i>
-        </Button>
+          <Form.Check
+            type="checkbox"
+            onChange={handleSelect}
+            checked={selectedIds.includes(id)}
+          />
+        </div>
+        <div className="d-flex justify-content-center align-items-center me-2">
+          <ProductImage url={product.image} alt={product.name} />
+        </div>
+        <div className="flex-grow-1">
+          <p style={{ fontWeight: 500 }} className="mb-1">
+            {product.name}
+          </p>
+          <p className="mb-1 text-gray-700 mb-1">
+            {formatPrice(product.price)}
+          </p>
+          <div className="d-flex g-2 align-items-center justify-content-end">
+            <Button
+              variant="outline-danger"
+              size="sm"
+              className="me-2"
+              onClick={handleDelete}
+            >
+              <i className="bi bi-trash"></i>
+            </Button>
 
-        <Button variant="outline-primary" size="sm" onClick={handleMoveToCart}>
-          <i className="bi bi-cart-plus"></i>
-        </Button>
-      </td>
-    </tr>
+            <Button
+              variant="outline-primary"
+              size="sm"
+              onClick={handleMoveToCart}
+            >
+              <i className="bi bi-cart-plus"></i>
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop */}
+      <div className="d-flex flex-row align-items-center p-2 mb-2 border shadow-sm d-none d-lg-flex">
+        <div className="text-center" style={{ width: "5%" }}>
+          <Form.Check
+            type="checkbox"
+            onChange={handleSelect}
+            checked={selectedIds.includes(id)}
+          />
+        </div>
+        <div
+          className="d-flex justify-content-start align-items-center"
+          style={{ width: "50%" }}
+        >
+          <ProductImage
+            width={60}
+            url={product.image}
+            alt={product.name}
+            className="me-2"
+          />
+          <span style={{ fontWeight: 500 }}>{product.name}</span>
+        </div>
+        <div className="text-center" style={{ width: "20%" }}>
+          {formatPrice(product.price)}
+        </div>
+
+        <div className="text-center" style={{ width: "25%" }}>
+          <Button
+            variant="outline-danger"
+            size="sm"
+            className="me-2"
+            onClick={handleDelete}
+          >
+            <i className="bi bi-trash"></i>
+          </Button>
+
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={handleMoveToCart}
+          >
+            <i className="bi bi-cart-plus"></i>
+          </Button>
+        </div>
+      </div>
+    </>
   );
 }
 

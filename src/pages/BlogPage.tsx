@@ -7,6 +7,7 @@ import Layout from "../layouts/Layout";
 import BlogListFilters from "../components/BlogListFilters";
 import useFilters from "../hooks/useFilters";
 import { FormEvent, useState } from "react";
+import { Button, Offcanvas } from "react-bootstrap";
 
 function BlogPage() {
   const { params, setFilter, queryString, clearFilters } =
@@ -15,6 +16,7 @@ function BlogPage() {
   const [searchTerm, setSearchTerm] = useState<string>(params.search || "");
 
   const { data: blogs, isLoading } = useFetchBlogs(queryString);
+  const [showFilters, setShowFilters] = useState(false);
 
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,11 +38,11 @@ function BlogPage() {
     <Layout title="Blogs">
       <div className="container">
         <div className="row">
-          <div className="col-lg-2">
+          <div className="col-lg-2 d-none d-lg-block">
             <BlogListFilters />
           </div>
           <div className="col-lg-10">
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="d-flex justify-content-between align-items-center mb-3">
               <div>
                 <span className="text-gray-700 mb-0 me-2">Sort by:</span>
                 <select
@@ -58,22 +60,48 @@ function BlogPage() {
                 </select>
               </div>
 
-              <form
-                className="d-flex align-items-center w-50"
-                onSubmit={handleSearchSubmit}
-              >
+              {/* Only show on desktop */}
+              <p className="text-gray-700 mb-0 d-none d-lg-block">
+                Showing {blogs?.data?.length || 0} results
+              </p>
+
+              {/* only show in mobile */}
+              <div className="d-block d-lg-none">
+                <Button
+                  size="sm"
+                  variant="outline-dark"
+                  onClick={() => setShowFilters(true)}
+                >
+                  <i className="bi bi-funnel-fill"></i>
+                </Button>
+
+                <Offcanvas
+                  show={showFilters}
+                  onHide={() => setShowFilters(false)}
+                  placement="end"
+                >
+                  <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>
+                      <i className="bi bi-funnel-fill"></i> Filters
+                    </Offcanvas.Title>
+                  </Offcanvas.Header>
+                  <Offcanvas.Body>
+                    <BlogListFilters />
+                  </Offcanvas.Body>
+                </Offcanvas>
+              </div>
+            </div>
+
+            <div className="d-flex justify-content-center align-items-center mb-3 bg-primary py-2 rounded">
+              <form className="mx-auto w-50" onSubmit={handleSearchSubmit}>
                 <input
-                  className="form-control w-100 d-inline-block"
+                  className="form-control w-100 border-0"
                   type="search"
                   placeholder="Search for blogs"
                   name="search"
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </form>
-
-              <p className="text-gray-700 mb-0">
-                Showing {blogs?.data?.length || 0} results
-              </p>
             </div>
 
             {isLoading && <Loading className="py-5" />}
@@ -90,7 +118,7 @@ function BlogPage() {
                   {blogs.data.map((blog) => (
                     <div
                       key={`blog-${blog.id}`}
-                      className="col-12 col-md-6 col-lg-3"
+                      className="col-6 col-md-4 col-lg-3"
                     >
                       <BlogItem blog={blog} />
                     </div>

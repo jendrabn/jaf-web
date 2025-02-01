@@ -68,6 +68,8 @@ function CheckoutPage() {
 
         cartDispatch({ type: "SET_SELECTED_IDS", payload: [] });
 
+        dispatch({ type: "RESET" });
+
         navigate(`/account/orders/${data.id}`, {
           replace: true,
           state: {

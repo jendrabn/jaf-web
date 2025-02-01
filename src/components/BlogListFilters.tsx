@@ -11,7 +11,7 @@ function BlogListFilters() {
 
   return (
     <div className="blog__filter">
-      <h5 className="mb-4">
+      <h5 className="mb-4 d-none d-lg-block">
         <i className="fa-solid fa-filter"></i> Filter
       </h5>
 

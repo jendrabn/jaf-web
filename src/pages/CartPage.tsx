@@ -2,7 +2,7 @@ import Layout from "../layouts/Layout";
 import { useNavigate } from "react-router";
 import { useCheckoutState } from "../services/api/order";
 import { formatPrice } from "../utils/functions";
-import { Button, Card, Form, Table } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { useDeleteCart } from "../services/api/cart";
 import CartItem from "../components/CartItem";
 import { useCartDispatch, useCartState } from "../contexts/CartContext";
@@ -45,74 +45,108 @@ function CartPage() {
       <div className="container">
         <h2 className="section__title">Shopping Cart</h2>
 
-        <Card>
-          <Card.Body>
-            {carts.length > 0 ? (
-              <>
-                <Table responsive className="align-middle">
-                  <thead>
-                    <tr>
-                      <th className="text-center">
-                        <Form.Check
-                          type="checkbox"
-                          checked={
-                            selectedIds.length > 0 &&
-                            selectedIds.length === carts.length
-                          }
-                          onChange={handleSelectAll}
-                        />
-                      </th>
-                      <th className="text-center">Product</th>
-                      <th className="text-center">Price</th>
-                      <th className="text-center">Quantity</th>
-                      <th className="text-center">Total Price</th>
-                      <th className="text-center">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {carts.map((cart) => (
-                      <CartItem key={`cart-item-${cart.id}`} cart={cart} />
-                    ))}
-                  </tbody>
-                </Table>
+        {carts.length > 0 ? (
+          <>
+            {/* Dekstop */}
+            <div className="d-flex px-2 py-3 d-none d-lg-flex fw-bold shadow-sm border mb-3">
+              <div
+                style={{ width: "5%" }}
+                className="d-flex justify-content-center"
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={
+                    selectedIds.length > 0 &&
+                    selectedIds.length === carts.length
+                  }
+                  onChange={handleSelectAll}
+                />
+              </div>
+              <div style={{ width: "40%" }} className="text-start">
+                Product
+              </div>
+              <div style={{ width: "15%" }} className="text-center">
+                Price
+              </div>
+              <div style={{ width: "15%" }} className="text-center">
+                Quantity
+              </div>
+              <div style={{ width: "15%" }} className="text-center">
+                Total
+              </div>
+              <div style={{ width: "10%" }} className="text-center">
+                Action
+              </div>
+            </div>
 
-                <div className="d-flex justify-content-between align-items-center mt-3">
-                  <Button
-                    variant="outline-danger"
-                    onClick={handleDeleteSelected}
-                    disabled={
-                      selectedIds.length === 0 || deleteCartMutation.isPending
-                    }
-                  >
-                    Delete Selected
-                  </Button>
+            <div className="d-flex flex-column">
+              {carts.map((cart) => (
+                <CartItem key={`cart-item-${cart.id}`} cart={cart} />
+              ))}
+            </div>
 
-                  <div className="d-flex align-items-center">
-                    <p className="d-flex align-items-center mb-0 me-3">
-                      Total ({totalItem} item):
-                      <span className="fw-bold fs-5 ms-2">
-                        {formatPrice(totalPrice)}
-                      </span>
-                    </p>
-                    <Button
-                      variant="primary"
-                      className="px-5"
-                      size="lg"
-                      disabled={
-                        selectedIds.length === 0 || checkoutMutation.isPending
-                      }
-                      onClick={handleCheckout}
-                    >
-                      {checkoutMutation.isPending ? "Loading..." : "Checkout"}
-                    </Button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <p className="text-center text-muted">Cart is empty</p>
-            )}
-          </Card.Body>
-        </Card>
+            {/* Dekstop */}
+            <div className="d-flex justify-content-between align-items-center mt-3 d-none d-lg-flex">
+              <Button
+                variant="outline-danger"
+                onClick={handleDeleteSelected}
+                disabled={
+                  selectedIds.length === 0 || deleteCartMutation.isPending
+                }
+              >
+                Delete Selected
+              </Button>
+
+              <div className="d-flex align-items-center">
+                <p className="mb-0 me-3">
+                  Total ({totalItem} item):{" "}
+                  <span className="fw-bold">{formatPrice(totalPrice)}</span>
+                </p>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  disabled={
+                    selectedIds.length === 0 || checkoutMutation.isPending
+                  }
+                  onClick={handleCheckout}
+                >
+                  {checkoutMutation.isPending ? "Loading..." : "Checkout"}
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex-grow-1 mt-1 d-lg-none">
+              <div className="d-flex px-2 py-3 shadow-sm border mb-3 align-items-center justify-content-between">
+                <Form.Check
+                  type="checkbox"
+                  checked={
+                    selectedIds.length > 0 &&
+                    selectedIds.length === carts.length
+                  }
+                  onChange={handleSelectAll}
+                  label="Select All"
+                />
+
+                <Button
+                  variant="outline-danger"
+                  size="sm"
+                  onClick={handleDeleteSelected}
+                  disabled={
+                    selectedIds.length === 0 || deleteCartMutation.isPending
+                  }
+                >
+                  Delete Selected
+                </Button>
+              </div>
+              <div className="d-flex align-items-center justify-content-between">
+                <p className="fw-bold">Total ({totalItem} item)</p>
+                <p className="fw-bold fs-5">{formatPrice(totalPrice)}</p>
+              </div>
+            </div>
+          </>
+        ) : (
+          <p className="text-center text-muted">Cart is empty</p>
+        )}
       </div>
     </Layout>
   );

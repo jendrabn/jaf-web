@@ -3,18 +3,22 @@
 
 // `sm` applies to x-small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
+  // Banner Carousel
+  .banner__carousel-wrapper {
+    .carousel-inner {
+      border-radius: 0 !important;
+      height: 100%;
+      max-height: 215px !important;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      display: none !important;
+    }
+  }
+
   .container-lg {
     padding: 0 !important;
-  }
-
-  .carousel-item {
-    border-radius: 0 !important;
-    height: 180px !important;
-  }
-
-  .btn__control-prev,
-  .btn__control-next {
-    display: none !important;
   }
 }
 

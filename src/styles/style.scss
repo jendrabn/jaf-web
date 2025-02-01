@@ -129,10 +129,11 @@ footer {
 // End Footer
 
 // Banner Carousel
-.banner__carousel {
+.banner__carousel-wrapper {
   .carousel-inner {
     border-radius: 10px;
     overflow: hidden;
+    background-color: $gray-300;
   }
 
   .carousel-item {
@@ -162,6 +163,7 @@ footer {
     margin: 0 5px;
   }
 }
+// End Banner Carousel
 
 .section__title {
   font-weight: 700;

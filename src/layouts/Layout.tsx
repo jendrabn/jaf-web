@@ -31,7 +31,7 @@ function Layout({ children, title, description }: LayoutProps) {
         {description && <meta name="description" content={description} />}
       </Helmet>
       <Navbar />
-      <main className="py-2 py-md-4 py-lg-5">{children}</main>
+      <main className="py-4 py-lg-5">{children}</main>
       <Footer />
     </>
   );

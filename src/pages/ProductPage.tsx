@@ -6,12 +6,16 @@ import Loading from "../components/Loading";
 import Pagination from "../components/Pagination";
 import useFilters from "../hooks/useFilters";
 import Layout from "../layouts/Layout";
+import { Button, Offcanvas } from "react-bootstrap";
+import { useState } from "react";
 
 function ProductPage() {
   const { params, queryString, setFilter, clearFilters } =
     useFilters<ProductParamsTypes>();
 
   const { data: products, isLoading } = useFetchProducts(queryString);
+
+  const [showFilters, setShowFilters] = useState(false);
 
   const handlePageClick = (page: number) => {
     setFilter("page", page);
@@ -27,7 +31,7 @@ function ProductPage() {
     <Layout title="Products">
       <div className="container">
         <div className="row">
-          <div className="col-lg-2">
+          <div className="col-lg-2 d-none d-lg-block">
             <ProductListFilters />
           </div>
           <div className="col-lg-10">
@@ -59,9 +63,37 @@ function ProductPage() {
                   <option value={"expensive"}>Price: high to low</option>
                 </select>
               </div>
-              <p className="text-gray-700 mb-0">
+
+              {/* only show in desktop */}
+              <p className="text-gray-700 mb-0 d-none d-lg-block">
                 Showing {products?.data?.length || 0} results
               </p>
+
+              {/* only show in mobile */}
+              <div className="d-block d-lg-none">
+                <Button
+                  size="sm"
+                  variant="outline-dark"
+                  onClick={() => setShowFilters(true)}
+                >
+                  <i className="bi bi-funnel-fill"></i>
+                </Button>
+
+                <Offcanvas
+                  show={showFilters}
+                  onHide={() => setShowFilters(false)}
+                  placement="end"
+                >
+                  <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>
+                      <i className="bi bi-funnel-fill"></i> Filters
+                    </Offcanvas.Title>
+                  </Offcanvas.Header>
+                  <Offcanvas.Body>
+                    <ProductListFilters />
+                  </Offcanvas.Body>
+                </Offcanvas>
+              </div>
             </div>
 
             {isLoading && <Loading className="py-5" />}

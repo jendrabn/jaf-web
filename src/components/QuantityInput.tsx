@@ -45,7 +45,7 @@ function QuantityInput({
         type="text"
         className="form-control text-center rounded-0"
         value={quantity}
-        style={{ width }}
+        style={{ maxWidth: width }}
         onChange={(e) => handleChange(Number(e.target.value))}
         disabled={disabled}
       />

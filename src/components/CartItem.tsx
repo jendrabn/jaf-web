@@ -48,40 +48,95 @@ function CartItem({ cart }: CartItemProps) {
   };
 
   return (
-    <tr>
-      <td className="text-center">
-        <Form.Check
-          type="checkbox"
-          checked={selectedIds.includes(id)}
-          onChange={handleSelect}
-        />
-      </td>
-      <td>
-        <ProductImage url={product.image} alt={product.name} className="me-2" />
-        {product.name}
-      </td>
-      <td className="text-center">{formatPrice(product.price)}</td>
-      <td className="text-center">
-        <QuantityInput
-          onChange={(quantity) => handleUpdate(quantity)}
-          maxValue={product.stock}
-          initialValue={quantity}
-          size="sm"
-          disabled={updateCartMutation.isPending}
-        />
-      </td>
-      <td className="text-center">{formatPrice(product.price * quantity)}</td>
-      <td className="text-center">
-        <Button
-          variant="outline-danger"
-          size="sm"
-          disabled={deleteCartMutation.isPending}
-          onClick={handleDelete}
+    <>
+      {/* Mobile */}
+      <div className="d-flex p-2 mb-2 shadow-sm border d-none d-lg-flex">
+        <div
+          style={{ width: "5%" }}
+          className="d-flex justify-content-center align-items-center"
         >
-          <i className="bi bi-trash"></i>
-        </Button>
-      </td>
-    </tr>
+          <Form.Check
+            type="checkbox"
+            checked={selectedIds.includes(id)}
+            onChange={handleSelect}
+          />
+        </div>
+
+        <div style={{ width: "40%" }} className="d-flex align-items-center">
+          <ProductImage
+            url={product.image}
+            alt={product.name}
+            className="me-2"
+          />
+          <span>{product.name}</span>
+        </div>
+
+        <div style={{ width: "15%" }} className="text-center my-auto">
+          {formatPrice(product.price)}
+        </div>
+
+        <div style={{ width: "15%" }} className="text-center my-auto">
+          <QuantityInput
+            onChange={(quantity) => handleUpdate(quantity)}
+            maxValue={product.stock}
+            initialValue={quantity}
+            size="sm"
+            disabled={updateCartMutation.isPending}
+          />
+        </div>
+
+        <div style={{ width: "15%" }} className="text-center my-auto">
+          {formatPrice(product.price * quantity)}
+        </div>
+
+        <div style={{ width: "10%" }} className="text-center my-auto">
+          <Button variant="outline-danger" size="sm" onClick={handleDelete}>
+            <i className="bi bi-trash"></i>
+          </Button>
+        </div>
+      </div>
+
+      {/* Desktop */}
+      <div className="d-flex p-2 mb-2 shadow-sm border d-lg-none">
+        <div className="d-flex justify-content-center align-items-center me-2">
+          <Form.Check
+            type="checkbox"
+            checked={selectedIds.includes(id)}
+            onChange={handleSelect}
+          />
+        </div>
+
+        <div className="d-flex align-items-center me-2">
+          <ProductImage url={product.image} alt={product.name} />
+        </div>
+
+        <div className="flex-grow-1">
+          <p className="mb-1" style={{ fontWeight: 500 }}>
+            {product.name}
+          </p>
+          <p className="mb-1 text-gray-700">{formatPrice(product.price)}</p>
+          <div className="d-flex justify-content-between mb-2">
+            <div className="flex-grow-1">
+              <QuantityInput
+                onChange={(quantity) => handleUpdate(quantity)}
+                maxValue={product.stock}
+                initialValue={quantity}
+                size="sm"
+                disabled={updateCartMutation.isPending}
+              />
+            </div>
+            <div className="text-end">
+              <Button variant="outline-danger" size="sm" onClick={handleDelete}>
+                <i className="bi bi-trash"></i>
+              </Button>
+            </div>
+          </div>
+          <p className="mb-0 text-end fw-bold">
+            {formatPrice(product.price * quantity)}
+          </p>
+        </div>
+      </div>
+    </>
   );
 }
 
