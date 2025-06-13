@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { OrderTypes } from "../../types/order";
+import { type OrderTypes } from "../../types/order";
 import { ORDER_STATUS_COLORS, ORDER_STATUSES } from "../../utils/constans";
 import { formatPrice } from "../../utils/functions";
 import { Alert, Button } from "react-bootstrap";
@@ -55,6 +55,7 @@ function OrderItem({
               </span>
             </div>
           </div>
+
           {/* Alert Payment Due Date */}
           {status === "pending_payment" && (
             <Alert variant="danger" className="p-2">
@@ -95,13 +96,18 @@ function OrderItem({
           </ul>
         </Link>
 
-        <div className="d-flex justify-content-between align-items-center border-top pt-2">
-          <div>
+        <div className="d-flex flex-column flex-lg-row flex-lg-row-reverse justify-content-between border-top pt-2">
+          <div className="d-flex justify-content-end align-items-center mb-2 mb-lg-0">
+            <span className="text-gray-700 me-2">Total Amount:</span>
+            <span className="fw-bold">{formatPrice(total_amount)}</span>
+          </div>
+
+          <div className="d-flex gap-2 jutsify-content-start">
             {status === "pending_payment" && (
               <Button
                 variant="primary"
                 size="sm"
-                className="me-2 rounded-0"
+                className="rounded-0"
                 onClick={() => onConfirmPayment(id)}
               >
                 Confirm Payment
@@ -118,10 +124,6 @@ function OrderItem({
                 Order Received
               </Button>
             )}
-          </div>
-          <div>
-            <span className="fw-bold me-2">Total Amount:</span>
-            <span className="fw-bold">{formatPrice(total_amount)}</span>
           </div>
         </div>
       </div>

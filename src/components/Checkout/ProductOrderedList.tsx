@@ -5,7 +5,7 @@ import {
   useCheckoutDispatch,
   useCheckoutState,
 } from "../../contexts/CheckoutContext";
-import { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 
 interface ProductOrderedListProps {
   className?: string;
@@ -79,7 +79,10 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
         <Form.Group>
           <Form.Label className="fw-bold">Shipping Option</Form.Label>
 
-          <Form.Select onChange={handleShippingChange}>
+          <Form.Select
+            onChange={handleShippingChange}
+            disabled={state.isLoadingShippingCosts}
+          >
             <option>Choose Shipping Service</option>
             {shippingCosts.map((cost, index) => (
               <option key={`shipping-${index}`} value={index}>
@@ -89,9 +92,11 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
               </option>
             ))}
           </Form.Select>
-          <Form.Text>
-            {shippingCosts.length === 0 && "Please wait a moment..."}
-          </Form.Text>
+          {state.isLoadingShippingCosts && (
+            <Form.Text className="text-muted">
+              Please wait a moment to get shipping costs ...
+            </Form.Text>
+          )}
         </Form.Group>
       </div>
     </div>

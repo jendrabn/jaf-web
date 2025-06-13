@@ -5,7 +5,7 @@ import ProductItem from "../components/ProductItem";
 import BlogItem from "../components/BlogItem";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { ProductItemTypes } from "../types/product";
+import type { ProductItemTypes } from "../types/product";
 import Loading from "../components/Loading";
 
 function HomePage() {
@@ -27,64 +27,66 @@ function HomePage() {
       <Navbar />
 
       <main>
-        <section className="mt-0 mt-md-4 mt-lg-5">
-          <div className="container-lg">
-            <div
-              id="bannerCarousel"
-              className="carousel slide banner__carousel-wrapper"
-            >
-              <div className="carousel-indicators">
-                {landing?.banners?.map((banner, index: number) => (
-                  <button
-                    key={`indicator-${banner.id}`}
-                    type="button"
-                    data-bs-target="#bannerCarousel"
-                    data-bs-slide-to={index}
-                    className={index === 0 ? "active" : ""}
-                  ></button>
-                ))}
-              </div>
-
-              <div className="carousel-inner">
-                {landing?.banners?.map((banner, index: number) => (
-                  <div
-                    className={`carousel-item ${index === 0 ? "active" : ""}`}
-                    key={`banner-${banner.id}`}
-                  >
-                    <img
-                      src={banner.image}
-                      className="d-block w-100 h-100 object-fit-fill"
-                      alt={banner.image_description}
-                    />
-                  </div>
-                ))}
-              </div>
-
-              <button
-                className="carousel-control-prev"
-                type="button"
-                data-bs-target="#bannerCarousel"
-                data-bs-slide="prev"
+        {landing?.banners && landing?.banners.length > 0 && (
+          <section className="mt-0 mt-md-4 mt-lg-5">
+            <div className="container-lg">
+              <div
+                id="bannerCarousel"
+                className="carousel slide banner__carousel-wrapper"
               >
-                <span className="control__prev-icon">
-                  <i className="fa-solid fa-chevron-left"></i>
-                </span>
-                <span className="visually-hidden">Previous</span>
-              </button>
-              <button
-                className="carousel-control-next"
-                type="button"
-                data-bs-target="#bannerCarousel"
-                data-bs-slide="next"
-              >
-                <span className="control__next-icon">
-                  <i className="fa-solid fa-chevron-right"></i>
-                </span>
-                <span className="visually-hidden">Next</span>
-              </button>
+                <div className="carousel-indicators">
+                  {landing.banners.map((banner, index: number) => (
+                    <button
+                      key={`indicator-${banner.id}`}
+                      type="button"
+                      data-bs-target="#bannerCarousel"
+                      data-bs-slide-to={index}
+                      className={index === 0 ? "active" : ""}
+                    ></button>
+                  ))}
+                </div>
+
+                <div className="carousel-inner">
+                  {landing.banners.map((banner, index: number) => (
+                    <div
+                      className={`carousel-item ${index === 0 ? "active" : ""}`}
+                      key={`banner-${banner.id}`}
+                    >
+                      <img
+                        src={banner.image}
+                        className="d-block w-100 h-100 object-fit-fill"
+                        alt={banner.image_description}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  className="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#bannerCarousel"
+                  data-bs-slide="prev"
+                >
+                  <span className="control__prev-icon">
+                    <i className="fa-solid fa-chevron-left"></i>
+                  </span>
+                  <span className="visually-hidden">Previous</span>
+                </button>
+                <button
+                  className="carousel-control-next"
+                  type="button"
+                  data-bs-target="#bannerCarousel"
+                  data-bs-slide="next"
+                >
+                  <span className="control__next-icon">
+                    <i className="fa-solid fa-chevron-right"></i>
+                  </span>
+                  <span className="visually-hidden">Next</span>
+                </button>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <section className="mt-4 mt-lg-5">
           <div className="container">

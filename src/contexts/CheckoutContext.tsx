@@ -1,11 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useReducer } from "react";
-import {
+import type {
   AddressTypes,
   CheckoutTypes,
   ShippingCostTypes,
 } from "../types/checkout";
-import { BankTypes, EwalletTypes } from "../types/payment-method";
+import type { BankTypes, EwalletTypes } from "../types/payment-method";
 import { useLocation } from "react-router";
 
 // Action type
@@ -18,7 +18,8 @@ type CheckoutAction =
   | { type: "SET_BANK"; payload: BankTypes | null }
   | { type: "SET_EWALLET"; payload: EwalletTypes | null }
   | { type: "SET_NOTE"; payload: string }
-  | { type: "RESET" };
+  | { type: "RESET" }
+  | { type: "SET_LOADING_SHIPPING_COSTS"; payload: boolean };
 
 // State type
 interface CheckoutState {
@@ -30,6 +31,7 @@ interface CheckoutState {
   bank: BankTypes | null;
   ewallet: EwalletTypes | null;
   note: string;
+  isLoadingShippingCosts: boolean;
 }
 
 // Initial state
@@ -42,6 +44,7 @@ const initialState: CheckoutState = {
   bank: null,
   ewallet: null,
   note: "",
+  isLoadingShippingCosts: false,
 };
 
 // Reducer
@@ -73,6 +76,8 @@ const cartReducer = (
       return { ...state, note: action.payload };
     case "RESET":
       return initialState;
+    case "SET_LOADING_SHIPPING_COSTS":
+      return { ...state, isLoadingShippingCosts: action.payload };
     default:
       throw new Error("Invalid action type");
   }

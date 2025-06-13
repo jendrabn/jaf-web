@@ -3,7 +3,18 @@ import { useFetchBlog } from "../services/api/blog";
 import Layout from "../layouts/Layout";
 import NotFoundPage from "./NotFoundPage";
 import Loading from "../components/Loading";
-import { formatDateTime } from "../utils/functions";
+// import { formatDateTime } from "../utils/functions";
+
+const formatDate = (date: string) => {
+  const d = new Date(date);
+  const day = d.getDate();
+  const month = d.toLocaleString("default", { month: "long" });
+  const year = d.getFullYear();
+  const hours = d.getHours();
+  const minutes = d.getMinutes();
+
+  return `${day} ${month} ${year} ${hours}:${minutes}`;
+};
 
 function BlogDetailPage() {
   const { slug } = useParams();
@@ -18,53 +29,65 @@ function BlogDetailPage() {
 
       {blog && (
         <div className="container">
-          <div className="d-flex justify-content-center">
-            <div className="blog__content">
-              <div className="blog__meta d-flex mb-2">
-                <div className="d-flex align-items-center me-3">
-                  <Link
-                    className="btn btn-primary btn-sm border rounded-5 px-3"
-                    to={`/blogs?category_id=${blog.category.id}`}
-                  >
-                    {blog.category.name}
-                  </Link>
-                </div>
-
-                <div className="d-flex align-items-center me-3">
-                  {formatDateTime(blog.created_at)}
-                </div>
-
-                <div className="d-flex align-items-center me-3">
-                  {blog.author}
-                </div>
-
-                <div className="d-flex align-items-center me-3">
-                  <i className="bi bi-eye-fill me-1"></i>
-                  {blog.views_count}
-                </div>
-
-                <div className="d-flex align-items-center">
-                  {blog.min_read} min read
-                </div>
-              </div>
-
-              <h1 className="fw-bold mb-3">{blog.title}</h1>
-
-              <figure className="mb-3">
+          <div className="row flex-column-reverse flex-lg-row">
+            <div className="col-lg-7">
+              <figure style={{ aspectRatio: "4/2" }} className="mb-0">
                 <img
                   src={blog.featured_image}
                   alt={blog.title}
-                  className="object-fit-cover w-100 img-fluid rounded-3"
+                  className="object-fit-fill w-100 h-100 img-fluid rounded-3"
                   loading="lazy"
-                  style={{ aspectRatio: "4/2.5" }}
                 />
                 {blog.featured_image_description && (
-                  <figcaption className="text-center">
+                  <figcaption className="text-center text-gray-700">
                     {blog.featured_image_description}
                   </figcaption>
                 )}
               </figure>
+            </div>
+            <div className="col-lg-5 align-self-center mb-3 mb-lg-0">
+              <div className="blog__category mb-3">
+                <Link
+                  className="btn btn-light btn-sm border border-1 rounded-0 px-3 border-dark-subtle"
+                  to={`/blogs?category_id=${blog.category.id}`}
+                >
+                  {blog.category.name}
+                </Link>
+              </div>
 
+              <h1 className="fw-bold mb-3 text-gray-800">{blog.title}</h1>
+
+              <div className="blog__meta d-flex align-items-center">
+                <div className="pe-2 me-2 border-end">
+                  <picture
+                    className="me-2 rounded-circle bg-gray-300 d-none d-md-inline-block"
+                    style={{ width: 35, height: 35 }}
+                  >
+                    <img
+                      src="/img/user.png"
+                      alt="Author"
+                      className="w-100 h-100"
+                    />
+                  </picture>
+                  <span style={{ fontWeight: 700 }}>{blog.author}</span>
+                </div>
+
+                <div className="pe-2 me-2 border-end">
+                  {formatDate(blog.created_at)}
+                </div>
+
+                <div className="pe-2 me-2 border-end">
+                  <i className="bi bi-eye-fill me-2"></i>
+                  {blog.views_count}
+                </div>
+
+                <div className="">{blog.min_read} min read</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row mt-3 mt-lg-5">
+            <div className="col-md-8 offset-md-2">
               <div
                 className="mb-3"
                 style={{ fontSize: "1.125rem" }}

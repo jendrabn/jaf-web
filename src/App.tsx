@@ -52,15 +52,16 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <>
+      <ToastContainer
+        limit={10}
+        theme="light"
+        position="top-center"
+        closeButton={false}
+        autoClose={3000}
+        newestOnTop
+      />
+
       <QueryClientProvider client={queryClient}>
-        <ToastContainer
-          limit={10}
-          theme="light"
-          position="top-center"
-          closeButton={false}
-          autoClose={3000}
-          newestOnTop
-        />
         <ReactQueryDevtools initialIsOpen={true} />
         <BrowserRouter>
           <AuthProvider>
@@ -113,6 +114,7 @@ function App() {
                       path="auth/forgot-password"
                       element={<ForgotPasswordPage />}
                     />
+                    {/* Auth */}
                   </Routes>
                 </CheckoutProvider>
               </WishlistProvider>

@@ -7,7 +7,7 @@ import {
   PAYMENT_METHOD_BANK,
   PAYMENT_METHOD_EWALLET,
 } from "../../utils/constans";
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 
 interface PaymentMethodProps {
   className?: string;

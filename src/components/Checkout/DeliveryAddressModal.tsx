@@ -1,7 +1,7 @@
-import { FormEvent, useState } from "react";
+import { type FormEvent, useState } from "react";
 import { useFetchCities, useFetchProvinces } from "../../services/api/region";
 import { Button, Form, Modal } from "react-bootstrap";
-import { AddressTypes } from "../../types/checkout";
+import type { AddressTypes } from "../../types/checkout";
 import {
   useCheckoutDispatch,
   useCheckoutState,
@@ -62,6 +62,10 @@ function DeliveryAddressModal({
 
     dispatch({ type: "SET_ADDRESS", payload: data });
 
+    onClose();
+
+    dispatch({ type: "SET_LOADING_SHIPPING_COSTS", payload: true });
+
     shippingCostMutation.mutate(
       {
         destination: data.city?.id || 0,
@@ -70,7 +74,9 @@ function DeliveryAddressModal({
       {
         onSuccess(data) {
           dispatch({ type: "SET_SHIPPING_COSTS", payload: data });
-          onClose();
+        },
+        onSettled() {
+          dispatch({ type: "SET_LOADING_SHIPPING_COSTS", payload: false });
         },
       }
     );
@@ -104,7 +110,7 @@ function DeliveryAddressModal({
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="provinces">
-              <Form.Label>Provinces</Form.Label>
+              <Form.Label>Province</Form.Label>
               <Form.Select
                 disabled={isLoadingProvinces}
                 value={data.province?.id || ""}
@@ -127,7 +133,7 @@ function DeliveryAddressModal({
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="cities">
-              <Form.Label>Cities</Form.Label>
+              <Form.Label>City</Form.Label>
               <Form.Select
                 value={data.city?.id || ""}
                 onChange={(e) =>
@@ -187,16 +193,12 @@ function DeliveryAddressModal({
               </Form.Text>
             </Form.Group>
 
-            <div className="d-flex justify-content-end">
-              <Button
-                variant="secondary"
-                onClick={handleClose}
-                className="me-2"
-              >
+            <div className="d-flex justify-content-end gap-2">
+              <Button variant="outline-secondary" onClick={handleClose}>
                 Cancel
               </Button>
               <Button variant="primary" type="submit">
-                {shippingCostMutation.isPending ? "Loading..." : "Save"}
+                Save
               </Button>
             </div>
           </fieldset>

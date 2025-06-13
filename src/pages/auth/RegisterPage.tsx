@@ -1,8 +1,8 @@
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { FormEvent } from "react";
+import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
-import { RegisterReqTypes } from "../../types/auth";
+import type { RegisterReqTypes } from "../../types/auth";
 import { useRegister } from "../../services/api/auth";
 import AuthLayout from "../../layouts/AuthLayout";
 import useForm from "../../hooks/useForm";
@@ -60,19 +60,19 @@ function RegisterPage() {
             />
           </Form.Group>
 
-          <PasswordInput
-            value={values.password}
-            onChange={handleChange}
-            className="mb-3"
-          />
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <PasswordInput value={values.password} onChange={handleChange} />
+          </Form.Group>
 
-          <PasswordInput
-            value={values.password_confirmation}
-            onChange={handleChange}
-            className="mb-3"
-            name="password_confirmation"
-            label="Confirm Password"
-          />
+          <Form.Group className="mb-3">
+            <Form.Label>Confirm Password</Form.Label>
+            <PasswordInput
+              value={values.password_confirmation}
+              onChange={handleChange}
+              name="password_confirmation"
+            />
+          </Form.Group>
 
           <div className="d-grid mb-3">
             <Button variant="primary" type="submit">

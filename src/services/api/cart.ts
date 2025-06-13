@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
+import type {
   CartItemTypes,
   CartReqTypes,
   deleteReqTypes,

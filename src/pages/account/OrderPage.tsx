@@ -2,12 +2,55 @@ import AccountLayout from "../../layouts/AccountLayout";
 import { useFetchOrders } from "../../services/api/order";
 import Pagination from "../../components/Pagination";
 import useFilters from "../../hooks/useFilters";
-import { ChangeEvent, useState } from "react";
+import { type ChangeEvent, useState } from "react";
 import OrderItem from "../../components/Order/OrderItem";
 import Loading from "../../components/Loading";
 import { ORDER_STATUSES } from "../../utils/constans";
 import ConfirmPaymentModal from "../../components/Order/ConfirmPaymentModal";
 import ConfirmOrderReceivedModal from "../../components/Order/ConfirmOrderReceivedModal";
+import { Button, Form, Offcanvas } from "react-bootstrap";
+import NoData from "../../components/NoData";
+
+const StatusSelect = ({
+  onChange,
+  className,
+}: {
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  className?: string;
+}) => (
+  <Form.Select
+    defaultValue={""}
+    className={`d-inline-block cursor-pointer ${className}`}
+    onChange={onChange}
+  >
+    <option value="">All</option>
+    {Object.keys(ORDER_STATUSES).map((status) => (
+      <option key={status} value={status}>
+        {ORDER_STATUSES[status]}
+      </option>
+    ))}
+  </Form.Select>
+);
+
+const SortSelect = ({
+  onChange,
+  className,
+}: {
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  className?: string;
+}) => {
+  return (
+    <Form.Select
+      defaultValue=""
+      onChange={onChange}
+      className={`d-inline-block cursor-pointer ${className}`}
+    >
+      <option value="">Default</option>
+      <option value="newest">Newest</option>
+      <option value="oldest">Oldest</option>
+    </Form.Select>
+  );
+};
 
 function OrderPage() {
   const { setFilter, clearFilters, queryString } = useFilters();
@@ -38,6 +81,25 @@ function OrderPage() {
     setShowConfirmOrderReceivedModal(false);
   };
 
+  const [showFilter, setShowFilter] = useState(false);
+  const [showSort, setShowSort] = useState(false);
+
+  const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value === "") {
+      clearFilters("status");
+    } else {
+      setFilter("status", e.target.value);
+    }
+  };
+
+  const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value === "") {
+      clearFilters("sort");
+    } else {
+      setFilter("sort", e.target.value);
+    }
+  };
+
   return (
     <AccountLayout title="My Orders">
       <ConfirmPaymentModal
@@ -52,48 +114,85 @@ function OrderPage() {
         onClose={handleCloseConfirmOrderDeliveredModal}
       />
 
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <div>
-          <span className="me-2 fw-bold">Status</span>
-          <select
-            className="form-select w-auto d-inline-block"
-            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-              if (e.target.value === "") {
-                clearFilters("status");
-              } else {
-                setFilter("status", e.target.value);
-              }
-            }}
-          >
-            <option value="">All</option>
-            {Object.keys(ORDER_STATUSES).map((status) => (
-              <option key={status} value={status}>
-                {ORDER_STATUSES[status]}
-              </option>
-            ))}
-          </select>
-
-          <span className="ms-2 fw-bold me-2">Sort by</span>
-          <select
-            className="form-select w-auto d-inline-block"
-            onChange={(e) => setFilter("sort_by", e.target.value)}
-          >
-            <option value="newest">Latest</option>
-            <option value="oldest">Oldest</option>
-          </select>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        {/* Desktop */}
+        <div className="d-none d-lg-flex align-items-center gap-2">
+          <div>
+            <Form.Label className="text-gray-700 mb-0 me-2">Status:</Form.Label>
+            <StatusSelect onChange={handleStatusChange} className="w-auto" />
+          </div>
+          <div>
+            <Form.Label className="text-gray-700 mb-0 me-2">
+              Sort by:
+            </Form.Label>
+            <SortSelect onChange={handleSortChange} className="w-auto" />
+          </div>
         </div>
 
         <p className="text-gray-700 mb-0">
-          Showing {orders?.data?.length || 0} of {orders?.page?.total || 0}{" "}
-          orders
+          {orders?.page?.from || 0} - {orders?.page?.to || 0} of{" "}
+          {orders?.page?.total || 0} orders
         </p>
+
+        {/* Mobile */}
+        <div className="d-flex gap-2 d-lg-none">
+          <Button
+            size="sm"
+            variant="outline-dark"
+            onClick={() => setShowSort(true)}
+          >
+            <i className="bi bi-arrow-down-up"></i>
+          </Button>
+
+          <Button
+            variant="outline-dark"
+            size="sm"
+            onClick={() => setShowFilter(true)}
+          >
+            <i className="bi bi-funnel"></i>
+          </Button>
+
+          <Offcanvas
+            show={showFilter}
+            onHide={() => setShowFilter(false)}
+            placement="end"
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>
+                <i className="bi bi-funnel-fill"></i> Filter
+              </Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <div className="mb-3">
+                <Form.Label>Status</Form.Label>
+                <StatusSelect onChange={handleStatusChange} />
+              </div>
+            </Offcanvas.Body>
+          </Offcanvas>
+
+          <Offcanvas
+            show={showSort}
+            onHide={() => setShowSort(false)}
+            placement="end"
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>
+                <i className="bi bi-arrow-down-up"></i> Sort
+              </Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <SortSelect
+                className="d-blok w-100"
+                onChange={handleSortChange}
+              />
+            </Offcanvas.Body>
+          </Offcanvas>
+        </div>
       </div>
 
       {isLoading && <Loading className="py-5" />}
 
-      {!isLoading && orders?.data?.length === 0 && (
-        <p className="text-gray-700 text-center py-5 mb-0">No orders found</p>
-      )}
+      {!isLoading && orders?.data?.length === 0 && <NoData />}
 
       {orders?.data && orders?.data?.length > 0 && (
         <>

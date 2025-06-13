@@ -1,5 +1,5 @@
 import { Button, Form } from "react-bootstrap";
-import { WishlistTypes } from "../types/wishlist";
+import type { WishlistTypes } from "../types/wishlist";
 import { formatPrice } from "../utils/functions";
 import ProductImage from "./ProductImage";
 import {

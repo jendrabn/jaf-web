@@ -14,7 +14,7 @@ import {
   useCheckoutDispatch,
   useCheckoutState,
 } from "../contexts/CheckoutContext";
-import { OrderReqTypes } from "../types/order";
+import { type OrderReqTypes } from "../types/order";
 import { useCartDispatch } from "../contexts/CartContext";
 
 function CheckoutPage() {
@@ -120,7 +120,7 @@ function CheckoutPage() {
                     <tr>
                       <td className="text-gray-700">
                         Shipping Cost (
-                        {Math.round(state.checkout?.total_weight || 0 / 1000)}
+                        {Math.round((state.checkout?.total_weight || 0) / 1000)}
                         kg)
                       </td>
                       <td className="text-end">

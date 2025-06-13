@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from "react";
+import { type PropsWithChildren, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { BlogItemTypes } from "../types/blog";
+import { type BlogItemTypes } from "../types/blog";
 
 const formatDate = (date: string): string =>
   new Date(date).toLocaleDateString("en-US", {

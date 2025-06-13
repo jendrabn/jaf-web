@@ -1,6 +1,6 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { useConfirmPayment, useFetchOrder } from "../../services/api/order";
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useState } from "react";
 import useForm from "../../hooks/useForm";
 import ErrorValidationAlert from "../ErrorValidationAlert";
 import { useQueryClient } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ import {
   PAYMENT_METHOD_EWALLET,
   QUERY_KEYS,
 } from "../../utils/constans";
-import { ConfirmPaymentReqTypes } from "../../types/order";
+import type { ConfirmPaymentReqTypes } from "../../types/order";
 import PaymentInfo from "./PaymentInfo";
 
 interface ConfirmPaymentModalProps {
@@ -227,7 +227,7 @@ function ConfirmPaymentModal({
 
                 <div className="d-flex justify-content-end gap-2">
                   <Button variant="outline-secondary" onClick={handleClose}>
-                    Cancel
+                    Confirm Later
                   </Button>
                   <Button variant="primary" type="submit">
                     Confirm Payment

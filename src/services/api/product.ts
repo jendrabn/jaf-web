@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { callApi } from "../../utils/functions";
-import {
+import type {
   ProductBrandTypes,
   ProductCategoryTypes,
   ProductDetailTypes,
   ProductItemTypes,
 } from "../../types/product";
-import { PageTypes } from "../../types";
+import type { PageTypes } from "../../types";
 import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchProductCategories = () =>

@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { callApi } from "../../utils/functions";
-import { ProductItemTypes } from "../../types/product";
-import { BannerTypes } from "../../types/banner";
-import { BlogItemTypes } from "../../types/blog";
+import type { ProductItemTypes } from "../../types/product";
+import type { BannerTypes } from "../../types/banner";
+import type { BlogItemTypes } from "../../types/blog";
 import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchLanding = () =>

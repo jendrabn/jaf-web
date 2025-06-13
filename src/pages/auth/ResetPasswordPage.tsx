@@ -1,11 +1,11 @@
 import { useNavigate, useSearchParams } from "react-router";
 import AuthLayout from "../../layouts/AuthLayout";
 import useForm from "../../hooks/useForm";
-import { ResetPasswordReqTypes } from "../../types/auth";
+import type { ResetPasswordReqTypes } from "../../types/auth";
 import { Button, Form, FormControl } from "react-bootstrap";
 import { useResetPassword } from "../../services/api/auth";
 import { toast } from "react-toastify";
-import { FormEvent } from "react";
+import type { FormEvent } from "react";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
 import PasswordInput from "../../components/PasswordInput";
 
@@ -51,20 +51,25 @@ function ResetPasswordPage() {
             />
           </Form.Group>
 
-          <PasswordInput
-            value={values.password}
-            onChange={handleChange}
-            className="mb-3"
-            autofocus
-          />
+          <Form.Group>
+            <Form.Label>Password</Form.Label>
+            <PasswordInput
+              value={values.password}
+              onChange={handleChange}
+              className="mb-3"
+              autofocus
+            />
+          </Form.Group>
 
-          <PasswordInput
-            value={values.password_confirmation}
-            onChange={handleChange}
-            className="mb-3"
-            name="password_confirmation"
-            label="Confirm New Password"
-          />
+          <Form.Group>
+            <Form.Label>Confirm Password</Form.Label>
+            <PasswordInput
+              value={values.password_confirmation}
+              onChange={handleChange}
+              className="mb-3"
+              name="password_confirmation"
+            />
+          </Form.Group>
 
           <div className="d-grid">
             <Button type="submit" variant="primary">

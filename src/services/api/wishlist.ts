@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
+import type {
   DeleteWishlistReqTypes,
   WishlistReqTypes,
   WishlistTypes,
 } from "../../types/wishlist";
-import { callApi, getAuthToken } from "../../utils/functions";
+import { callApi } from "../../utils/functions";
 import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchWishlist = () =>
@@ -16,7 +16,6 @@ export const useFetchWishlist = () =>
         url: "/wishlist",
         token: true,
       }),
-    enabled: !!getAuthToken(),
   });
 
 export const useCreateWishlist = () =>

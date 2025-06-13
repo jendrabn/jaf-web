@@ -1,13 +1,14 @@
 import { useFetchProducts } from "../services/api/product";
-import { ProductItemTypes, ProductParamsTypes } from "../types/product";
+import type { ProductItemTypes, ProductParamsTypes } from "../types/product";
 import ProductItem from "../components/ProductItem";
 import ProductListFilters from "../components/ProductListFilters";
 import Loading from "../components/Loading";
 import Pagination from "../components/Pagination";
 import useFilters from "../hooks/useFilters";
 import Layout from "../layouts/Layout";
-import { Button, Offcanvas } from "react-bootstrap";
+import { Button, Form, Offcanvas } from "react-bootstrap";
 import { useState } from "react";
+import NoData from "../components/NoData";
 
 function ProductPage() {
   const { params, queryString, setFilter, clearFilters } =
@@ -16,6 +17,7 @@ function ProductPage() {
   const { data: products, isLoading } = useFetchProducts(queryString);
 
   const [showFilters, setShowFilters] = useState(false);
+  const [showSort, setShowSort] = useState(false);
 
   const handlePageClick = (page: number) => {
     setFilter("page", page);
@@ -46,37 +48,45 @@ function ProductPage() {
             )}
 
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <div>
+              <div className="d-none d-lg-block">
                 <span className="text-gray-700 mb-0 me-2">Sort by:</span>
-                <select
-                  className="form-select w-auto d-inline-block"
+                <Form.Select
+                  className="w-auto d-inline-block cursor-pointer"
                   onChange={(e) => {
                     setFilter("sort_by", e.target.value);
                     clearFilters("page");
                   }}
                 >
                   <option value="">Relevance</option>
-                  <option value={"newest"}>Latest</option>
-                  <option value={"oldest"}>Oldest</option>
-                  <option value={"sales"}>Top Sales</option>
-                  <option value={"cheapest"}>Price: low to high</option>
-                  <option value={"expensive"}>Price: high to low</option>
-                </select>
+                  <option value="newest">Latest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="sales">Top Sales</option>
+                  <option value="cheapest">Price: low to high</option>
+                  <option value="expensive">Price: high to low</option>
+                </Form.Select>
               </div>
 
-              {/* only show in desktop */}
-              <p className="text-gray-700 mb-0 d-none d-lg-block">
-                Showing {products?.data?.length || 0} results
+              <p className="text-gray-700 mb-0">
+                {products?.page?.from || 0} - {products?.page?.to || 0} from{" "}
+                {products?.page?.total || 0} products
               </p>
 
-              {/* only show in mobile */}
-              <div className="d-block d-lg-none">
+              {/* Mobile */}
+              <div className="d-flex align-items-center gap-2 d-lg-none">
+                <Button
+                  size="sm"
+                  variant="outline-dark"
+                  onClick={() => setShowSort(true)}
+                >
+                  <i className="bi bi-arrow-down-up"></i>
+                </Button>
+
                 <Button
                   size="sm"
                   variant="outline-dark"
                   onClick={() => setShowFilters(true)}
                 >
-                  <i className="bi bi-funnel-fill"></i>
+                  <i className="bi bi-funnel"></i>
                 </Button>
 
                 <Offcanvas
@@ -86,11 +96,35 @@ function ProductPage() {
                 >
                   <Offcanvas.Header closeButton>
                     <Offcanvas.Title>
-                      <i className="bi bi-funnel-fill"></i> Filters
+                      <i className="bi bi-funnel"></i> Filter
                     </Offcanvas.Title>
                   </Offcanvas.Header>
                   <Offcanvas.Body>
                     <ProductListFilters />
+                  </Offcanvas.Body>
+                </Offcanvas>
+
+                <Offcanvas
+                  show={showSort}
+                  onHide={() => setShowSort(false)}
+                  placement="end"
+                >
+                  <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>
+                      <i className="bi bi-arrow-down-up"></i> Sort
+                    </Offcanvas.Title>
+                  </Offcanvas.Header>
+                  <Offcanvas.Body>
+                    <Form.Select
+                      onChange={(e) => setFilter("sort_by", e.target.value)}
+                    >
+                      <option value="">Relevance</option>
+                      <option value={"newest"}>Latest</option>
+                      <option value={"oldest"}>Oldest</option>
+                      <option value={"sales"}>Top Sales</option>
+                      <option value={"cheapest"}>Price: low to high</option>
+                      <option value={"expensive"}>Price: high to low</option>
+                    </Form.Select>
                   </Offcanvas.Body>
                 </Offcanvas>
               </div>
@@ -98,9 +132,7 @@ function ProductPage() {
 
             {isLoading && <Loading className="py-5" />}
 
-            {products?.data?.length === 0 && (
-              <p className="text-center text-gray-700">No products found</p>
-            )}
+            {products?.data?.length === 0 && <NoData />}
 
             {products?.data && products?.data?.length > 0 && (
               <>

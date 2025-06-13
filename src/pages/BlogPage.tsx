@@ -1,22 +1,40 @@
 import { useFetchBlogs } from "../services/api/blog";
-import { BlogParamsTypes } from "../types/blog";
+import type { BlogParamsTypes } from "../types/blog";
 import BlogItem from "../components/BlogItem";
 import Loading from "../components/Loading";
 import Pagination from "../components/Pagination";
 import Layout from "../layouts/Layout";
 import BlogListFilters from "../components/BlogListFilters";
 import useFilters from "../hooks/useFilters";
-import { FormEvent, useState } from "react";
-import { Button, Offcanvas } from "react-bootstrap";
+import { type ChangeEvent, type FormEvent, useState } from "react";
+import { Button, Form, Offcanvas } from "react-bootstrap";
+import NoData from "../components/NoData";
+
+const SortSelect = ({
+  onChange,
+  className,
+}: {
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  className?: string;
+}) => (
+  <Form.Select
+    defaultValue=""
+    onChange={onChange}
+    className={`d-inline-block cursor-pointer ${className}`}
+  >
+    <option value="">Default</option>
+    <option value="newest">Newest</option>
+    <option value="oldest">Oldest</option>
+  </Form.Select>
+);
 
 function BlogPage() {
   const { params, setFilter, queryString, clearFilters } =
     useFilters<BlogParamsTypes>();
-
   const [searchTerm, setSearchTerm] = useState<string>(params.search || "");
-
   const { data: blogs, isLoading } = useFetchBlogs(queryString);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showSort, setShowSort] = useState(false);
 
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,6 +52,12 @@ function BlogPage() {
     });
   };
 
+  const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setFilter("sort_by", e.target.value);
+
+    clearFilters("page");
+  };
+
   return (
     <Layout title="Blogs">
       <div className="container">
@@ -43,50 +67,62 @@ function BlogPage() {
           </div>
           <div className="col-lg-10">
             <div className="d-flex justify-content-between align-items-center mb-3">
-              <div>
+              <div className="d-none d-lg-block">
                 <span className="text-gray-700 mb-0 me-2">Sort by:</span>
-                <select
-                  className="form-select w-auto d-inline-block"
-                  onChange={(e) => {
-                    setFilter("sort_by", e.target.value);
-
-                    clearFilters("page");
-                  }}
-                >
-                  <option value="">Relevance</option>
-                  <option value="newest">Latest</option>
-                  <option value="oldest">Oldest</option>
-                  <option value="views">Views</option>
-                </select>
+                <SortSelect className="w-auto" onChange={handleSortChange} />
               </div>
 
-              {/* Only show on desktop */}
-              <p className="text-gray-700 mb-0 d-none d-lg-block">
-                Showing {blogs?.data?.length || 0} results
+              <p className="text-gray-700 mb-0">
+                {blogs?.page?.from} - {blogs?.page?.to} of {blogs?.page?.total}{" "}
+                blogs
               </p>
 
-              {/* only show in mobile */}
-              <div className="d-block d-lg-none">
+              {/* Mobile */}
+              <div className="d-flex gap-2 d-lg-none">
                 <Button
                   size="sm"
                   variant="outline-dark"
-                  onClick={() => setShowFilters(true)}
+                  onClick={() => setShowSort(true)}
                 >
-                  <i className="bi bi-funnel-fill"></i>
+                  <i className="bi bi-arrow-down-up"></i>
+                </Button>
+
+                <Button
+                  size="sm"
+                  variant="outline-dark"
+                  onClick={() => setShowFilter(true)}
+                >
+                  <i className="bi bi-funnel"></i>
                 </Button>
 
                 <Offcanvas
-                  show={showFilters}
-                  onHide={() => setShowFilters(false)}
+                  show={showFilter}
+                  onHide={() => setShowFilter(false)}
                   placement="end"
                 >
                   <Offcanvas.Header closeButton>
                     <Offcanvas.Title>
-                      <i className="bi bi-funnel-fill"></i> Filters
+                      <i className="bi bi-funnel-fill"></i> Filter
                     </Offcanvas.Title>
                   </Offcanvas.Header>
                   <Offcanvas.Body>
                     <BlogListFilters />
+                  </Offcanvas.Body>
+                </Offcanvas>
+
+                <Offcanvas
+                  show={showSort}
+                  onHide={() => setShowSort(false)}
+                  placement="end"
+                >
+                  <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>
+                      <i className="bi bi-arrow-down-up"></i> Sort
+                    </Offcanvas.Title>
+                  </Offcanvas.Header>
+
+                  <Offcanvas.Body>
+                    <SortSelect className="w-100" onChange={handleSortChange} />
                   </Offcanvas.Body>
                 </Offcanvas>
               </div>
@@ -106,11 +142,7 @@ function BlogPage() {
 
             {isLoading && <Loading className="py-5" />}
 
-            {blogs?.data?.length === 0 && (
-              <p className="text-center text-gray-700 mb-0 py-5">
-                No blogs found
-              </p>
-            )}
+            {blogs?.data?.length === 0 && <NoData />}
 
             {blogs?.data && blogs?.data?.length > 0 && (
               <>

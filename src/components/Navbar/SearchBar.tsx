@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 
 interface SearchBarProps {

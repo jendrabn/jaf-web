@@ -1,5 +1,6 @@
 import { Button, Card } from "react-bootstrap";
 import { useCheckoutState } from "../../contexts/CheckoutContext";
+import NoData from "../NoData";
 
 interface DeliveryAddressProps {
   className?: string;
@@ -16,24 +17,24 @@ function DeliveryAddress({
     <Card className={className}>
       <Card.Body>
         <Card.Title>Delivery Address</Card.Title>
-        <div className="d-flex align-items-center">
+        <div className="d-flex flex-column flex-lg-row align-items-center">
           {address ? (
-            <address className="flex-grow-1 mb-0 pe-2">
-              <span className="fw-bold">
-                {`${address?.name} (${address?.phone})`}
-              </span>
+            <address className="flex-grow-1 mb-0 pe-2 lh-sm">
+              <strong>{`${address?.name} (${address?.phone})`}</strong>
               <br />
               {address?.address} <br />
               {`${address?.district}, ${address?.city?.type} ${address?.city?.name}, ${address?.province?.name}, ${address.postal_code}`}
             </address>
           ) : (
-            <p className="text-muted text-center flex-grow-1 mb-0">
-              No delivery address
-            </p>
+            <NoData className="flex-grow-1 w-auto" />
           )}
-          <div>
-            <Button variant="outline-primary" onClick={handleShowAddressModal}>
-              <i className="fa-solid fa-pen-to-square me-1"></i>Change
+          <div className="mt-3 mt-lg-0 align-self-start">
+            <Button
+              variant="outline-primary"
+              onClick={handleShowAddressModal}
+              size="sm"
+            >
+              <i className="bi bi-pencil-square"></i> Change
             </Button>
           </div>
         </div>

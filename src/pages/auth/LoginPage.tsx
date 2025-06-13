@@ -1,10 +1,10 @@
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router";
-import { FormEvent } from "react";
+import type { FormEvent } from "react";
 import AuthLayout from "../../layouts/AuthLayout";
 import useForm from "../../hooks/useForm";
 import { useLogin } from "../../services/api/auth";
-import { LoginReqTypes } from "../../types/auth";
+import type { LoginReqTypes } from "../../types/auth";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
 import { useLocation } from "react-router";
 import { setAuthToken, setSelectedCartIds } from "../../utils/functions";
@@ -65,7 +65,10 @@ function LoginPage() {
             />
           </Form.Group>
 
-          <PasswordInput value={values.password} onChange={handleChange} />
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <PasswordInput value={values.password} onChange={handleChange} />
+          </Form.Group>
 
           <p className="text-end mb-3">
             <Link to="/auth/forgot-password">Forgot Password?</Link>

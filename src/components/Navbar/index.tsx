@@ -6,7 +6,7 @@ import {
   useFetchProductCategories,
 } from "../../services/api/product";
 import { useLogout } from "../../services/api/auth";
-import { MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { useCartState } from "../../contexts/CartContext";
 import { removeAuthToken } from "../../utils/functions";
 import { useQueryClient } from "@tanstack/react-query";

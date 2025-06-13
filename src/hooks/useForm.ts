@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 
 function useForm<T>(initialValues: T) {
   const [values, setValues] = useState<T>(initialValues);

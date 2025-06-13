@@ -6,6 +6,7 @@ import { Button, Form } from "react-bootstrap";
 import { useDeleteCart } from "../services/api/cart";
 import CartItem from "../components/CartItem";
 import { useCartDispatch, useCartState } from "../contexts/CartContext";
+import NoData from "../components/NoData";
 
 function CartPage() {
   const navigate = useNavigate();
@@ -100,7 +101,9 @@ function CartPage() {
               <div className="d-flex align-items-center">
                 <p className="mb-0 me-3">
                   Total ({totalItem} item):{" "}
-                  <span className="fw-bold">{formatPrice(totalPrice)}</span>
+                  <span className="fw-bold fs-4">
+                    {formatPrice(totalPrice)}
+                  </span>
                 </p>
                 <Button
                   variant="primary"
@@ -115,8 +118,9 @@ function CartPage() {
               </div>
             </div>
 
+            {/* Mobile */}
             <div className="flex-grow-1 mt-1 d-lg-none">
-              <div className="d-flex px-2 py-3 shadow-sm border mb-3 align-items-center justify-content-between">
+              <div className="d-flex px-2 py-3 shadow-sm border mb-3 align-items-center justify-content-between mb-1">
                 <Form.Check
                   type="checkbox"
                   checked={
@@ -138,14 +142,27 @@ function CartPage() {
                   Delete Selected
                 </Button>
               </div>
-              <div className="d-flex align-items-center justify-content-between">
+
+              <div className="d-flex align-items-center justify-content-between mb-1">
                 <p className="fw-bold">Total ({totalItem} item)</p>
-                <p className="fw-bold fs-5">{formatPrice(totalPrice)}</p>
+                <p className="fw-bold fs-6">{formatPrice(totalPrice)}</p>
+              </div>
+
+              <div className="d-grid">
+                <Button
+                  variant="primary"
+                  disabled={
+                    selectedIds.length === 0 || checkoutMutation.isPending
+                  }
+                  onClick={handleCheckout}
+                >
+                  {checkoutMutation.isPending ? "Loading..." : "Checkout"}
+                </Button>
               </div>
             </div>
           </>
         ) : (
-          <p className="text-center text-muted">Cart is empty</p>
+          <NoData />
         )}
       </div>
     </Layout>

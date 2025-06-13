@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { callApi } from "../../utils/functions";
-import { CityTypes, ProvinceTypes } from "../../types/region";
+import type { CityTypes, ProvinceTypes } from "../../types/region";
 import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchProvinces = () =>

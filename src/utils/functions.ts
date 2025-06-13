@@ -1,5 +1,5 @@
 import Cookie from "js-cookie";
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { type AxiosRequestConfig } from "axios";
 import { KEY_SELECTED_CART_IDS } from "./constans";
 
 export const formatPrice = (value: number = 0) => {
@@ -55,6 +55,12 @@ export const callApi = async ({
         Authorization: `Bearer ${Cookie.get("token")}`,
       }),
     },
+  }).catch((err) => {
+    if (err.response.status === 401) {
+      removeAuthToken();
+    }
+
+    throw err;
   });
 
   const { length } = Object.keys(response.data);

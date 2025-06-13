@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { callApi } from "../../utils/functions";
-import {
+import type {
   BlogCategoryTypes,
   BlogDetailTypes,
   BlogItemTypes,
   BlogTagTypes,
 } from "../../types/blog";
-import { PageTypes } from "../../types";
+import type { PageTypes } from "../../types";
 import { QUERY_KEYS } from "../../utils/constans";
 
 export const useFetchBlogCategories = () =>

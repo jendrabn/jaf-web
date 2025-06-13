@@ -1,6 +1,6 @@
-import { CartItemTypes } from "./cart";
-import { BankTypes, EwalletTypes } from "./payment-method";
-import { CityTypes, ProvinceTypes } from "./region";
+import type { CartItemTypes } from "./cart";
+import type { BankTypes, EwalletTypes } from "./payment-method";
+import type { CityTypes, ProvinceTypes } from "./region";
 
 export interface CheckoutTypes {
   shipping_address: AddressTypes;

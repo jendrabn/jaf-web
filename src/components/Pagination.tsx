@@ -1,5 +1,5 @@
 import { Pagination as BootstrapPagination } from "react-bootstrap";
-import { PageTypes } from "../types";
+import type { PageTypes } from "../types";
 import { useState } from "react";
 
 type PaginationProps = PageTypes & {

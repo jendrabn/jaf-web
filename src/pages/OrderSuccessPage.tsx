@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Layout from "../layouts/Layout";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { OrderSuccessTypes } from "../types/order";
+import type { OrderSuccessTypes } from "../types/order";
 import { formatDate } from "../utils/functions";
 
 function OrderSuccessPage() {

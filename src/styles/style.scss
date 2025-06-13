@@ -333,3 +333,23 @@ footer {
 .text-justify {
   text-align: justify;
 }
+
+.accordion__menu-account {
+  border-radius: 0;
+
+  .accordion-button {
+    // color: $gray-900 !important;
+    font-weight: 500;
+    // background-color: $gray-200 !important;
+    padding: 1rem;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .accordion-button:not(.collapsed) {
+    background-color: $gray-200 !important;
+    color: $dark;
+  }
+}

@@ -1,4 +1,4 @@
-import { BlogCategoryTypes, BlogTagTypes } from "../types/blog";
+import type { BlogCategoryTypes, BlogTagTypes } from "../types/blog";
 import { Accordion } from "react-bootstrap";
 import useFilters from "../hooks/useFilters";
 import { useFetchBlogCategories, useFetchBlogTags } from "../services/api/blog";

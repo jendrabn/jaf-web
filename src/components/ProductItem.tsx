@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { ProductItemTypes } from "../types/product";
+import type { ProductItemTypes } from "../types/product";
 import { formatPrice } from "../utils/functions";
 
 interface ProductItemProps {

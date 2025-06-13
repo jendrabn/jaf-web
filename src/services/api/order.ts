@@ -1,13 +1,16 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { CheckoutReqTypes, ShippingCostReqTypes } from "../../types/checkout";
-import {
+import type {
+  CheckoutReqTypes,
+  ShippingCostReqTypes,
+} from "../../types/checkout";
+import type {
   ConfirmPaymentReqTypes,
   OrderDetailTypes,
   OrderReqTypes,
   OrderTypes,
 } from "../../types/order";
 import { callApi, getAuthToken } from "../../utils/functions";
-import { PageTypes } from "../../types";
+import type { PageTypes } from "../../types";
 import { QUERY_KEYS } from "../../utils/constans";
 
 export const useCheckoutState = () =>
@@ -41,7 +44,6 @@ export const useFetchOrders = (queryString?: string) =>
         url: `/orders${queryString ? `?${queryString}` : ""}`,
         token: true,
       }),
-    enabled: !!getAuthToken(),
   });
 
 export const useCreateOrder = () =>

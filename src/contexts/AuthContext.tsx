@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, PropsWithChildren, useEffect } from "react";
-import { UserTypes } from "../types/user";
+import React, { createContext, type PropsWithChildren, useEffect } from "react";
+import type { UserTypes } from "../types/user";
 import { useFetchUser } from "../services/api/user";
 
 // Action type

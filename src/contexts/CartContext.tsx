@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from "react";
 import { useFetchCarts } from "../services/api/cart";
-import { CartItemTypes } from "../types/cart";
+import { type CartItemTypes } from "../types/cart";
 import { getSelectedCartIds, setSelectedCartIds } from "../utils/functions";
 
 // Action type

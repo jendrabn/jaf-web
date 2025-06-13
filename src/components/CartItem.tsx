@@ -1,5 +1,5 @@
 import { Button, Form } from "react-bootstrap";
-import { CartItemTypes } from "../types/cart";
+import type { CartItemTypes } from "../types/cart";
 import { formatPrice } from "../utils/functions";
 import ProductImage from "./ProductImage";
 import QuantityInput from "./QuantityInput";
@@ -49,7 +49,7 @@ function CartItem({ cart }: CartItemProps) {
 
   return (
     <>
-      {/* Mobile */}
+      {/* Desktop */}
       <div className="d-flex p-2 mb-2 shadow-sm border d-none d-lg-flex">
         <div
           style={{ width: "5%" }}
@@ -96,7 +96,7 @@ function CartItem({ cart }: CartItemProps) {
         </div>
       </div>
 
-      {/* Desktop */}
+      {/* Mobile */}
       <div className="d-flex p-2 mb-2 shadow-sm border d-lg-none">
         <div className="d-flex justify-content-center align-items-center me-2">
           <Form.Check
@@ -107,11 +107,16 @@ function CartItem({ cart }: CartItemProps) {
         </div>
 
         <div className="d-flex align-items-center me-2">
-          <ProductImage url={product.image} alt={product.name} />
+          <ProductImage
+            url={product.image}
+            alt={product.name}
+            width={60}
+            className="border"
+          />
         </div>
 
         <div className="flex-grow-1">
-          <p className="mb-1" style={{ fontWeight: 500 }}>
+          <p className="mb-1 title-truncate" style={{ fontWeight: 500 }}>
             {product.name}
           </p>
           <p className="mb-1 text-gray-700">{formatPrice(product.price)}</p>

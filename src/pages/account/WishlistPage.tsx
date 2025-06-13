@@ -6,6 +6,7 @@ import {
 import { Button, Form } from "react-bootstrap";
 import WishlistItem from "../../components/WishlistItem";
 import { useDeleteWishlist } from "../../services/api/wishlist";
+import NoData from "../../components/NoData";
 
 function WishlistPage() {
   const deleteWishlistMutation = useDeleteWishlist();
@@ -90,7 +91,7 @@ function WishlistPage() {
           </div>
         </>
       ) : (
-        <p className="text-center text-muted ">Your wishlist is empty</p>
+        <NoData />
       )}
     </AccountLayout>
   );

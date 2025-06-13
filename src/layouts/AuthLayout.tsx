@@ -1,7 +1,7 @@
 import { Link, Navigate } from "react-router";
 import { useAuthState } from "../contexts/AuthContext";
 import { useLocation } from "react-router";
-import { PropsWithChildren, useEffect } from "react";
+import { type PropsWithChildren, useEffect } from "react";
 import Loading from "../components/Loading";
 import { Helmet } from "react-helmet-async";
 

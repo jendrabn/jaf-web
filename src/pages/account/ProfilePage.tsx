@@ -1,12 +1,12 @@
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { useAuthState } from "../../contexts/AuthContext";
-import { UserTypes } from "../../types/user";
+import type { UserTypes } from "../../types/user";
 import useForm from "../../hooks/useForm";
 import AccountLayout from "../../layouts/AccountLayout";
 import { useUpdateUser } from "../../services/api/user";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { ChangeEvent, FormEvent, useRef } from "react";
+import { type ChangeEvent, type FormEvent, useRef } from "react";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
 
 function ProfilePage() {
@@ -60,10 +60,35 @@ function ProfilePage() {
 
   return (
     <AccountLayout title="My Profile">
-      <div className="row">
-        <div className="col-lg-9">
-          <ErrorValidationAlert error={error} onClose={reset} />
+      <ErrorValidationAlert error={error} onClose={reset} />
+      <div className="row flex-row-reverse">
+        <div className="col-lg-3">
+          <div className="text-center mb-3 mb-lg-0">
+            <img
+              src={user?.avatar}
+              alt="Avatar"
+              className="rounded-circle img-fluid object-fit-cover border-primary border border-primary border-3 border-opacity-50 mb-2"
+              style={{ width: 100, height: 100 }}
+              ref={avatarRef}
+              loading="lazy"
+            />
 
+            <br />
+
+            <Button
+              variant="light"
+              size="sm"
+              className="border"
+              onClick={() => {
+                inputAvatarRef.current?.click();
+              }}
+            >
+              <i className="fa-solid fa-arrow-up-from-bracket me-2"></i> Select
+              Image
+            </Button>
+          </div>
+        </div>
+        <div className="col-lg-9">
           <Form onSubmit={handleSubmit}>
             <fieldset disabled={isPending}>
               <Form.Group as={Row} className="mb-3">
@@ -167,31 +192,6 @@ function ProfilePage() {
               onChange={handleAvatarChange}
             />
           </Form>
-        </div>
-        <div className="col-lg-3">
-          <div className="text-center">
-            <img
-              src={user?.avatar}
-              alt="Avatar"
-              className="rounded-circle img-fluid object-fit-cover img-thumbnail mb-3"
-              style={{ width: 100, height: 100 }}
-              ref={avatarRef}
-              loading="lazy"
-            />
-
-            <div className="mb-3">
-              <Button
-                variant="light"
-                size="sm"
-                onClick={() => {
-                  inputAvatarRef.current?.click();
-                }}
-              >
-                <i className="fa-solid fa-arrow-up-from-bracket me-2"></i>
-                Select Image
-              </Button>
-            </div>
-          </div>
         </div>
       </div>
     </AccountLayout>

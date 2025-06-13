@@ -2,10 +2,10 @@ import { Button, Form } from "react-bootstrap";
 import AuthLayout from "../../layouts/AuthLayout";
 import { useForgotPassword } from "../../services/api/auth";
 import useForm from "../../hooks/useForm";
-import { ForgotPasswordReqTypes } from "../../types/auth";
+import type { ForgotPasswordReqTypes } from "../../types/auth";
 import { toast } from "react-toastify";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
-import { FormEvent } from "react";
+import type { FormEvent } from "react";
 
 function ForgotPasswordPage() {
   const { mutate, isPending, error, reset } = useForgotPassword();

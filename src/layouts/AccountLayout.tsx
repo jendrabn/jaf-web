@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from "react";
+import { type PropsWithChildren, useEffect } from "react";
 import { NavLink } from "react-router";
 import { Helmet } from "react-helmet-async";
 import Navbar from "../components/Navbar";
@@ -90,10 +90,13 @@ function AccountLayout({ children, title, description }: AuthLayoutProps) {
           <div className="row">
             <div className="col-lg-2 mb-3 ">
               {/* Mobile */}
-              <Accordion defaultActiveKey="0" className="mb-3 d-lg-none">
+              <Accordion
+                defaultActiveKey="0"
+                className="mb-3 d-lg-none accordion__menu-account"
+              >
                 <Accordion.Item eventKey="0">
-                  <Accordion.Header>My Account</Accordion.Header>
-                  <Accordion.Body className="px-2">
+                  <Accordion.Header>Account Menu</Accordion.Header>
+                  <Accordion.Body>
                     <NavAccount />
                   </Accordion.Body>
                 </Accordion.Item>

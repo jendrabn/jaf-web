@@ -1,6 +1,6 @@
 import { Alert, Table } from "react-bootstrap";
 import { formatDateTime, formatPrice } from "../../utils/functions";
-import { OrderDetailTypes } from "../../types/order";
+import { type OrderDetailTypes } from "../../types/order";
 import {
   PAYMENT_METHOD_BANK,
   PAYMENT_METHOD_EWALLET,

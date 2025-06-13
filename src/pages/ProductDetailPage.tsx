@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import ProductImagesCarousel from "../components/ProductImagesCarousel";
 import StarRating from "../components/StarRating";
+import NoData from "../components/NoData";
 
 export default function ProductDetailPage() {
   const { productId } = useParams();
@@ -179,11 +180,7 @@ export default function ProductDetailPage() {
             <section className="mt-5">
               <h2 className="section__title">Related Products</h2>
 
-              {relatedProducts?.length === 0 && (
-                <p className="text-center text-gray-700">
-                  No related products found
-                </p>
-              )}
+              {relatedProducts?.length === 0 && <NoData />}
 
               {relatedProducts && relatedProducts.length > 0 && (
                 <div className="row g-3">
