@@ -9,6 +9,7 @@ import React, {
 import { useFetchCarts } from "../services/api/cart";
 import { type CartItemTypes } from "../types/cart";
 import { getSelectedCartIds, setSelectedCartIds } from "../utils/functions";
+import { useLocation } from "react-router";
 
 // Action type
 type CartAction =
@@ -106,13 +107,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
   const { data: carts } = useFetchCarts();
+  const location = useLocation();
 
   // Fetch carts from API and set state
   useEffect(() => {
     if (carts) {
       dispatch({ type: "SET_CARTS", payload: carts });
     }
-  }, [carts]);
+  }, [carts, location]);
 
   useEffect(() => {
     setSelectedCartIds(state.selectedIds);

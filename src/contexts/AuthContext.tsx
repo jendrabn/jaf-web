@@ -2,6 +2,8 @@
 import React, { createContext, type PropsWithChildren, useEffect } from "react";
 import type { UserTypes } from "../types/user";
 import { useFetchUser } from "../services/api/user";
+import { getAuthToken } from "../utils/functions";
+import { useLocation } from "react-router";
 
 // Action type
 type AuthAction =
@@ -19,7 +21,7 @@ interface AuthState {
 
 // Initial state
 const initialState: AuthState = {
-  isAuthenticated: false,
+  isAuthenticated: !!getAuthToken(),
   isLoading: true,
   user: null,
 };
@@ -54,8 +56,20 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const [state, dispatch] = React.useReducer(authReducer, initialState);
 
+  const location = useLocation();
+
   useEffect(() => {
-    dispatch({ type: "SET_AUTHENTICATED", payload: !!user });
+    // Check if the user is authenticated based on the presence of an auth token
+    const token = getAuthToken();
+    if (token) {
+      dispatch({ type: "SET_AUTHENTICATED", payload: true });
+    } else {
+      dispatch({ type: "SET_AUTHENTICATED", payload: false });
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    // dispatch({ type: "SET_AUTHENTICATED", payload: !!user });
     dispatch({ type: "SET_LOADING", payload: isLoading });
     dispatch({ type: "SET_USER", payload: user || null });
   }, [user, isLoading]);

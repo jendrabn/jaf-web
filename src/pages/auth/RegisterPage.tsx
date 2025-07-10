@@ -1,32 +1,25 @@
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
-import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import type { RegisterReqTypes } from "../../types/auth";
 import { useRegister } from "../../services/api/auth";
 import AuthLayout from "../../layouts/AuthLayout";
-import useForm from "../../hooks/useForm";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
 import PasswordInput from "../../components/PasswordInput";
+import { Helmet } from "react-helmet-async";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 function RegisterPage() {
   const navigate = useNavigate();
 
   const { mutate, isPending, error, reset } = useRegister();
 
-  const { values, handleChange } = useForm<RegisterReqTypes>({
-    email: "",
-    name: "",
-    password: "",
-    password_confirmation: "",
-  });
+  const { register, handleSubmit } = useForm<RegisterReqTypes>();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    mutate(values, {
+  const onSubmit: SubmitHandler<RegisterReqTypes> = (data) => {
+    mutate(data, {
       onSuccess() {
-        toast.success("Registered successfully, please sign in.");
+        toast.success("Registrasi berhasil, silahkan login.");
 
         navigate("/auth/login", { replace: true });
       },
@@ -35,43 +28,32 @@ function RegisterPage() {
 
   return (
     <AuthLayout title="Sign Up">
+      <Helmet>
+        <title>Sign Up | {import.meta.env.VITE_APP_NAME}</title>
+      </Helmet>
+
       <ErrorValidationAlert error={error} onClose={reset} />
 
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <fieldset disabled={isPending}>
           <Form.Group className="mb-3">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="text"
-              onChange={handleChange}
-              name="name"
-              value={values.name}
-              autoFocus
-            />
+            <Form.Label>Nama</Form.Label>
+            <Form.Control type="text" {...register("name")} autoFocus />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              onChange={handleChange}
-              value={values.email}
-              name="email"
-            />
+            <Form.Control type="email" {...register("email")} name="email" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
-            <PasswordInput value={values.password} onChange={handleChange} />
+            <PasswordInput {...register("password")} />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Confirm Password</Form.Label>
-            <PasswordInput
-              value={values.password_confirmation}
-              onChange={handleChange}
-              name="password_confirmation"
-            />
+            <Form.Label>Konfirmasi Password</Form.Label>
+            <PasswordInput {...register("password_confirmation")} />
           </Form.Group>
 
           <div className="d-grid mb-3">
@@ -81,7 +63,7 @@ function RegisterPage() {
           </div>
 
           <p className="mb-0 text-center">
-            Already have an account? <Link to="/auth/login">Login</Link>
+            Sudah punya akun? <Link to="/auth/login">Login</Link>
           </p>
         </fieldset>
       </Form>

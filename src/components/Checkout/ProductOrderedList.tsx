@@ -29,15 +29,15 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
   return (
     <div className={`card ${className}`}>
       <div className="card-body">
-        <h5 className="card-title mb-3">Products Ordered</h5>
+        <h5 className="card-title mb-3">Produk Dipesan</h5>
 
         {carts && carts.length > 0 && (
           <Table responsive className="align-middle">
             <thead>
               <tr className="text-center">
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
+                <th></th>
+                <th>Produk</th>
+                <th>Kuantitas</th>
                 <th>Subtotal</th>
               </tr>
             </thead>
@@ -77,13 +77,13 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
         )}
 
         <Form.Group>
-          <Form.Label className="fw-bold">Shipping Option</Form.Label>
+          <Form.Label className="fw-bold">Opsi Pengiriman</Form.Label>
 
           <Form.Select
             onChange={handleShippingChange}
             disabled={state.isLoadingShippingCosts}
           >
-            <option>Choose Shipping Service</option>
+            <option>Pilih Opsi Pengiriman</option>
             {shippingCosts.map((cost, index) => (
               <option key={`shipping-${index}`} value={index}>
                 {`${cost.courier_name} - ${cost.service_name} - ${formatPrice(
@@ -94,7 +94,7 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
           </Form.Select>
           {state.isLoadingShippingCosts && (
             <Form.Text className="text-muted">
-              Please wait a moment to get shipping costs ...
+              Sedang memuat opsi pengiriman
             </Form.Text>
           )}
         </Form.Group>

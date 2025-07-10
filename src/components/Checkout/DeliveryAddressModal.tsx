@@ -85,13 +85,13 @@ function DeliveryAddressModal({
   return (
     <Modal show={show} onHide={handleClose} backdrop="static">
       <Modal.Header>
-        <Modal.Title>Delivery Address</Modal.Title>
+        <Modal.Title>Alamat Pengiriman</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <fieldset disabled={shippingCostMutation.isPending}>
             <Form.Group className="mb-3" controlId="name">
-              <Form.Label>Full Name</Form.Label>
+              <Form.Label>Nama Lengkap</Form.Label>
               <Form.Control
                 type="text"
                 value={data.name}
@@ -100,7 +100,7 @@ function DeliveryAddressModal({
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="phone">
-              <Form.Label>Phone Number</Form.Label>
+              <Form.Label>Nomor Telepon</Form.Label>
               <Form.Control
                 type="text"
                 name="phone"
@@ -110,7 +110,7 @@ function DeliveryAddressModal({
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="provinces">
-              <Form.Label>Province</Form.Label>
+              <Form.Label>Provinsi</Form.Label>
               <Form.Select
                 disabled={isLoadingProvinces}
                 value={data.province?.id || ""}
@@ -123,7 +123,7 @@ function DeliveryAddressModal({
                   })
                 }
               >
-                <option>Choose a Province</option>
+                <option>Pilih Provinsi</option>
                 {provinces?.map((province) => (
                   <option key={`province-${province.id}`} value={province.id}>
                     {province.name}
@@ -133,7 +133,7 @@ function DeliveryAddressModal({
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="cities">
-              <Form.Label>City</Form.Label>
+              <Form.Label>Kabupaten/Kota</Form.Label>
               <Form.Select
                 value={data.city?.id || ""}
                 onChange={(e) =>
@@ -146,7 +146,7 @@ function DeliveryAddressModal({
                 }
                 disabled={isLoadingCities || !data.province}
               >
-                <option>Choose a City</option>
+                <option>Pilih Kabupaten/Kota</option>
                 {cities?.map((city) => (
                   <option key={`city-${city.id}`} value={city.id}>
                     {city.name}
@@ -156,7 +156,7 @@ function DeliveryAddressModal({
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="district">
-              <Form.Label>District</Form.Label>
+              <Form.Label>Kecamatan</Form.Label>
               <Form.Control
                 type="text"
                 name="district"
@@ -166,7 +166,7 @@ function DeliveryAddressModal({
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="postal_code">
-              <Form.Label>Postal Code</Form.Label>
+              <Form.Label>Kode Pos</Form.Label>
               <Form.Control
                 type="text"
                 onChange={(e) =>
@@ -178,7 +178,7 @@ function DeliveryAddressModal({
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="address">
-              <Form.Label>Address</Form.Label>
+              <Form.Label>Alamat Lengkap</Form.Label>
               <Form.Control
                 type="text"
                 as={"textarea"}
@@ -188,17 +188,17 @@ function DeliveryAddressModal({
                 value={data.address}
               />
               <Form.Text className="text-muted">
-                Please enter your complete address including house number,
-                street name, and any other relevant details.
+                Masukkan alamat lengkap Anda, termasuk nomor rumah, nama jalan,
+                dan detail lainnya.
               </Form.Text>
             </Form.Group>
 
             <div className="d-flex justify-content-end gap-2">
               <Button variant="outline-secondary" onClick={handleClose}>
-                Cancel
+                Batal
               </Button>
               <Button variant="primary" type="submit">
-                Save
+                Simpan
               </Button>
             </div>
           </fieldset>

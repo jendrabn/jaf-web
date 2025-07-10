@@ -2,6 +2,7 @@ import { Button, Modal } from "react-bootstrap";
 import { useConfirmOrderReceived } from "../../services/api/order";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { QUERY_KEYS } from "../../utils/constans";
 
 interface ConfirmOrderReceivedModalProps {
   orderId: number | null;
@@ -22,11 +23,14 @@ function ConfirmOrderReceivedModal({
 
     mutate(orderId, {
       onSuccess() {
-        toast.success("Order has been confirmed.");
+        toast.success("Pesanan berhasil dikonfirmasi.");
 
-        queryClient.invalidateQueries({ queryKey: ["orders"] });
+        onClose?.();
 
-        onClose();
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ORDERS] });
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.ORDER, orderId],
+        });
       },
     });
   };
@@ -34,13 +38,14 @@ function ConfirmOrderReceivedModal({
   return (
     <Modal onHide={() => onClose()} show={show} backdrop="static" centered>
       <Modal.Header closeButton>
-        <Modal.Title>Confirm Order Received</Modal.Title>
+        <Modal.Title>Konfirmasi Pesanan Diterima</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
-          Check that you received all items in satisfactory condition (no
-          return/refund required) before confirming receipt. Once you confirm,
-          the order is completed and we will release the payment to seller.
+          Pastikan Anda telah menerima semua barang dalam kondisi baik (tidak
+          ada retur/pengembalian) sebelum mengonfirmasi pesanan diterima.
+          Setelah Anda konfirmasi, pesanan akan dianggap selesai dan pembayaran
+          akan diteruskan ke penjual.
         </p>
         <div className="d-flex justify-content-end gap-2">
           <Button
@@ -48,14 +53,14 @@ function ConfirmOrderReceivedModal({
             onClick={() => onClose()}
             disabled={isPending}
           >
-            Cancel
+            Batal
           </Button>
           <Button
             variant="primary"
             onClick={handleConfirm}
             disabled={isPending}
           >
-            Confirm
+            Konfirmasi
           </Button>
         </div>
       </Modal.Body>

@@ -7,6 +7,7 @@ import { Button, Form } from "react-bootstrap";
 import WishlistItem from "../../components/WishlistItem";
 import { useDeleteWishlist } from "../../services/api/wishlist";
 import NoData from "../../components/NoData";
+import { Helmet } from "react-helmet-async";
 
 function WishlistPage() {
   const deleteWishlistMutation = useDeleteWishlist();
@@ -29,7 +30,11 @@ function WishlistPage() {
   };
 
   return (
-    <AccountLayout title="My Wishlist">
+    <AccountLayout title="Wishlist">
+      <Helmet>
+        <title>Wishlist | {import.meta.env.VITE_APP_NAME}</title>
+      </Helmet>
+
       {wishlists && wishlists?.length > 0 ? (
         <>
           {/* Desktop */}
@@ -45,13 +50,13 @@ function WishlistPage() {
               />
             </div>
             <div className="text-center" style={{ width: "50%" }}>
-              Product
+              Produk
             </div>
             <div className="text-center" style={{ width: "20%" }}>
-              Price
+              Harga
             </div>
             <div className="text-center" style={{ width: "25%" }}>
-              Action
+              Aksi
             </div>
           </div>
 
@@ -86,7 +91,7 @@ function WishlistPage() {
               disabled={selectedIds.length === 0}
               onClick={handleDeleteSelected}
             >
-              Delete Selected
+              Hapus
             </Button>
           </div>
         </>

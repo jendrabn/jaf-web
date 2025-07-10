@@ -8,7 +8,7 @@ import ProductImage from "../ProductImage";
 const formatDate = (date: string) => {
   const d = new Date(date);
   const day = d.getDate();
-  const month = d.toLocaleString("default", { month: "long" });
+  const month = d.toLocaleString("id-ID", { month: "long" });
   const year = d.getFullYear();
   return `${day} ${month} ${year}`;
 };
@@ -16,7 +16,7 @@ const formatDate = (date: string) => {
 const formatPaymentDueDate = (date: string) => {
   const d = new Date(date);
   const day = d.getDate();
-  const month = d.toLocaleString("default", { month: "long" });
+  const month = d.toLocaleString("id-ID", { month: "long" });
   const year = d.getFullYear();
   const hours = d.getHours();
   const minutes = d.getMinutes();
@@ -98,7 +98,7 @@ function OrderItem({
 
         <div className="d-flex flex-column flex-lg-row flex-lg-row-reverse justify-content-between border-top pt-2">
           <div className="d-flex justify-content-end align-items-center mb-2 mb-lg-0">
-            <span className="text-gray-700 me-2">Total Amount:</span>
+            <span className="text-gray-700 me-2">Jumlah Total:</span>
             <span className="fw-bold">{formatPrice(total_amount)}</span>
           </div>
 

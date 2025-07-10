@@ -7,6 +7,7 @@ import { useDeleteCart } from "../services/api/cart";
 import CartItem from "../components/CartItem";
 import { useCartDispatch, useCartState } from "../contexts/CartContext";
 import NoData from "../components/NoData";
+import { Helmet } from "react-helmet-async";
 
 function CartPage() {
   const navigate = useNavigate();
@@ -42,9 +43,13 @@ function CartPage() {
   };
 
   return (
-    <Layout title="Cart">
+    <Layout>
+      <Helmet>
+        <title>Keranjang Belanja | {import.meta.env.VITE_APP_NAME}</title>
+      </Helmet>
+
       <div className="container">
-        <h2 className="section__title">Shopping Cart</h2>
+        <h2 className="section__title">Keranjang Belanja</h2>
 
         {carts.length > 0 ? (
           <>
@@ -64,19 +69,19 @@ function CartPage() {
                 />
               </div>
               <div style={{ width: "40%" }} className="text-start">
-                Product
+                Produk
               </div>
               <div style={{ width: "15%" }} className="text-center">
-                Price
+                Harga Satuan
               </div>
               <div style={{ width: "15%" }} className="text-center">
-                Quantity
+                Kuantitas
               </div>
               <div style={{ width: "15%" }} className="text-center">
                 Total
               </div>
               <div style={{ width: "10%" }} className="text-center">
-                Action
+                Aksi
               </div>
             </div>
 
@@ -95,7 +100,7 @@ function CartPage() {
                   selectedIds.length === 0 || deleteCartMutation.isPending
                 }
               >
-                Delete Selected
+                Hapus
               </Button>
 
               <div className="d-flex align-items-center">
@@ -139,7 +144,7 @@ function CartPage() {
                     selectedIds.length === 0 || deleteCartMutation.isPending
                   }
                 >
-                  Delete Selected
+                  Hapus
                 </Button>
               </div>
 

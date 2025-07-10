@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { callApi } from "../../utils/functions";
+import apiClient from "../../utils/api";
 import type {
   BlogCategoryTypes,
   BlogDetailTypes,
@@ -12,23 +12,17 @@ import { QUERY_KEYS } from "../../utils/constans";
 export const useFetchBlogCategories = () =>
   useQuery<BlogCategoryTypes[]>({
     queryKey: [QUERY_KEYS.BLOG_CATEGORIES],
-    queryFn: () =>
-      callApi({
-        method: "GET",
-        url: "/blogs/categories",
-      }),
+    queryFn: () => apiClient().get("/blogs/categories"),
     staleTime: Infinity,
+    retry: 3,
   });
 
 export const useFetchBlogTags = () =>
   useQuery<BlogTagTypes[]>({
     queryKey: [QUERY_KEYS.BLOG_TAGS],
-    queryFn: () =>
-      callApi({
-        method: "GET",
-        url: "/blogs/tags",
-      }),
+    queryFn: () => apiClient().get("/blogs/tags"),
     staleTime: Infinity,
+    retry: 3,
   });
 
 export const useFetchBlogs = (queryString?: string) =>
@@ -38,21 +32,16 @@ export const useFetchBlogs = (queryString?: string) =>
   }>({
     queryKey: [QUERY_KEYS.BLOGS, queryString],
     queryFn: () =>
-      callApi({
-        method: "GET",
-        url: `/blogs${queryString ? `?${queryString}` : ""}`,
-      }),
+      apiClient().get(`/blogs${queryString ? `?${queryString}` : ""}`),
     staleTime: Infinity,
+    retry: 3,
   });
 
 export const useFetchBlog = (slug?: string) =>
   useQuery<BlogDetailTypes>({
     queryKey: [QUERY_KEYS.BLOG, slug],
-    queryFn: () =>
-      callApi({
-        method: "GET",
-        url: `/blogs/${slug}`,
-      }),
+    queryFn: () => apiClient().get(`/blogs/${slug}`),
     staleTime: Infinity,
     enabled: !!slug,
+    retry: 3,
   });

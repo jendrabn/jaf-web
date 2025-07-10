@@ -16,6 +16,7 @@ import {
 } from "../contexts/CheckoutContext";
 import { type OrderReqTypes } from "../types/order";
 import { useCartDispatch } from "../contexts/CartContext";
+import { Helmet } from "react-helmet-async";
 
 function CheckoutPage() {
   const queryClient = useQueryClient();
@@ -85,7 +86,11 @@ function CheckoutPage() {
   };
 
   return (
-    <Layout title="Checkout">
+    <Layout>
+      <Helmet>
+        <title>Checkout | {import.meta.env.VITE_APP_NAME}</title>
+      </Helmet>
+
       <DeliveryAddressModal
         show={showAddressModal}
         onClose={() => setShowAddressModal(false)}
@@ -106,12 +111,12 @@ function CheckoutPage() {
           <div className="col-lg-4">
             <div className="card mb-3">
               <div className="card-body">
-                <h5 className="card-title mb-3">Order Summary</h5>
+                <h5 className="card-title mb-3">Ringkasan Pesanan</h5>
                 <Table responsive>
                   <tbody>
                     <tr>
                       <td className="text-gray-700">
-                        Total Price ({state.checkout?.total_quantity})
+                        Total Harga ({state.checkout?.total_quantity})
                       </td>
                       <td className="text-end">
                         {formatPrice(state.checkout?.total_price || 0)}
@@ -119,7 +124,7 @@ function CheckoutPage() {
                     </tr>
                     <tr>
                       <td className="text-gray-700">
-                        Shipping Cost (
+                        Biaya Pengiriman (
                         {Math.round((state.checkout?.total_weight || 0) / 1000)}
                         kg)
                       </td>
@@ -128,11 +133,11 @@ function CheckoutPage() {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-gray-700">Tax</td>
+                      <td className="text-gray-700">Pajak</td>
                       <td className="text-end">{formatPrice(0)}</td>
                     </tr>
                     <tr>
-                      <td className="text-gray-700">Total Amount</td>
+                      <td className="text-gray-700">Jumlah Total</td>
                       <td className="text-end">
                         {formatPrice(
                           (state.checkout?.total_price || 0) +
@@ -146,7 +151,7 @@ function CheckoutPage() {
                 <Form.Group>
                   <Form.Control
                     value={state.note}
-                    placeholder="Please leave a message for seller..."
+                    placeholder="Catatan untuk penjual"
                     onChange={(e) => {
                       dispatch({ type: "SET_NOTE", payload: e.target.value });
                     }}
@@ -161,7 +166,7 @@ function CheckoutPage() {
                 onClick={handleCreateOrder}
                 disabled={createMutation.isPending}
               >
-                {createMutation.isPending ? "Loading..." : "Place Order"}
+                {createMutation.isPending ? "Loading..." : "Buat Pesanan"}
               </Button>
             </div>
           </div>

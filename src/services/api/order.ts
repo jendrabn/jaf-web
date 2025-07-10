@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   CheckoutReqTypes,
   ShippingCostReqTypes,
+  ShippingCostTypes,
 } from "../../types/checkout";
 import type {
   ConfirmPaymentReqTypes,
@@ -9,64 +10,54 @@ import type {
   OrderReqTypes,
   OrderTypes,
 } from "../../types/order";
-import { callApi, getAuthToken } from "../../utils/functions";
+import { getAuthToken } from "../../utils/functions";
 import type { PageTypes } from "../../types";
 import { QUERY_KEYS } from "../../utils/constans";
+import apiClient from "../../utils/api";
 
 export const useCheckoutState = () =>
   useMutation({
-    mutationFn: (data: CheckoutReqTypes) =>
-      callApi({
-        method: "POST",
-        url: "/checkout",
-        data,
-        token: true,
-      }),
+    mutationFn: (data: CheckoutReqTypes) => apiClient().post("/checkout", data),
   });
 
 export const useFetchShippingCosts = () =>
-  useMutation({
-    mutationFn: (data: ShippingCostReqTypes) =>
-      callApi({
-        method: "POST",
-        url: "/shipping_costs",
-        data,
-        token: true,
-      }),
+  useMutation<ShippingCostTypes[], Error, ShippingCostReqTypes>({
+    mutationFn: (data) => apiClient().post("/shipping_costs", data),
   });
 
 export const useFetchOrders = (queryString?: string) =>
   useQuery<{ data: OrderTypes[]; page: PageTypes }>({
     queryKey: [QUERY_KEYS.ORDERS, queryString],
     queryFn: () =>
-      callApi({
-        method: "GET",
-        url: `/orders${queryString ? `?${queryString}` : ""}`,
-        token: true,
-      }),
+      apiClient().get(`/orders${queryString ? `?${queryString}` : ""}`),
+    retry: 3,
   });
 
+interface OrderSuccessTypes {
+  id: number;
+  total_amount: number;
+  payment_method: string;
+  payment_info: {
+    name: string;
+    code: string;
+    account_name: number;
+    account_number: string;
+  };
+  payment_due_date: string;
+  created_at: string;
+}
+
 export const useCreateOrder = () =>
-  useMutation({
-    mutationFn: (data: OrderReqTypes) =>
-      callApi({
-        method: "POST",
-        url: "/orders",
-        data,
-        token: true,
-      }),
+  useMutation<OrderSuccessTypes, Error, OrderReqTypes>({
+    mutationFn: (data) => apiClient().post("/orders", data),
   });
 
 export const useFetchOrder = (orderId?: number) =>
   useQuery<OrderDetailTypes>({
     queryKey: [QUERY_KEYS.ORDER, orderId],
-    queryFn: () =>
-      callApi({
-        method: "GET",
-        url: `/orders/${orderId}`,
-        token: true,
-      }),
+    queryFn: () => apiClient().get(`/orders/${orderId}`),
     enabled: !!getAuthToken() && !!orderId,
+    retry: 3,
   });
 
 export const useConfirmPayment = () =>
@@ -77,21 +68,11 @@ export const useConfirmPayment = () =>
     }: {
       orderId: number;
       data: ConfirmPaymentReqTypes;
-    }) =>
-      callApi({
-        method: "POST",
-        url: `/orders/${orderId}/confirm_payment`,
-        token: true,
-        data,
-      }),
+    }) => apiClient().post(`/orders/${orderId}/confirm_payment`, data),
   });
 
 export const useConfirmOrderReceived = () =>
   useMutation({
     mutationFn: (orderId: number) =>
-      callApi({
-        method: "PUT",
-        url: `/orders/${orderId}/confirm_order_delivered`,
-        token: true,
-      }),
+      apiClient().put(`/orders/${orderId}/confirm_order_delivered`),
   });

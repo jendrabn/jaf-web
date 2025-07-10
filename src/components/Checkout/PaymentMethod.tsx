@@ -47,16 +47,16 @@ function PaymentMethod({ className }: PaymentMethodProps) {
   return (
     <div className={`card ${className}`}>
       <div className="card-body">
-        <h5 className="card-title mb-3">Payment</h5>
+        <h5 className="card-title mb-3">Pembayaran</h5>
 
         <div>
           <Form.Group className="mb-3" controlId="payment">
-            <Form.Label className="fw-bold">Payment Method</Form.Label>
+            <Form.Label className="fw-bold">Metode Pembayaran</Form.Label>
             <div>
               <Form.Check
                 inline
                 type="radio"
-                label="Bank Transfer"
+                label="Transfer Bank"
                 name="payment_method"
                 value={PAYMENT_METHOD_BANK}
                 checked={paymentMethod === PAYMENT_METHOD_BANK}
@@ -85,9 +85,9 @@ function PaymentMethod({ className }: PaymentMethodProps) {
 
           {paymentMethod === PAYMENT_METHOD_BANK && (
             <Form.Group className="mb-3" controlId="bank">
-              <Form.Label className="fw-bold">Bank Option</Form.Label>
+              <Form.Label className="fw-bold">Bank</Form.Label>
               <Form.Select value={bank?.id} onChange={handlePaymentBankChange}>
-                <option>Choose Bank</option>
+                <option>Pilih Bank</option>
                 {banks?.map((bank) => (
                   <option value={bank.id} key={`bank-${bank.id}`}>
                     {`${bank.name} - ${bank.account_number} - a.n ${bank.account_name}`}
@@ -99,12 +99,12 @@ function PaymentMethod({ className }: PaymentMethodProps) {
 
           {paymentMethod === PAYMENT_METHOD_EWALLET && (
             <Form.Group className="mb-3" controlId="ewallet">
-              <Form.Label className="fw-bold">E-Wallet Option</Form.Label>
+              <Form.Label className="fw-bold">E-Wallet</Form.Label>
               <Form.Select
                 value={ewallet?.id}
                 onChange={handlePaymentEwalletChange}
               >
-                <option>Choose E-Wallet</option>
+                <option>Pilih E-Wallet</option>
                 {ewallets?.map((ewallet) => (
                   <option value={ewallet.id} key={`ewallet-${ewallet.id}`}>
                     {`${ewallet.name} - ${ewallet.phone} - a.n ${ewallet.account_username}`}

@@ -1,5 +1,5 @@
 import type { BlogCategoryTypes, BlogTagTypes } from "../types/blog";
-import { Accordion } from "react-bootstrap";
+import { Accordion, Button } from "react-bootstrap";
 import useFilters from "../hooks/useFilters";
 import { useFetchBlogCategories, useFetchBlogTags } from "../services/api/blog";
 
@@ -17,7 +17,7 @@ function BlogListFilters() {
 
       <Accordion defaultActiveKey="0" flush alwaysOpen>
         <Accordion.Item eventKey="0">
-          <Accordion.Header>Category</Accordion.Header>
+          <Accordion.Header>Kategori</Accordion.Header>
           <Accordion.Body>
             <ul className="list-unstyled mb-0">
               {categories?.map((category: BlogCategoryTypes) => (
@@ -68,14 +68,16 @@ function BlogListFilters() {
       </Accordion>
 
       <div className="d-grid mt-4">
-        <button
-          className="btn btn-outline-danger btn-sm"
+        <Button
+          type="button"
+          size="sm"
+          variant="outline-danger"
           onClick={() => {
             clearFilters("category_id", "tag_id");
           }}
         >
-          Clear all
-        </button>
+          Hapus Semua
+        </Button>
       </div>
     </div>
   );

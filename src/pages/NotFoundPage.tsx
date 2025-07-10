@@ -5,8 +5,7 @@ function NotFoundPage() {
   return (
     <>
       <Helmet>
-        <title>404 | {import.meta.env.VITE_APP_NAME}</title>
-        <meta name="description" content="Page Not Found" />
+        <title>Halaman Tidak Ditemukan | {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
 
       <section className="d-flex align-items-center min-vh-100">
@@ -21,16 +20,18 @@ function NotFoundPage() {
                   >
                     404
                   </h4>
-                  <p className="card-text text-center">Page Not Found</p>
                   <p className="card-text text-center">
-                    The page you are looking for does not exist.
+                    Halaman Tidak Ditemukan
                   </p>
                   <p className="card-text text-center">
-                    Please check the URL and try again.
+                    Halaman yang Anda cari tidak tersedia.
+                  </p>
+                  <p className="card-text text-center">
+                    Silakan periksa kembali URL atau kembali ke halaman utama.
                   </p>
                   <div className="d-flex justify-content-center mt-4">
                     <Link to="/" className="btn btn-primary">
-                      Go Back Home
+                      Kembali ke Beranda
                     </Link>
                   </div>
                 </div>

@@ -18,6 +18,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import ProductImagesCarousel from "../components/ProductImagesCarousel";
 import StarRating from "../components/StarRating";
 import NoData from "../components/NoData";
+import { Helmet } from "react-helmet-async";
 
 export default function ProductDetailPage() {
   const { productId } = useParams();
@@ -44,7 +45,7 @@ export default function ProductDetailPage() {
         onSuccess() {
           queryClient.invalidateQueries({ queryKey: ["carts"] });
 
-          toast.success("Item has been added to your shopping cart.");
+          toast.success("Berhasil ditambahkan ke keranjang.");
         },
       }
     );
@@ -57,7 +58,7 @@ export default function ProductDetailPage() {
       { product_id: product.id },
       {
         onSuccess() {
-          toast.success("Item has been added to your wishlist.");
+          toast.success("Berhasil ditambahkan ke wishlist.");
 
           queryClient.invalidateQueries({ queryKey: ["wishlists"] });
         },
@@ -68,11 +69,17 @@ export default function ProductDetailPage() {
   if (!isLoading && !product) return <NotFoundPage />;
 
   return (
-    <Layout title={product?.name}>
+    <Layout>
       {isLoading && <Loading className="py-5" />}
 
       {!isLoading && product && (
         <>
+          <Helmet>
+            <title>
+              {product?.name} | {import.meta.env.VITE_APP_NAME}
+            </title>
+          </Helmet>
+
           <div className="container">
             <div className="row gx-5">
               <div className="col-lg-6">
@@ -89,23 +96,23 @@ export default function ProductDetailPage() {
                   </div>
                   <div className="px-3 border-end border-2">
                     <span className="me-2">0</span>
-                    <span className="text-gray-600">Ratings</span>
+                    <span className="text-gray-600">Penilaian</span>
                   </div>
                   <div className="px-3">
                     <span className="me-2">{product?.sold_count}</span>
-                    <span className="text-gray-600">Sold</span>
+                    <span className="text-gray-600">Terjual</span>
                   </div>
                 </div>
                 <div>
                   <div className="row py-2">
-                    <div className="col-md-3 fw-bold">Price</div>
+                    <div className="col-md-3 fw-bold">Harga</div>
                     <div className="col-md-9 h4 mb-0">
                       {formatPrice(product?.price)}
                     </div>
                   </div>
 
                   <div className="row py-2">
-                    <div className="col-md-3 fw-bold">Category</div>
+                    <div className="col-md-3 fw-bold">Kategori</div>
                     <div className="col-md-9">{product?.category?.name}</div>
                   </div>
 
@@ -122,7 +129,7 @@ export default function ProductDetailPage() {
                   </div>
 
                   <div className="row py-2">
-                    <div className="col-md-3 fw-bold">Quantity</div>
+                    <div className="col-md-3 fw-bold">Jumlah</div>
                     <div className="col-md-9">
                       <QuantityInput
                         onChange={handleQuantityChange}
@@ -130,7 +137,7 @@ export default function ProductDetailPage() {
                         maxValue={product?.stock}
                       />
                       <span className="text-gray-700 ms-3">
-                        {product?.stock} pieces available
+                        {product?.stock} stok tersedia
                       </span>
                     </div>
                   </div>
@@ -138,19 +145,20 @@ export default function ProductDetailPage() {
                   <div className="d-flex gap-2 mt-3 mb-3 fs-6 fw-bold text-gray-600 align-items-center ">
                     <Button
                       variant="primary"
-                      className="py-2 w-100"
+                      className="py-2 w-50"
                       disabled={cartMutation.isPending}
                       onClick={handleAddToCart}
                     >
-                      <i className="fa-solid fa-cart-plus"></i> Add to Cart
+                      <i className="fa-solid fa-cart-plus me-2"></i> Tambah ke
+                      Keranjang
                     </Button>
                     <Button
                       variant="outline-primary"
-                      className="py-2 w-100"
+                      className="py-2"
                       onClick={handleAddToWishlist}
                       disabled={createWishlistMutation.isPending}
                     >
-                      <i className="fa-solid fa-heart"></i> Add to Wishlist
+                      <i className="fa-solid fa-heart"></i>
                     </Button>
                   </div>
                 </div>
@@ -162,7 +170,7 @@ export default function ProductDetailPage() {
                 <Tabs defaultActiveKey={"description"}>
                   <Tab
                     eventKey="description"
-                    title="Description"
+                    title="Deskripsi"
                     dangerouslySetInnerHTML={{
                       __html: product?.description || "",
                     }}
@@ -170,7 +178,7 @@ export default function ProductDetailPage() {
                   ></Tab>
                   <Tab
                     eventKey="reviews"
-                    title="Reviews"
+                    title="Ulasan"
                     className="p-3 border text-break"
                   ></Tab>
                 </Tabs>
@@ -178,7 +186,7 @@ export default function ProductDetailPage() {
             </div>
 
             <section className="mt-5">
-              <h2 className="section__title">Related Products</h2>
+              <h2 className="section__title">Produk Terkait</h2>
 
               {relatedProducts?.length === 0 && <NoData />}
 

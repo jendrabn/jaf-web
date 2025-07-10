@@ -1,15 +1,14 @@
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router";
-import type { FormEvent } from "react";
 import AuthLayout from "../../layouts/AuthLayout";
-import useForm from "../../hooks/useForm";
 import { useLogin } from "../../services/api/auth";
 import type { LoginReqTypes } from "../../types/auth";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
 import { useLocation } from "react-router";
 import { setAuthToken, setSelectedCartIds } from "../../utils/functions";
 import PasswordInput from "../../components/PasswordInput";
-import { useQueryClient } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -18,48 +17,37 @@ function LoginPage() {
 
   const { mutate, isPending, error, reset } = useLogin();
 
-  const { values, handleChange } = useForm<LoginReqTypes>({
-    email: "",
-    password: "",
-  });
+  const { register, handleSubmit } = useForm<LoginReqTypes>();
 
-  const queryClient = useQueryClient();
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    mutate(values, {
+  const onSubmit: SubmitHandler<LoginReqTypes> = (data) => {
+    mutate(data, {
       onSuccess({ auth_token }) {
         setAuthToken(auth_token);
 
         setSelectedCartIds([]);
 
-        queryClient.invalidateQueries({ queryKey: ["user"] });
-        queryClient.invalidateQueries({ queryKey: ["carts"] });
-        queryClient.invalidateQueries({ queryKey: ["orders"] });
-        queryClient.invalidateQueries({ queryKey: ["wishlists"] });
+        navigate(location.state?.from || "/", { replace: true });
 
-        navigate(location.state?.from || "/", {
-          replace: true,
-          viewTransition: true,
-        });
+        window.location.reload();
       },
     });
   };
 
   return (
     <AuthLayout title="Sign In">
+      <Helmet>
+        <title>Sign In | {import.meta.env.VITE_APP_NAME}</title>
+      </Helmet>
+
       <ErrorValidationAlert error={error} onClose={reset} />
 
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <fieldset disabled={isPending}>
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
-              name="email"
-              value={values.email}
-              onChange={handleChange}
+              {...register("email")}
               autoFocus
               autoSave="email"
             />
@@ -67,11 +55,11 @@ function LoginPage() {
 
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
-            <PasswordInput value={values.password} onChange={handleChange} />
+            <PasswordInput {...register("password")} />
           </Form.Group>
 
           <p className="text-end mb-3">
-            <Link to="/auth/forgot-password">Forgot Password?</Link>
+            <Link to="/auth/forgot-password">Lupa Password?</Link>
           </p>
 
           <div className="d-grid mb-3">
@@ -80,7 +68,7 @@ function LoginPage() {
             </Button>
           </div>
           <p className="text-center mb-0">
-            Don't have an account? <Link to="/auth/register">Sign Up</Link>
+            Belum punya akun? <Link to="/auth/register">Sign Up</Link>
           </p>
         </fieldset>
       </Form>

@@ -9,6 +9,7 @@ import useFilters from "../hooks/useFilters";
 import { type ChangeEvent, type FormEvent, useState } from "react";
 import { Button, Form, Offcanvas } from "react-bootstrap";
 import NoData from "../components/NoData";
+import { Helmet } from "react-helmet-async";
 
 const SortSelect = ({
   onChange,
@@ -59,7 +60,11 @@ function BlogPage() {
   };
 
   return (
-    <Layout title="Blogs">
+    <Layout>
+      <Helmet>
+        <title>Blog | {import.meta.env.VITE_APP_NAME}</title>
+      </Helmet>
+
       <div className="container">
         <div className="row">
           <div className="col-lg-2 d-none d-lg-block">
@@ -68,13 +73,13 @@ function BlogPage() {
           <div className="col-lg-10">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <div className="d-none d-lg-block">
-                <span className="text-gray-700 mb-0 me-2">Sort by:</span>
+                <span className="text-gray-700 mb-0 me-2">Urutkan:</span>
                 <SortSelect className="w-auto" onChange={handleSortChange} />
               </div>
 
               <p className="text-gray-700 mb-0">
-                {blogs?.page?.from} - {blogs?.page?.to} of {blogs?.page?.total}{" "}
-                blogs
+                {blogs?.page?.from || 0} - {blogs?.page?.to || 0} dari{" "}
+                {blogs?.page?.total || 0}
               </p>
 
               {/* Mobile */}
@@ -133,7 +138,7 @@ function BlogPage() {
                 <input
                   className="form-control w-100 border-0"
                   type="search"
-                  placeholder="Search for blogs"
+                  placeholder="Cari blog disini..."
                   name="search"
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />

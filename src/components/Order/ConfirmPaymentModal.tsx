@@ -110,7 +110,7 @@ function ConfirmPaymentModal({
       animation
     >
       <Modal.Header closeButton>
-        <Modal.Title>Payment Confirmation</Modal.Title>
+        <Modal.Title>Konfirmasi Pembayaran</Modal.Title>
       </Modal.Header>
       <Modal.Body className="py-3">
         {isLoading && show && <Loading className="py-5" />}
@@ -125,7 +125,7 @@ function ConfirmPaymentModal({
                   className="mb-1"
                   style={{ width: "100%", maxWidth: 100 }}
                 />
-                <p className="mb-0 fs-6">Create order has been successful</p>
+                <p className="mb-0 fs-6">Pesanan berhasil dibuat</p>
               </div>
             )}
 
@@ -135,8 +135,8 @@ function ConfirmPaymentModal({
             />
 
             <p className="text-muted text-center">
-              Confirm your payment by filling in the form below. We will verify
-              your payment as soon as possible
+              Konfirmasi pembayaran Anda dengan mengisi form di bawah ini. Kami
+              akan memverifikasi pembayaran Anda secepatnya.
             </p>
 
             <ErrorValidationAlert error={error} onClose={reset} />
@@ -146,14 +146,14 @@ function ConfirmPaymentModal({
                 {order?.payment?.method === PAYMENT_METHOD_BANK && (
                   <>
                     <Form.Group className="mb-3">
-                      <Form.Label>Bank Name</Form.Label>
+                      <Form.Label>Nama Bank</Form.Label>
                       <Form.Select
                         name="name"
                         onChange={handleChange}
                         value={values.name}
                         autoFocus
                       >
-                        <option>Choose Bank</option>
+                        <option>Pilih Bank</option>
                         {bankList.map((bank) => (
                           <option key={bank.id} value={bank.name}>
                             {bank.name}
@@ -162,7 +162,7 @@ function ConfirmPaymentModal({
                       </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label>Account Name</Form.Label>
+                      <Form.Label>Nama Pemilik Rekening</Form.Label>
                       <Form.Control
                         type="text"
                         name="account_name"
@@ -171,7 +171,7 @@ function ConfirmPaymentModal({
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label>Account Number</Form.Label>
+                      <Form.Label>Nomor Rekening</Form.Label>
                       <Form.Control
                         type="text"
                         name="account_number"
@@ -195,7 +195,7 @@ function ConfirmPaymentModal({
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label>Account Name</Form.Label>
+                      <Form.Label>Nama Akun</Form.Label>
                       <Form.Control
                         type="text"
                         name="account_name"
@@ -205,7 +205,7 @@ function ConfirmPaymentModal({
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label>Account Username</Form.Label>
+                      <Form.Label>Username Akun</Form.Label>
                       <Form.Control
                         type="text"
                         name="account_username"
@@ -214,7 +214,7 @@ function ConfirmPaymentModal({
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label>Phone Number</Form.Label>
+                      <Form.Label>No. Handphone</Form.Label>
                       <Form.Control
                         type="text"
                         name="phone"
@@ -227,10 +227,10 @@ function ConfirmPaymentModal({
 
                 <div className="d-flex justify-content-end gap-2">
                   <Button variant="outline-secondary" onClick={handleClose}>
-                    Confirm Later
+                    Konfirmasi Nanti
                   </Button>
                   <Button variant="primary" type="submit">
-                    Confirm Payment
+                    Konfirmasi Pembayaran
                   </Button>
                 </div>
               </fieldset>

@@ -15,13 +15,13 @@ function PaymentInfo({ paymentDueDate, payment }: PaymentInfoProps) {
   return (
     <div className="p-3 border mb-4">
       <h4 className="text-center mb-3">
-        <i className="bi bi-cash-coin me-1"></i> Payment Info
+        <i className="bi bi-cash-coin me-1"></i> Informasi Pembayaran
       </h4>
 
       <Alert variant="danger" className="p-2 mb-3">
         <p className="mb-0 text-center">
-          <b>Notice:</b> Please complete the payment of{" "}
-          <b>{formatPrice(payment.amount)}</b> to the account below before{" "}
+          <b>Peringatan:</b> Silakan selesaikan pembayaran sebesar{" "}
+          <b>{formatPrice(payment.amount)}</b> ke rekening di bawah ini sebelum{" "}
           <b>{formatDateTime(paymentDueDate)}</b>
         </p>
       </Alert>
@@ -34,19 +34,19 @@ function PaymentInfo({ paymentDueDate, payment }: PaymentInfoProps) {
               <td className="text-end">{payment?.info?.name}</td>
             </tr>
             <tr>
-              <td className="text-muted">Bank Code</td>
+              <td className="text-muted">Kode Bank</td>
               <td className="text-end">{payment?.info?.code}</td>
             </tr>
             <tr>
-              <td className="text-muted">Account Name</td>
+              <td className="text-muted">Nama Rekening</td>
               <td className="text-end">{payment?.info?.account_name}</td>
             </tr>
             <tr>
-              <td className="text-muted">Account Number</td>
+              <td className="text-muted">Nomor Rekening</td>
               <td className="text-end">{payment?.info?.account_number}</td>
             </tr>
             <tr>
-              <td className="text-muted">Total Payment</td>
+              <td className="text-muted">Total Pembayaran</td>
               <td className="text-end fw-bold">
                 {formatPrice(payment.amount || 0)}
               </td>
@@ -63,19 +63,19 @@ function PaymentInfo({ paymentDueDate, payment }: PaymentInfoProps) {
               <td className="text-end">{payment?.info?.name}</td>
             </tr>
             <tr>
-              <td className="text-muted">Account Name</td>
+              <td className="text-muted">Nama Akun</td>
               <td className="text-end">{payment?.info?.account_name}</td>
             </tr>
             <tr>
-              <td className="text-muted">Account Username</td>
+              <td className="text-muted">Username Akun</td>
               <td className="text-end">{payment?.info?.account_username}</td>
             </tr>
             <tr>
-              <td className="text-muted">Phone Number</td>
+              <td className="text-muted">Nomor HP</td>
               <td className="text-end">{payment?.info?.phone}</td>
             </tr>
             <tr>
-              <td className="text-muted">Total Payment</td>
+              <td className="text-muted">Total Pembayaran</td>
               <td className="text-end fw-bold">
                 {formatPrice(payment.amount || 0)}
               </td>

@@ -4,9 +4,15 @@ import { formatPrice } from "../utils/functions";
 
 interface ProductItemProps {
   product: ProductItemTypes;
+  showSoldCount?: boolean;
+  showRating?: boolean;
 }
 
-export default function ProductItem({ product }: ProductItemProps) {
+export default function ProductItem({
+  product,
+  showSoldCount = true,
+  showRating = true,
+}: ProductItemProps) {
   const { id, name, image, price, sold_count } = product;
 
   return (
@@ -34,10 +40,14 @@ export default function ProductItem({ product }: ProductItemProps) {
           {formatPrice(price)}
         </div>
         <div className="card__product-item-rating-and-sold d-flex justify-content-between align-items-center fs-6 text-gray-700">
-          <div className="card__product-item-rating">
-            {/* <i className="fa fa-star text-warning"></i> 5 */}
-          </div>
-          <div className="card__product-item-sold">{sold_count} Sold</div>
+          {showRating && (
+            <div className="card__product-item-rating">
+              {/* <i className="fa fa-star text-warning"></i> 5 */}
+            </div>
+          )}
+          {showSoldCount && (
+            <div className="card__product-item-sold">{sold_count} Sold</div>
+          )}
         </div>
       </div>
     </NavLink>

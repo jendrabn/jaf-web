@@ -1,5 +1,4 @@
 import Cookie from "js-cookie";
-import axios, { type AxiosRequestConfig } from "axios";
 import { KEY_SELECTED_CART_IDS } from "./constans";
 
 export const formatPrice = (value: number = 0) => {
@@ -36,36 +35,6 @@ export const getGenderLabel = (gender: number) => {
     default:
       return "";
   }
-};
-
-export const callApi = async ({
-  method,
-  url,
-  data,
-  token = false,
-}: {
-  token?: boolean;
-} & AxiosRequestConfig) => {
-  const response = await axios({
-    method,
-    url: `${import.meta.env.VITE_BASE_API_URL}${url}`,
-    data,
-    headers: {
-      ...(token && {
-        Authorization: `Bearer ${Cookie.get("token")}`,
-      }),
-    },
-  }).catch((err) => {
-    if (err.response.status === 401) {
-      removeAuthToken();
-    }
-
-    throw err;
-  });
-
-  const { length } = Object.keys(response.data);
-
-  return length > 1 ? response.data : response.data.data;
 };
 
 export const getAuthToken = () => Cookie.get("token");

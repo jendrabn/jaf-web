@@ -11,6 +11,7 @@ import { useState } from "react";
 import ConfirmPaymentModal from "../../components/Order/ConfirmPaymentModal";
 import ConfirmOrderReceivedModal from "../../components/Order/ConfirmOrderReceivedModal";
 import { useLocation } from "react-router";
+import { Helmet } from "react-helmet-async";
 
 function OrderDetailPage() {
   const { id } = useParams();
@@ -44,7 +45,10 @@ function OrderDetailPage() {
   if (!isLoading && !order) return <NotFoundPage />;
 
   return (
-    <AccountLayout title="Order Detail">
+    <AccountLayout title="Detail Pesanan">
+      <Helmet>
+        <title>Detail Pesanan | {import.meta.env.VITE_APP_NAME}</title>
+      </Helmet>
       {/* <OrderSuccessModal /> */}
 
       {order && (
@@ -69,7 +73,7 @@ function OrderDetailPage() {
               <div className="icon">
                 <i className="fas fa-check"></i>
               </div>
-              <div>Order Created</div>
+              <div>Pesanan Dibuat</div>
               <div className="timestamp">
                 {formatDateTime(order.created_at)}
               </div>
@@ -87,7 +91,7 @@ function OrderDetailPage() {
                 <i className="fas fa-check"></i>
               </div>
               <div>
-                Order Paid <br /> ({formatPrice(order.total_amount)})
+                Pesanan Dibayar <br /> ({formatPrice(order.total_amount)})
               </div>
               <div className="timestamp">
                 {formatDateTime(order.confirmed_at)}
@@ -101,7 +105,7 @@ function OrderDetailPage() {
               <div className="icon">
                 <i className="fas fa-truck"></i>
               </div>
-              <div>Order Shipped Out</div>
+              <div>Pesanan Dikirim</div>
               <div className="timestamp">
                 {formatDateTime(order.shipped_at)}
               </div>
@@ -114,7 +118,7 @@ function OrderDetailPage() {
               <div className="icon">
                 <i className="fas fa-box"></i>
               </div>
-              <div>Order Completed</div>
+              <div>Pesanan Selesai</div>
               <div className="timestamp">
                 {formatDateTime(order.completed_at)}
               </div>
@@ -129,7 +133,7 @@ function OrderDetailPage() {
                   className="p-2"
                 >
                   <small>
-                    Order Status: <b>{ORDER_STATUSES[order.status]}</b>
+                    Status Pesanan: <b>{ORDER_STATUSES[order.status]}</b>
                   </small>
                 </Alert>
               </div>
@@ -137,11 +141,11 @@ function OrderDetailPage() {
               <div className="order__info border-top py-3">
                 <div className="row">
                   <div className="col">
-                    <strong>Order Date</strong> <br />{" "}
+                    <strong>Tanggal Pesanan</strong> <br />{" "}
                     {formatDateTime(order.created_at)}
                   </div>
                   <div className="col border-start border-end">
-                    <strong>Order ID</strong> <br /> {order.id}
+                    <strong>ID Pesanan</strong> <br /> {order.id}
                   </div>
                   <div className="col">
                     <strong>Invoice</strong>
@@ -154,7 +158,7 @@ function OrderDetailPage() {
               <div className="order__address border-top py-3">
                 <div className="row">
                   <div className="col-md-5 border-end">
-                    <strong>Delivery Address</strong>
+                    <strong>Alamat Pengiriman</strong>
                     <br />
                     {order.shipping_address.name} <br />
                     {order.shipping_address.phone} <br />
@@ -164,7 +168,7 @@ function OrderDetailPage() {
                     <div className="row">
                       <div className="col-md-6">
                         <p>
-                          <strong>Delivery Service</strong>
+                          <strong>Jasa Pengiriman</strong>
                           <br />
                           {`${order.shipping.courier_name} - ${
                             order.shipping.service
@@ -173,21 +177,21 @@ function OrderDetailPage() {
                       </div>
                       <div className="col-md-6">
                         <p>
-                          <strong>Shipping Cost</strong>
+                          <strong>Ongkos Kirim</strong>
                           <br />
                           {formatPrice(order.shipping_cost)}
                         </p>
                       </div>
                       <div className="col-md-6">
                         <p>
-                          <strong>Tracking Number</strong>
+                          <strong>Nomor Resi</strong>
                           <br />
                           {order.shipping.tracking_number || "-"}
                         </p>
                       </div>
                       <div className="col-md-6">
                         <p>
-                          <strong>Delivery Status</strong>
+                          <strong>Status Pengiriman</strong>
                           <br />
                           {order.shipping.status.toUpperCase() || "-"}
                         </p>
@@ -201,19 +205,19 @@ function OrderDetailPage() {
                 <div className="row">
                   <div className="col border-end d-flex justify-content-between">
                     <div>
-                      <strong>Payment Method</strong> <br />
+                      <strong>Metode Pembayaran</strong> <br />
                       {order.payment.method.toUpperCase()} -{" "}
                       {order.payment.info.name}
                     </div>
                   </div>
                   <div className="col">
-                    <strong>Payment Status</strong> <br />
+                    <strong>Status Pembayaran</strong> <br />
                     {order.invoice.status.toUpperCase()}
                     {order.status === "pending_payment" && (
                       <>
                         <br />
                         <span className="text-danger">
-                          {`Payment due date at ${formatDateTime(
+                          {`Batas waktu pembayaran ${formatDateTime(
                             order.payment_due_date
                           )}`}
                         </span>
@@ -258,14 +262,14 @@ function OrderDetailPage() {
                   ))}
                 </ul>
                 <p className="mt-3 mb-0 border-top border-bottom py-2">
-                  <b>Note:</b> {order.notes || "-"}
+                  <b>Catatan:</b> {order.notes || "-"}
                 </p>
               </div>
 
               <div className="order__summary py-3">
                 <div className="row mb-2">
                   <div className="col-md-9 text-end">
-                    <span>Total Price</span>
+                    <span>Total Harga</span>
                   </div>
                   <div className="col-md-3 text-end">
                     <span>{formatPrice(order.total_price)}</span>
@@ -274,7 +278,7 @@ function OrderDetailPage() {
 
                 <div className="row mb-2">
                   <div className="col-md-9 text-end">
-                    <span>Shipping Cost</span>
+                    <span>Ongkos Kirim</span>
                   </div>
                   <div className="col-md-3 text-end">
                     <span>{formatPrice(order.shipping_cost)}</span>
@@ -283,7 +287,7 @@ function OrderDetailPage() {
 
                 <div className="row mb-2">
                   <div className="col-md-9 text-end">
-                    <span>Tax</span>
+                    <span>Pajak</span>
                   </div>
                   <div className="col-md-3 text-end">
                     <span>{formatPrice(0)}</span>
@@ -292,7 +296,7 @@ function OrderDetailPage() {
 
                 <div className="row">
                   <div className="col-md-9 text-end">
-                    <span>Total Amount</span>
+                    <span>Total Bayar</span>
                   </div>
                   <div className="col-md-3 text-end">
                     <span className="fw-bold fs-5">
@@ -308,7 +312,7 @@ function OrderDetailPage() {
                     variant="success"
                     onClick={handleShowConfirmOrderReceivedModal}
                   >
-                    Order Received
+                    Pesanan Diterima
                   </Button>
                 )}
                 {order.status === "pending_payment" && (
@@ -316,7 +320,7 @@ function OrderDetailPage() {
                     variant="primary"
                     onClick={handleShowConfirmPaymentModal}
                   >
-                    Confirm Payment
+                    Konfirmasi Pembayaran
                   </Button>
                 )}
               </div>

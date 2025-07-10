@@ -16,7 +16,7 @@ function DeliveryAddress({
   return (
     <Card className={className}>
       <Card.Body>
-        <Card.Title>Delivery Address</Card.Title>
+        <Card.Title>Alamat Pengiriman</Card.Title>
         <div className="d-flex flex-column flex-lg-row align-items-center">
           {address ? (
             <address className="flex-grow-1 mb-0 pe-2 lh-sm">
@@ -34,7 +34,7 @@ function DeliveryAddress({
               onClick={handleShowAddressModal}
               size="sm"
             >
-              <i className="bi bi-pencil-square"></i> Change
+              <i className="bi bi-pencil-square"></i> Ubah
             </Button>
           </div>
         </div>

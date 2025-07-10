@@ -10,6 +10,7 @@ import ConfirmPaymentModal from "../../components/Order/ConfirmPaymentModal";
 import ConfirmOrderReceivedModal from "../../components/Order/ConfirmOrderReceivedModal";
 import { Button, Form, Offcanvas } from "react-bootstrap";
 import NoData from "../../components/NoData";
+import { Helmet } from "react-helmet-async";
 
 const StatusSelect = ({
   onChange,
@@ -46,8 +47,8 @@ const SortSelect = ({
       className={`d-inline-block cursor-pointer ${className}`}
     >
       <option value="">Default</option>
-      <option value="newest">Newest</option>
-      <option value="oldest">Oldest</option>
+      <option value="newest">Terbaru</option>
+      <option value="oldest">Terlama</option>
     </Form.Select>
   );
 };
@@ -101,7 +102,11 @@ function OrderPage() {
   };
 
   return (
-    <AccountLayout title="My Orders">
+    <AccountLayout title="Pesanan">
+      <Helmet>
+        <title>Pesanan | {import.meta.env.VITE_APP_NAME}</title>
+      </Helmet>
+
       <ConfirmPaymentModal
         show={showConfirmPaymentModal}
         onClose={handleCloseConfirmPaymentModal}
@@ -123,15 +128,15 @@ function OrderPage() {
           </div>
           <div>
             <Form.Label className="text-gray-700 mb-0 me-2">
-              Sort by:
+              Urutkan:
             </Form.Label>
             <SortSelect onChange={handleSortChange} className="w-auto" />
           </div>
         </div>
 
         <p className="text-gray-700 mb-0">
-          {orders?.page?.from || 0} - {orders?.page?.to || 0} of{" "}
-          {orders?.page?.total || 0} orders
+          {orders?.page?.from || 0} - {orders?.page?.to || 0} dari{" "}
+          {orders?.page?.total || 0}
         </p>
 
         {/* Mobile */}

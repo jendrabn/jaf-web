@@ -5,49 +5,31 @@ import type {
   deleteReqTypes,
   updateReqTypes,
 } from "../../types/cart";
-import { callApi } from "../../utils/functions";
+import { getAuthToken } from "../../utils/functions";
 import { QUERY_KEYS } from "../../utils/constans";
+import apiClient from "../../utils/api";
 
 export const useFetchCarts = () =>
   useQuery<CartItemTypes[]>({
     queryKey: [QUERY_KEYS.CARTS],
-    queryFn: () =>
-      callApi({
-        method: "GET",
-        url: "/carts",
-        token: true,
-      }),
+    queryFn: () => apiClient().get("/carts"),
+    enabled: !!getAuthToken(),
+    retry: 3,
   });
 
 export const useCreateCart = () =>
   useMutation({
-    mutationFn: (data: CartReqTypes) =>
-      callApi({
-        method: "POST",
-        url: "/carts",
-        data,
-        token: true,
-      }),
+    mutationFn: (data: CartReqTypes) => apiClient().post("/carts", data),
   });
 
 export const useUpdateCart = () =>
   useMutation({
     mutationFn: ({ id, data }: { id: number; data: updateReqTypes }) =>
-      callApi({
-        method: "PUT",
-        url: `/carts/${id}`,
-        data,
-        token: true,
-      }),
+      apiClient().put(`/carts/${id}`, data),
   });
 
 export const useDeleteCart = () =>
   useMutation({
     mutationFn: (data: deleteReqTypes) =>
-      callApi({
-        method: "DELETE",
-        url: "/carts",
-        data,
-        token: true,
-      }),
+      apiClient().post("/carts?_method=DELETE", data),
   });

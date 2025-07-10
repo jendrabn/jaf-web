@@ -1,13 +1,11 @@
 import { type PropsWithChildren, useEffect } from "react";
 import { NavLink } from "react-router";
-import { Helmet } from "react-helmet-async";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Accordion, Nav } from "react-bootstrap";
 
 type AuthLayoutProps = PropsWithChildren & {
   title: string;
-  description?: string;
 };
 
 const NavAccount = () => {
@@ -21,7 +19,7 @@ const NavAccount = () => {
           to="/account/profile"
           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         >
-          <i className="fa-solid fa-angle-right me-2"></i> My Profile
+          <i className="fa-solid fa-angle-right me-2"></i> Profil
         </NavLink>
       </Nav.Item>
 
@@ -30,7 +28,7 @@ const NavAccount = () => {
           to="/account/orders"
           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         >
-          <i className="fa-solid fa-angle-right me-2"></i> My Orders
+          <i className="fa-solid fa-angle-right me-2"></i> Pesanan
         </NavLink>
       </Nav.Item>
 
@@ -39,7 +37,7 @@ const NavAccount = () => {
           to="/account/wishlist"
           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         >
-          <i className="fa-solid fa-angle-right me-2"></i> My Wishlist
+          <i className="fa-solid fa-angle-right me-2"></i> Wishlist
         </NavLink>
       </Nav.Item>
 
@@ -48,7 +46,7 @@ const NavAccount = () => {
           to="/account/address"
           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         >
-          <i className="fa-solid fa-angle-right me-2"></i> My Addresses
+          <i className="fa-solid fa-angle-right me-2"></i> Alamat
         </NavLink>
       </Nav.Item>
 
@@ -57,14 +55,14 @@ const NavAccount = () => {
           to="/account/change-password"
           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         >
-          <i className="fa-solid fa-angle-right me-2"></i> Change Password
+          <i className="fa-solid fa-angle-right me-2"></i> Ubah Password
         </NavLink>
       </Nav.Item>
     </Nav>
   );
 };
 
-function AccountLayout({ children, title, description }: AuthLayoutProps) {
+function AccountLayout({ children, title }: AuthLayoutProps) {
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -75,14 +73,6 @@ function AccountLayout({ children, title, description }: AuthLayoutProps) {
 
   return (
     <>
-      <Helmet>
-        <title>
-          {title} | {import.meta.env.VITE_APP_NAME}
-        </title>
-
-        {description && <meta name="description" content={description} />}
-      </Helmet>
-
       <Navbar />
 
       <main className="py-3 py-md-5">

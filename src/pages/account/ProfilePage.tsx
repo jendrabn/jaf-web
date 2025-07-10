@@ -1,13 +1,14 @@
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { useAuthState } from "../../contexts/AuthContext";
 import type { UserTypes } from "../../types/user";
-import useForm from "../../hooks/useForm";
 import AccountLayout from "../../layouts/AccountLayout";
 import { useUpdateUser } from "../../services/api/user";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { type ChangeEvent, type FormEvent, useRef } from "react";
+import { type ChangeEvent, useRef } from "react";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
+import { useForm } from "react-hook-form";
+import { Helmet } from "react-helmet-async";
 
 function ProfilePage() {
   const { user } = useAuthState();
@@ -19,22 +20,47 @@ function ProfilePage() {
 
   const { mutate, isPending, error, reset } = useUpdateUser();
 
-  const { values, resetForm, handleChange } = useForm<UserTypes | null>(user);
+  const {
+    register,
+    handleSubmit,
+    reset: resetForm,
+    watch,
+    setValue,
+  } = useForm<UserTypes>({
+    defaultValues: {
+      name: user?.name || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
+      sex: user?.sex || null,
+      birth_date: user?.birth_date || "",
+    },
+  });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const watchedSex = watch("sex");
 
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
+  const onSubmit = (data: UserTypes) => {
+    const formData = new FormData();
+
+    // Append form data
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("phone", data.phone || "");
+    formData.append("sex", data.sex?.toString() || "1");
+    formData.append("birth_date", data.birth_date || "");
+
+    // Append avatar file if exists
+    if (inputAvatarRef.current?.files?.[0]) {
+      formData.append("avatar", inputAvatarRef.current.files[0]);
+    }
 
     mutate(formData, {
       onSuccess: () => {
-        toast.success("Profile updated successfully");
+        toast.success("Berhasil memperbarui profil.");
 
         queryClient.invalidateQueries({ queryKey: ["user"] });
       },
       onError: () => {
         resetForm();
-
         avatarRef.current?.setAttribute("src", user?.avatar ?? "");
       },
     });
@@ -59,7 +85,11 @@ function ProfilePage() {
   };
 
   return (
-    <AccountLayout title="My Profile">
+    <AccountLayout title="Profil">
+      <Helmet>
+        <title>Profil | {import.meta.env.VITE_APP_NAME}</title>
+      </Helmet>
+
       <ErrorValidationAlert error={error} onClose={reset} />
       <div className="row flex-row-reverse">
         <div className="col-lg-3">
@@ -83,25 +113,20 @@ function ProfilePage() {
                 inputAvatarRef.current?.click();
               }}
             >
-              <i className="fa-solid fa-arrow-up-from-bracket me-2"></i> Select
-              Image
+              <i className="fa-solid fa-arrow-up-from-bracket me-2"></i> Pilih
+              Gambar
             </Button>
           </div>
         </div>
         <div className="col-lg-9">
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <fieldset disabled={isPending}>
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm="3" className="text-gray-700">
-                  Name
+                  Nama
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Control
-                    type="text"
-                    value={values?.name}
-                    name="name"
-                    onChange={handleChange}
-                  />
+                  <Form.Control type="text" {...register("name")} />
                 </Col>
               </Form.Group>
 
@@ -110,66 +135,49 @@ function ProfilePage() {
                   Email
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Control
-                    type="email"
-                    value={values?.email}
-                    name="email"
-                    onChange={handleChange}
-                  />
+                  <Form.Control type="email" {...register("email")} />
                 </Col>
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm="3" className="text-gray-700">
-                  Phone Number
+                  Nomor Telepon
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Control
-                    type="text"
-                    value={values?.phone || ""}
-                    name="phone"
-                    onChange={handleChange}
-                  />
+                  <Form.Control type="text" {...register("phone")} />
                 </Col>
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm="3" className="text-gray-700">
-                  Gender
+                  Jenis Kelamin
                 </Form.Label>
                 <Col sm="9">
                   <Form.Check
                     type="radio"
                     inline
-                    label="Male"
+                    label="Laki-laki"
                     name="sex"
-                    defaultChecked={values?.sex === 1}
-                    onChange={handleChange}
-                    value={1}
+                    checked={watchedSex === 1}
+                    onChange={() => setValue("sex", 1)}
                   />
                   <Form.Check
                     type="radio"
-                    label="Female"
+                    label="Perempuan"
                     inline
                     name="sex"
-                    defaultChecked={values?.sex === 2}
-                    onChange={handleChange}
-                    value={2}
+                    checked={watchedSex === 2}
+                    onChange={() => setValue("sex", 2)}
                   />
                 </Col>
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm="3" className="text-gray-700">
-                  Date of Birth
+                  Tanggal Lahir
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Control
-                    type="date"
-                    value={values?.birth_date || ""}
-                    name="birth_date"
-                    onChange={handleChange}
-                  />
+                  <Form.Control type="date" {...register("birth_date")} />
                 </Col>
               </Form.Group>
 
@@ -177,7 +185,7 @@ function ProfilePage() {
                 <Form.Label column sm="3"></Form.Label>
                 <Col sm="9">
                   <Button variant="primary" type="submit">
-                    <i className="fa-solid fa-floppy-disk me-2"></i>Save Changes
+                    <i className="fa-solid fa-floppy-disk me-2"></i>Simpan
                   </Button>
                 </Col>
               </Form.Group>

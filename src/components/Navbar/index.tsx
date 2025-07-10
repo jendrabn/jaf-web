@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router";
 import SearchBar from "./SearchBar";
-import { useAuthDispatch, useAuthState } from "../../contexts/AuthContext";
+import { useAuthState } from "../../contexts/AuthContext";
 import {
   useFetchProductBrands,
   useFetchProductCategories,
@@ -9,12 +9,9 @@ import { useLogout } from "../../services/api/auth";
 import type { MouseEvent } from "react";
 import { useCartState } from "../../contexts/CartContext";
 import { removeAuthToken } from "../../utils/functions";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function Navbar() {
   const { isAuthenticated, user } = useAuthState();
-  const queryClient = useQueryClient();
-  const dispatch = useAuthDispatch();
 
   const logoutMutation = useLogout();
 
@@ -29,9 +26,7 @@ export default function Navbar() {
       onSettled: () => {
         removeAuthToken();
 
-        queryClient.clear();
-
-        dispatch({ type: "RESET" });
+        window.location.reload();
       },
     });
   };
@@ -43,18 +38,18 @@ export default function Navbar() {
           <div className="d-flex justify-content-between">
             <div className="top__bar-left">
               <NavLink className="me-3" to="/about">
-                About
+                Tentang Kami
               </NavLink>
               <NavLink className="me-3" to="/contact">
-                Contact
+                Kontak
               </NavLink>
               <NavLink className="me-3" to="/help">
-                Help
+                Bantuan
               </NavLink>
-              <NavLink to="faq">FAQs</NavLink>
+              <NavLink to="/faq">FAQs</NavLink>
             </div>
             <div className="top__bar-right">
-              <p>Free Shipping on all orders over IDR 100K</p>
+              <p>Gratis ongkir untuk semua pesanan di atas 100k</p>
             </div>
           </div>
         </div>
@@ -99,7 +94,7 @@ export default function Navbar() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Category
+                  Kategori
                 </a>
                 <ul className="dropdown-menu">
                   {categories?.map((category) => (
@@ -144,7 +139,7 @@ export default function Navbar() {
                   }
                   to="/products"
                 >
-                  Product
+                  Produk
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -187,18 +182,19 @@ export default function Navbar() {
                       </li>
                       <li>
                         <Link className="dropdown-item" to="/account/profile">
-                          <i className="fa-solid fa-user me-2"></i> My Account
+                          <i className="fa-solid fa-user me-2"></i> Akun Saya
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item" to="/account/orders">
-                          <i className="fa-solid fa-box-archive me-2"></i> My
-                          Orders
+                          <i className="fa-solid fa-box-archive me-2"></i>{" "}
+                          Pesanan Saya
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item" to="/account/wishlist">
-                          <i className="fa-solid fa-heart me-2"></i> My Wishlist
+                          <i className="fa-solid fa-heart me-2"></i> Wishlist
+                          Saya
                         </Link>
                       </li>
                       <li>

@@ -1,13 +1,13 @@
 import { useNavigate, useSearchParams } from "react-router";
 import AuthLayout from "../../layouts/AuthLayout";
-import useForm from "../../hooks/useForm";
 import type { ResetPasswordReqTypes } from "../../types/auth";
 import { Button, Form, FormControl } from "react-bootstrap";
 import { useResetPassword } from "../../services/api/auth";
 import { toast } from "react-toastify";
-import type { FormEvent } from "react";
 import ErrorValidationAlert from "../../components/ErrorValidationAlert";
 import PasswordInput from "../../components/PasswordInput";
+import { Helmet } from "react-helmet-async";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 function ResetPasswordPage() {
   const [searchParams] = useSearchParams();
@@ -16,19 +16,19 @@ function ResetPasswordPage() {
 
   const { mutate, isPending, error, reset } = useResetPassword();
 
-  const { values, handleChange } = useForm<ResetPasswordReqTypes>({
-    email: searchParams.get("email") || "",
-    token: searchParams.get("token") || "",
-    password: "",
-    password_confirmation: "",
+  const { register, handleSubmit } = useForm<ResetPasswordReqTypes>({
+    defaultValues: {
+      email: searchParams.get("email") || "",
+      token: searchParams.get("token") || "",
+      password: "",
+      password_confirmation: "",
+    },
   });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    mutate(values, {
+  const onSubmit: SubmitHandler<ResetPasswordReqTypes> = (data) => {
+    mutate(data, {
       onSuccess() {
-        toast.success("Password reset successfully, please login.");
+        toast.success("Reset password berhasil, silahkan login.");
 
         navigate("/auth/login", { replace: true });
       },
@@ -37,37 +37,33 @@ function ResetPasswordPage() {
 
   return (
     <AuthLayout title="Reset Password">
+      <Helmet>
+        <title>Reset Password | {import.meta.env.VITE_APP_NAME}</title>
+      </Helmet>
+
       <ErrorValidationAlert error={error} onClose={reset} />
 
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <fieldset disabled={isPending}>
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>
-            <FormControl
-              type="email"
-              name="email"
-              value={values.email}
-              disabled
-            />
+            <FormControl type="email" {...register("email")} disabled />
           </Form.Group>
 
           <Form.Group>
             <Form.Label>Password</Form.Label>
             <PasswordInput
-              value={values.password}
-              onChange={handleChange}
+              {...register("password")}
               className="mb-3"
               autofocus
             />
           </Form.Group>
 
           <Form.Group>
-            <Form.Label>Confirm Password</Form.Label>
+            <Form.Label>Konfirmasi Password</Form.Label>
             <PasswordInput
-              value={values.password_confirmation}
-              onChange={handleChange}
+              {...register("password_confirmation")}
               className="mb-3"
-              name="password_confirmation"
             />
           </Form.Group>
 

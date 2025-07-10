@@ -26,7 +26,7 @@ function ProductListFilters() {
 
       <Accordion defaultActiveKey="0" flush alwaysOpen>
         <Accordion.Item eventKey="0">
-          <Accordion.Header>Category</Accordion.Header>
+          <Accordion.Header>Kategori</Accordion.Header>
           <Accordion.Body>
             <ul className="list-unstyled mb-0">
               {categories?.map((category) => (
@@ -78,7 +78,7 @@ function ProductListFilters() {
 
       <Accordion defaultActiveKey="2" flush alwaysOpen>
         <Accordion.Item eventKey="2">
-          <Accordion.Header>Price Range</Accordion.Header>
+          <Accordion.Header>Batas Harga</Accordion.Header>
           <Accordion.Body>
             <div className="input-group mb-3">
               <input
@@ -96,7 +96,7 @@ function ProductListFilters() {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Max"
+                placeholder="Maks"
                 value={maxPrice}
                 onChange={(e) =>
                   setMaxPrice(e.target.value.replace(/[^0-9]/g, ""))
@@ -112,7 +112,7 @@ function ProductListFilters() {
                   setFilter("max_price", maxPrice);
                 }}
               >
-                Apply
+                Terapkan
               </button>
             </div>
           </Accordion.Body>
@@ -164,7 +164,7 @@ function ProductListFilters() {
             setMaxPrice("");
           }}
         >
-          Clear all
+          Hapus Semua
         </button>
       </div>
     </div>

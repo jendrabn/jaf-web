@@ -21,7 +21,6 @@ import BlogPage from "./pages/BlogPage.tsx";
 import BlogDetailPage from "./pages/BlogDetailPage.tsx";
 import { AxiosError } from "axios";
 import CheckoutPage from "./pages/CheckoutPage.tsx";
-import OrderSuccessPage from "./pages/OrderSuccessPage.tsx";
 import OrderDetailPage from "./pages/account/OrderDetailPage.tsx";
 import "bootstrap";
 import "./styles/style.scss";
@@ -29,6 +28,10 @@ import { AuthProvider } from "./contexts/AuthContext.tsx";
 import { CartProvider } from "./contexts/CartContext.tsx";
 import { WishlistProvider } from "./contexts/WishlistContext.tsx";
 import { CheckoutProvider } from "./contexts/CheckoutContext.tsx";
+import ContactPage from "./pages/ContactPage.tsx";
+import AboutPage from "./pages/AboutPage.tsx";
+import FaqPage from "./pages/FaqPage.tsx";
+import HelpPage from "./pages/HelpPage.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,14 +81,15 @@ function App() {
                     />
                     <Route path="blogs" element={<BlogPage />} />
                     <Route path="blogs/:slug" element={<BlogDetailPage />} />
+                    <Route path="contact" element={<ContactPage />} />
+                    <Route path="about" element={<AboutPage />} />
+                    <Route path="faq" element={<FaqPage />} />
+                    <Route path="help" element={<HelpPage />} />
 
+                    {/* Protected Routes */}
                     <Route element={<ProtectedRoute />}>
                       <Route path="cart" element={<CartPage />} />
                       <Route path="checkout" element={<CheckoutPage />} />
-                      <Route
-                        path="order-success"
-                        element={<OrderSuccessPage />}
-                      />
                       <Route path="account/profile" element={<ProfilePage />} />
                       <Route path="account/orders" element={<OrderPage />} />
                       <Route

@@ -9,6 +9,47 @@ import Layout from "../layouts/Layout";
 import { Button, Form, Offcanvas } from "react-bootstrap";
 import { useState } from "react";
 import NoData from "../components/NoData";
+import { Helmet } from "react-helmet-async";
+
+// filter options
+const FILTER_OPTIONS: { label: string; value: string }[] = [
+  {
+    label: "Relevansi",
+    value: "",
+  },
+  {
+    label: "Terbaru",
+    value: "newest",
+  },
+  {
+    label: "Terlama",
+    value: "oldest",
+  },
+  {
+    label: "Terlaris",
+    value: "sales",
+  },
+  {
+    label: "Harga: Rendah ke Tinggi",
+    value: "cheapest",
+  },
+  {
+    label: "Harga: Tinggi ke Rendah",
+    value: "expensive",
+  },
+];
+
+// sort options
+const SORT_OPTIONS: { label: string; value: string }[] = [
+  {
+    label: "Terbaru",
+    value: "newest",
+  },
+  {
+    label: "Terlama",
+    value: "oldest",
+  },
+];
 
 function ProductPage() {
   const { params, queryString, setFilter, clearFilters } =
@@ -30,7 +71,12 @@ function ProductPage() {
   };
 
   return (
-    <Layout title="Products">
+    <Layout>
+      <Helmet>
+        <title>Products | {import.meta.env.VITE_APP_NAME}</title>
+        <meta name="description" content="Products" />
+      </Helmet>
+
       <div className="container">
         <div className="row">
           <div className="col-lg-2 d-none d-lg-block">
@@ -40,16 +86,17 @@ function ProductPage() {
             {params.search && (
               <div className="d-flex align-items-center justify-content-start mb-3">
                 <p className="text-gray-700 mb-0">
-                  <i className="fa-solid fa-magnifying-glass me-2"></i>Search
-                  results for "
+                  <i className="fa-solid fa-magnifying-glass me-2"></i>Hasil
+                  pencarian untuk "
                   <span className="fw-bold text-body">{params.search}</span>"
                 </p>
               </div>
             )}
 
             <div className="d-flex justify-content-between align-items-center mb-4">
+              {/* Desktop Only */}
               <div className="d-none d-lg-block">
-                <span className="text-gray-700 mb-0 me-2">Sort by:</span>
+                <span className="text-gray-700 mb-0 me-2">Urutkan:</span>
                 <Form.Select
                   className="w-auto d-inline-block cursor-pointer"
                   onChange={(e) => {
@@ -57,21 +104,21 @@ function ProductPage() {
                     clearFilters("page");
                   }}
                 >
-                  <option value="">Relevance</option>
-                  <option value="newest">Latest</option>
-                  <option value="oldest">Oldest</option>
-                  <option value="sales">Top Sales</option>
-                  <option value="cheapest">Price: low to high</option>
-                  <option value="expensive">Price: high to low</option>
+                  {FILTER_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </Form.Select>
               </div>
+              {/* End Desktop Only */}
 
               <p className="text-gray-700 mb-0">
-                {products?.page?.from || 0} - {products?.page?.to || 0} from{" "}
-                {products?.page?.total || 0} products
+                {products?.page?.from || 0} - {products?.page?.to || 0} dari{" "}
+                {products?.page?.total || 0}
               </p>
 
-              {/* Mobile */}
+              {/* Mobile Only */}
               <div className="d-flex align-items-center gap-2 d-lg-none">
                 <Button
                   size="sm"
@@ -111,23 +158,23 @@ function ProductPage() {
                 >
                   <Offcanvas.Header closeButton>
                     <Offcanvas.Title>
-                      <i className="bi bi-arrow-down-up"></i> Sort
+                      <i className="bi bi-arrow-down-up"></i> Urutkan
                     </Offcanvas.Title>
                   </Offcanvas.Header>
                   <Offcanvas.Body>
                     <Form.Select
                       onChange={(e) => setFilter("sort_by", e.target.value)}
                     >
-                      <option value="">Relevance</option>
-                      <option value={"newest"}>Latest</option>
-                      <option value={"oldest"}>Oldest</option>
-                      <option value={"sales"}>Top Sales</option>
-                      <option value={"cheapest"}>Price: low to high</option>
-                      <option value={"expensive"}>Price: high to low</option>
+                      {SORT_OPTIONS.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
                     </Form.Select>
                   </Offcanvas.Body>
                 </Offcanvas>
               </div>
+              {/* End Only Mobile */}
             </div>
 
             {isLoading && <Loading className="py-5" />}

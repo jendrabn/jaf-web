@@ -29,7 +29,7 @@ function SearchBar({ className }: SearchBarProps) {
         <input
           type="search"
           className="form-control"
-          placeholder="Search for products and brands"
+          placeholder="Cari parfum disini..."
           value={searchTerm}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setSearchTerm(e.target.value)
