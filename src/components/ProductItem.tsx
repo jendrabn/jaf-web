@@ -32,21 +32,28 @@ export default function ProductItem({
         />
       </figure>
 
-      <div className="card-body" style={{ padding: "0.5rem" }}>
-        <div className="card__product-item-name title-truncate fs-6 mb-1">
-          {name}
+      <div
+        className="card-body d-flex flex-column justify-content-between"
+        style={{ padding: "0.5rem" }}
+      >
+        <div>
+          <div className="card__product-item-name title-truncate fs-6 mb-1">
+            {name}
+          </div>
+          <div className="card__product-item-price h5 mb-2 fw-bold">
+            {formatPrice(price)}
+          </div>
         </div>
-        <div className="card__product-item-price h5 mb-2 fw-bold">
-          {formatPrice(price)}
-        </div>
-        <div className="card__product-item-rating-and-sold d-flex justify-content-between align-items-center fs-6 text-gray-700">
+
+        <div className="card__product-item-rating-and-sold d-flex justify-content-between align-items-center text-gray-700 mt-auto">
           {showRating && (
             <div className="card__product-item-rating">
-              {/* <i className="fa fa-star text-warning"></i> 5 */}
+              <i className="fa fa-star text-warning"></i>
+              <span className="ms-1">{product.rating_avg}</span>
             </div>
           )}
           {showSoldCount && (
-            <div className="card__product-item-sold">{sold_count} Sold</div>
+            <div className="card__product-item-sold">{sold_count} Terjual</div>
           )}
         </div>
       </div>

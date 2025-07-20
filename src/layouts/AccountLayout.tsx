@@ -79,23 +79,25 @@ function AccountLayout({ children, title }: AuthLayoutProps) {
         <div className="container">
           <div className="row">
             <div className="col-lg-2 mb-3 ">
-              {/* Mobile */}
+              {/* Mobile Only */}
               <Accordion
                 defaultActiveKey="0"
                 className="mb-3 d-lg-none accordion__menu-account"
               >
                 <Accordion.Item eventKey="0">
-                  <Accordion.Header>Account Menu</Accordion.Header>
+                  <Accordion.Header>Menu Saya</Accordion.Header>
                   <Accordion.Body>
                     <NavAccount />
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
+              {/* End Mobile Only */}
 
-              {/* Desktop */}
+              {/* Desktop Only */}
               <div className="d-none d-lg-block">
                 <NavAccount />
               </div>
+              {/* End Desktop Only */}
             </div>
 
             <div className="col-lg-10">

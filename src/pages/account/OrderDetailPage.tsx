@@ -12,6 +12,7 @@ import ConfirmPaymentModal from "../../components/Order/ConfirmPaymentModal";
 import ConfirmOrderReceivedModal from "../../components/Order/ConfirmOrderReceivedModal";
 import { useLocation } from "react-router";
 import { Helmet } from "react-helmet-async";
+import AddRatingModal from "../../components/Order/AddRatingModal";
 
 function OrderDetailPage() {
   const { id } = useParams();
@@ -23,6 +24,8 @@ function OrderDetailPage() {
   );
   const [showConfirmOrderReceivedModal, setShowConfirmOrderReceivedModal] =
     useState(false);
+
+  const [showRatingModal, setShowRatingModal] = useState(false);
 
   const handleShowConfirmPaymentModal = () => {
     setShowConfirmPaymentModal(true);
@@ -38,6 +41,14 @@ function OrderDetailPage() {
 
   const handleCloseConfirmOrderDeliveredModal = () => {
     setShowConfirmOrderReceivedModal(false);
+  };
+
+  const handleShowRatingModal = () => {
+    setShowRatingModal(true);
+  };
+
+  const handleCloseRatingModal = () => {
+    setShowRatingModal(false);
   };
 
   if (isLoading) return <Loading className="min-vh-100" />;
@@ -307,6 +318,25 @@ function OrderDetailPage() {
               </div>
 
               <div className="order__action d-flex justify-content-start gap-2">
+                {order.status === "completed" && (
+                  <>
+                    <Button
+                      variant="primary"
+                      className="rounded-0"
+                      onClick={handleShowRatingModal}
+                    >
+                      {order.items.every((item) => item.rating)
+                        ? "Edit Penilaian"
+                        : "Beri Penilaian"}
+                    </Button>
+                    <AddRatingModal
+                      show={showRatingModal}
+                      onClose={handleCloseRatingModal}
+                      order={order}
+                    />
+                  </>
+                )}
+
                 {order.status === "on_delivery" && (
                   <Button
                     variant="success"

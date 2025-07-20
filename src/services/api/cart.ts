@@ -8,6 +8,8 @@ import type {
 import { getAuthToken } from "../../utils/functions";
 import { QUERY_KEYS } from "../../utils/constans";
 import apiClient from "../../utils/api";
+import type { NoContentTypes } from "../../types";
+import type { AxiosError } from "axios";
 
 export const useFetchCarts = () =>
   useQuery<CartItemTypes[]>({
@@ -18,8 +20,8 @@ export const useFetchCarts = () =>
   });
 
 export const useCreateCart = () =>
-  useMutation({
-    mutationFn: (data: CartReqTypes) => apiClient().post("/carts", data),
+  useMutation<NoContentTypes, AxiosError, CartReqTypes>({
+    mutationFn: (data) => apiClient().post("/carts", data),
   });
 
 export const useUpdateCart = () =>

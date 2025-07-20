@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 import { type BlogItemTypes } from "../types/blog";
 
 const formatDate = (date: string): string =>
-  new Date(date).toLocaleDateString("en-US", {
+  new Date(date).toLocaleDateString("id-ID", {
     day: "2-digit",
     month: "short",
   });

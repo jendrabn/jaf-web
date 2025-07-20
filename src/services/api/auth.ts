@@ -2,14 +2,13 @@ import { useMutation } from "@tanstack/react-query";
 import type {
   ForgotPasswordReqTypes,
   LoginReqTypes,
+  LoginTypes,
   RegisterReqTypes,
+  RegisterTypes,
   ResetPasswordReqTypes,
 } from "../../types/auth";
 import apiClient from "../../utils/api";
-
-interface LoginTypes {
-  auth_token: string;
-}
+import type { NoContentTypes } from "../../types";
 
 export const useLogin = () =>
   useMutation<LoginTypes, Error, LoginReqTypes>({
@@ -17,9 +16,8 @@ export const useLogin = () =>
   });
 
 export const useRegister = () =>
-  useMutation({
-    mutationFn: (data: RegisterReqTypes) =>
-      apiClient().post("/auth/register", data),
+  useMutation<RegisterTypes, Error, RegisterReqTypes>({
+    mutationFn: (data) => apiClient().post("/auth/register", data),
   });
 
 export const useLogout = () =>
@@ -28,13 +26,11 @@ export const useLogout = () =>
   });
 
 export const useForgotPassword = () =>
-  useMutation({
-    mutationFn: (data: ForgotPasswordReqTypes) =>
-      apiClient().post("/auth/forgot_password", data),
+  useMutation<NoContentTypes, Error, ForgotPasswordReqTypes>({
+    mutationFn: (data) => apiClient().post("/auth/forgot_password", data),
   });
 
 export const useResetPassword = () =>
-  useMutation({
-    mutationFn: (data: ResetPasswordReqTypes) =>
-      apiClient().put("/auth/reset_password", data),
+  useMutation<NoContentTypes, Error, ResetPasswordReqTypes>({
+    mutationFn: (data) => apiClient().put("/auth/reset_password", data),
   });

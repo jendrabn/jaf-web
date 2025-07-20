@@ -137,7 +137,7 @@ footer {
   }
 
   .carousel-item {
-    max-height: 380px;
+    max-height: 450px;
     aspect-ratio: 16/9;
   }
 
@@ -410,4 +410,8 @@ footer {
   p {
     font-size: 14px;
   }
+}
+
+.card__product-item-rating-and-sold {
+  font-size: 14px;
 }

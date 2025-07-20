@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 const formatDate = (date: string) => {
   const d = new Date(date);
   const day = d.getDate();
-  const month = d.toLocaleString("default", { month: "long" });
+  const month = d.toLocaleString("id-ID", { month: "long" });
   const year = d.getFullYear();
   const hours = d.getHours();
   const minutes = d.getMinutes();

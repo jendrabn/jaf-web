@@ -91,7 +91,7 @@ function CartPage() {
               ))}
             </div>
 
-            {/* Dekstop */}
+            {/* Dekstop Only */}
             <div className="d-flex justify-content-between align-items-center mt-3 d-none d-lg-flex">
               <Button
                 variant="outline-danger"
@@ -122,8 +122,9 @@ function CartPage() {
                 </Button>
               </div>
             </div>
+            {/* End Dekstop Only */}
 
-            {/* Mobile */}
+            {/* Mobile Only */}
             <div className="flex-grow-1 mt-1 d-lg-none">
               <div className="d-flex px-2 py-3 shadow-sm border mb-3 align-items-center justify-content-between mb-1">
                 <Form.Check
@@ -133,7 +134,7 @@ function CartPage() {
                     selectedIds.length === carts.length
                   }
                   onChange={handleSelectAll}
-                  label="Select All"
+                  label="Pilih Semua"
                 />
 
                 <Button
@@ -149,7 +150,7 @@ function CartPage() {
               </div>
 
               <div className="d-flex align-items-center justify-content-between mb-1">
-                <p className="fw-bold">Total ({totalItem} item)</p>
+                <p className="fw-bold">Total ({totalItem} produk)</p>
                 <p className="fw-bold fs-6">{formatPrice(totalPrice)}</p>
               </div>
 
@@ -165,6 +166,7 @@ function CartPage() {
                 </Button>
               </div>
             </div>
+            {/* End Mobile Only */}
           </>
         ) : (
           <NoData />

@@ -17,6 +17,7 @@ import {
 import { type OrderReqTypes } from "../types/order";
 import { useCartDispatch } from "../contexts/CartContext";
 import { Helmet } from "react-helmet-async";
+import { QUERY_KEYS } from "../utils/constans";
 
 function CheckoutPage() {
   const queryClient = useQueryClient();
@@ -29,18 +30,30 @@ function CheckoutPage() {
 
   const handleCreateOrder = () => {
     if (!state.address) {
-      toast.error("Please add a delivery address");
+      toast.error("Silakan tambahkan alamat pengiriman terlebih dahulu");
       return;
     }
 
     if (!state.shipping) {
-      toast.error("Please select a shipping method");
+      toast.error("Silakan pilih metode pengiriman terlebih dahulu");
       return;
     }
 
     if (!state.paymentMethod) {
-      toast.error("Please select a payment method");
+      toast.error("Silakan pilih metode pembayaran terlebih dahulu");
       return;
+    }
+
+    if (state.paymentMethod === "bank") {
+      if (!state.bank) {
+        toast.error("Silakan pilih bank terlebih dahulu");
+        return;
+      }
+    } else if (state.paymentMethod === "ewallet") {
+      if (!state.ewallet) {
+        toast.error("Silakan pilih e-wallet terlebih dahulu");
+        return;
+      }
     }
 
     const requestData = {
@@ -63,9 +76,9 @@ function CheckoutPage() {
 
     createMutation.mutate(requestData as OrderReqTypes, {
       onSuccess: (data) => {
-        toast.success("Order created successfully");
+        toast.success("Pesanan berhasil dibuat.");
 
-        queryClient.invalidateQueries({ queryKey: ["carts"] });
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CARTS] });
 
         cartDispatch({ type: "SET_SELECTED_IDS", payload: [] });
 

@@ -37,7 +37,7 @@ function WishlistPage() {
 
       {wishlists && wishlists?.length > 0 ? (
         <>
-          {/* Desktop */}
+          {/* Desktop Only */}
           <div className="d-flex align-items-center px-2 py-3 mb-2 fw-bold border shadow-sm d-none d-lg-flex">
             <div
               className="d-flex align-items-center justify-content-center"
@@ -59,6 +59,7 @@ function WishlistPage() {
               Aksi
             </div>
           </div>
+          {/* End Desktop Only */}
 
           <div className="d-flex flex-column">
             {wishlists?.map((item) => (
@@ -66,7 +67,7 @@ function WishlistPage() {
             ))}
           </div>
 
-          {/* Mobile */}
+          {/* Mobile Only */}
           <div className="d-flex justify-content-between align-items-center p-2 border shadow-sm d-lg-none">
             <Form.Check
               type="checkbox"
@@ -80,11 +81,12 @@ function WishlistPage() {
               disabled={selectedIds.length === 0}
               onClick={handleDeleteSelected}
             >
-              Delete Selected
+              Hapus
             </Button>
           </div>
+          {/* End Mobile Only */}
 
-          {/* Desktop */}
+          {/* Desktop Only */}
           <div className="d-flex justify-content-start mt-3 d-none d-lg-flex">
             <Button
               variant="outline-danger"
@@ -94,6 +96,7 @@ function WishlistPage() {
               Hapus
             </Button>
           </div>
+          {/* End Desktop Only */}
         </>
       ) : (
         <NoData />

@@ -1,7 +1,6 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { useConfirmPayment, useFetchOrder } from "../../services/api/order";
-import { type FormEvent, useCallback, useEffect, useState } from "react";
-import useForm from "../../hooks/useForm";
+import { useCallback, useEffect, useState } from "react";
 import ErrorValidationAlert from "../ErrorValidationAlert";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -16,6 +15,7 @@ import {
 } from "../../utils/constans";
 import type { ConfirmPaymentReqTypes } from "../../types/order";
 import PaymentInfo from "./PaymentInfo";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 interface ConfirmPaymentModalProps {
   show: boolean;
@@ -33,13 +33,17 @@ function ConfirmPaymentModal({
   const { data: order, isLoading } = useFetchOrder(orderId!);
 
   const { mutate, error, reset, isPending } = useConfirmPayment();
-  const { values, handleChange, setValue } = useForm<ConfirmPaymentReqTypes>({
-    name: "",
-    account_name: "",
-    account_number: "",
-    account_username: "",
-    phone: "",
-  });
+
+  const { register, handleSubmit, setValue, getValues } =
+    useForm<ConfirmPaymentReqTypes>({
+      defaultValues: {
+        name: "",
+        account_name: "",
+        account_number: "",
+        account_username: "",
+        phone: "",
+      },
+    });
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -54,31 +58,28 @@ function ConfirmPaymentModal({
     !!location.state?.new_order_created
   );
 
+  const currentName = getValues("name");
   useEffect(() => {
     if (order && order.payment?.method === PAYMENT_METHOD_EWALLET) {
       // Check if the current value is different from the new value
-      if (values.name !== order.payment.info.name) {
+      if (currentName !== order.payment.info.name) {
         setValue("name", order.payment.info.name || "");
       }
     }
-  }, [order, values.name, setValue]);
+  }, [order, currentName, setValue, getValues]);
 
   useEffect(() => {
     clearState();
   }, [clearState, location]);
 
-  const handleConfirm = (e: FormEvent) => {
-    e.preventDefault();
-
+  const onConfirm: SubmitHandler<ConfirmPaymentReqTypes> = (data) => {
     if (!orderId) return;
 
-    console.log(values);
-
     mutate(
-      { orderId, data: values },
+      { orderId, data: data },
       {
         onSuccess() {
-          toast.success("Payment has been confirmed.");
+          toast.success("Pesanan berhasil dikonfirmasi.");
 
           onClose?.();
 
@@ -141,18 +142,13 @@ function ConfirmPaymentModal({
 
             <ErrorValidationAlert error={error} onClose={reset} />
 
-            <Form onSubmit={handleConfirm}>
+            <Form onSubmit={handleSubmit(onConfirm)}>
               <fieldset disabled={isPending}>
                 {order?.payment?.method === PAYMENT_METHOD_BANK && (
                   <>
                     <Form.Group className="mb-3">
                       <Form.Label>Nama Bank</Form.Label>
-                      <Form.Select
-                        name="name"
-                        onChange={handleChange}
-                        value={values.name}
-                        autoFocus
-                      >
+                      <Form.Select {...register("name")} autoFocus>
                         <option>Pilih Bank</option>
                         {bankList.map((bank) => (
                           <option key={bank.id} value={bank.name}>
@@ -163,20 +159,13 @@ function ConfirmPaymentModal({
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label>Nama Pemilik Rekening</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="account_name"
-                        onChange={handleChange}
-                        value={values.account_name}
-                      />
+                      <Form.Control type="text" {...register("account_name")} />
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label>Nomor Rekening</Form.Label>
                       <Form.Control
                         type="text"
-                        name="account_number"
-                        onChange={handleChange}
-                        value={values.account_number}
+                        {...register("account_number")}
                       />
                     </Form.Group>
                   </>
@@ -188,8 +177,7 @@ function ConfirmPaymentModal({
                       <Form.Label>E-Wallet</Form.Label>
                       <Form.Control
                         type="text"
-                        name="name"
-                        onChange={handleChange}
+                        {...register("name")}
                         value={order?.payment?.info?.name}
                         disabled
                       />
@@ -198,29 +186,20 @@ function ConfirmPaymentModal({
                       <Form.Label>Nama Akun</Form.Label>
                       <Form.Control
                         type="text"
-                        name="account_name"
-                        onChange={handleChange}
+                        {...register("account_name")}
                         autoFocus
-                        value={values.account_name}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label>Username Akun</Form.Label>
                       <Form.Control
                         type="text"
-                        name="account_username"
-                        onChange={handleChange}
-                        value={values.account_username}
+                        {...register("account_username")}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label>No. Handphone</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="phone"
-                        onChange={handleChange}
-                        value={values.phone}
-                      />
+                      <Form.Control type="text" {...register("phone")} />
                     </Form.Group>
                   </>
                 )}

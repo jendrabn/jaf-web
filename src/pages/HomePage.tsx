@@ -5,12 +5,20 @@ import type { ProductItemTypes } from "../types/product";
 import Loading from "../components/Loading";
 import Layout from "../layouts/Layout";
 import OurServices from "../components/OurServices";
+import { Helmet } from "react-helmet-async";
 
 function HomePage() {
   const { data: landing, isLoading } = useFetchLanding();
 
   return (
     <Layout>
+      <Helmet>
+        <title>
+          {import.meta.env.VITE_APP_NAME} | Situs Belanja Parfum Online
+          Terlengkap & Terpercaya
+        </title>
+      </Helmet>
+
       {landing?.banners && landing?.banners.length > 0 && (
         <section className="mt-0">
           <div className="container-lg">

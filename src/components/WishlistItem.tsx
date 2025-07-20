@@ -10,6 +10,7 @@ import { useDeleteWishlist } from "../services/api/wishlist";
 import { useCreateCart } from "../services/api/cart";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "../utils/constans";
 
 interface WishlistItemProps {
   item: WishlistTypes;
@@ -48,9 +49,9 @@ function WishlistItem({ item: { id, product } }: WishlistItemProps) {
       { product_id: product.id, quantity: 1 },
       {
         onSuccess: () => {
-          toast.success("Item has been moved to your shopping cart.");
+          toast.success("Berhasil ditambahkan ke keranjang.");
 
-          queryClient.invalidateQueries({ queryKey: ["carts"] });
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CARTS] });
 
           handleDelete();
         },
@@ -60,7 +61,7 @@ function WishlistItem({ item: { id, product } }: WishlistItemProps) {
 
   return (
     <>
-      {/* Mobile */}
+      {/* Mobile Only */}
       <div className="d-flex p-2 mb-2 border shadow-sm d-lg-none">
         <div
           className="d-flex justify-content-center align-items-center me-2"
@@ -102,8 +103,9 @@ function WishlistItem({ item: { id, product } }: WishlistItemProps) {
           </div>
         </div>
       </div>
+      {/* End Mobile Only */}
 
-      {/* Desktop */}
+      {/* Desktop Only */}
       <div className="d-flex flex-row align-items-center p-2 mb-2 border shadow-sm d-none d-lg-flex">
         <div className="text-center" style={{ width: "5%" }}>
           <Form.Check
@@ -147,6 +149,7 @@ function WishlistItem({ item: { id, product } }: WishlistItemProps) {
           </Button>
         </div>
       </div>
+      {/* End Desktop Only */}
     </>
   );
 }

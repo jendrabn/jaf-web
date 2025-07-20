@@ -1,6 +1,6 @@
 import type { UserTypes } from "./user";
 
-export interface LoginTypes extends UserTypes {
+export interface LoginTypes {
   auth_token: string;
 }
 

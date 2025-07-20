@@ -1,3 +1,5 @@
+import type { RatingTypes } from "./order";
+
 export interface ProductCategoryTypes {
   id: number;
   name: string;
@@ -34,6 +36,7 @@ export interface ProductItemTypes {
   weight: number;
   sold_count: number;
   is_wishlist: boolean;
+  rating_avg: number;
 }
 
 export interface ProductDetailTypes {
@@ -50,4 +53,6 @@ export interface ProductDetailTypes {
   weight: number;
   sold_count: number;
   is_wishlist: boolean;
+  rating_avg: number;
+  ratings: RatingTypes[];
 }

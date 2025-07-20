@@ -22,8 +22,6 @@ import BlogDetailPage from "./pages/BlogDetailPage.tsx";
 import { AxiosError } from "axios";
 import CheckoutPage from "./pages/CheckoutPage.tsx";
 import OrderDetailPage from "./pages/account/OrderDetailPage.tsx";
-import "bootstrap";
-import "./styles/style.scss";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 import { CartProvider } from "./contexts/CartContext.tsx";
 import { WishlistProvider } from "./contexts/WishlistContext.tsx";
@@ -32,6 +30,8 @@ import ContactPage from "./pages/ContactPage.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import FaqPage from "./pages/FaqPage.tsx";
 import HelpPage from "./pages/HelpPage.tsx";
+import "bootstrap";
+import "./styles/style.scss";
 
 const queryClient = new QueryClient({
   defaultOptions: {

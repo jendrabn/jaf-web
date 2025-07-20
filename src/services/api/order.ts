@@ -8,7 +8,9 @@ import type {
   ConfirmPaymentReqTypes,
   OrderDetailTypes,
   OrderReqTypes,
+  OrderSuccessTypes,
   OrderTypes,
+  RatingReqTypes,
 } from "../../types/order";
 import { getAuthToken } from "../../utils/functions";
 import type { PageTypes } from "../../types";
@@ -32,20 +34,6 @@ export const useFetchOrders = (queryString?: string) =>
       apiClient().get(`/orders${queryString ? `?${queryString}` : ""}`),
     retry: 3,
   });
-
-interface OrderSuccessTypes {
-  id: number;
-  total_amount: number;
-  payment_method: string;
-  payment_info: {
-    name: string;
-    code: string;
-    account_name: number;
-    account_number: string;
-  };
-  payment_due_date: string;
-  created_at: string;
-}
 
 export const useCreateOrder = () =>
   useMutation<OrderSuccessTypes, Error, OrderReqTypes>({
@@ -75,4 +63,12 @@ export const useConfirmOrderReceived = () =>
   useMutation({
     mutationFn: (orderId: number) =>
       apiClient().put(`/orders/${orderId}/confirm_order_delivered`),
+  });
+
+export const useAddRating = () =>
+  useMutation({
+    mutationFn: (data: RatingReqTypes[]) =>
+      apiClient().post("/orders/ratings", {
+        ratings: data,
+      }),
   });

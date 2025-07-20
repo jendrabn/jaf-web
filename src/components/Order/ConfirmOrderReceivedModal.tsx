@@ -53,7 +53,7 @@ function ConfirmOrderReceivedModal({
             onClick={() => onClose()}
             disabled={isPending}
           >
-            Batal
+            Nanti Saja
           </Button>
           <Button
             variant="primary"

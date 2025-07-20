@@ -11,23 +11,20 @@ import { Button, Form, Offcanvas } from "react-bootstrap";
 import NoData from "../components/NoData";
 import { Helmet } from "react-helmet-async";
 
-const SortSelect = ({
-  onChange,
-  className,
-}: {
-  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-  className?: string;
-}) => (
-  <Form.Select
-    defaultValue=""
-    onChange={onChange}
-    className={`d-inline-block cursor-pointer ${className}`}
-  >
-    <option value="">Default</option>
-    <option value="newest">Newest</option>
-    <option value="oldest">Oldest</option>
-  </Form.Select>
-);
+const SORT_OPTIONS: { label: string; value: string }[] = [
+  {
+    label: "Default",
+    value: "",
+  },
+  {
+    label: "Terbaru",
+    value: "newest",
+  },
+  {
+    label: "Terlama",
+    value: "oldest",
+  },
+];
 
 function BlogPage() {
   const { params, setFilter, queryString, clearFilters } =
@@ -72,17 +69,29 @@ function BlogPage() {
           </div>
           <div className="col-lg-10">
             <div className="d-flex justify-content-between align-items-center mb-3">
+              {/* Desktop Only */}
               <div className="d-none d-lg-block">
                 <span className="text-gray-700 mb-0 me-2">Urutkan:</span>
-                <SortSelect className="w-auto" onChange={handleSortChange} />
+                <Form.Select
+                  defaultValue=""
+                  onChange={handleSortChange}
+                  className="d-inline-block cursor-pointer w-auto"
+                >
+                  {SORT_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Form.Select>
               </div>
+              {/* End Desktop Only */}
 
               <p className="text-gray-700 mb-0">
                 {blogs?.page?.from || 0} - {blogs?.page?.to || 0} dari{" "}
                 {blogs?.page?.total || 0}
               </p>
 
-              {/* Mobile */}
+              {/* Mobile Only */}
               <div className="d-flex gap-2 d-lg-none">
                 <Button
                   size="sm"
@@ -127,10 +136,21 @@ function BlogPage() {
                   </Offcanvas.Header>
 
                   <Offcanvas.Body>
-                    <SortSelect className="w-100" onChange={handleSortChange} />
+                    <Form.Select
+                      defaultValue=""
+                      onChange={handleSortChange}
+                      className="d-inline-block cursor-pointer w-100"
+                    >
+                      {SORT_OPTIONS.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </Form.Select>
                   </Offcanvas.Body>
                 </Offcanvas>
               </div>
+              {/* End Mobile Only */}
             </div>
 
             <div className="d-flex justify-content-center align-items-center mb-3 bg-primary py-2 rounded">

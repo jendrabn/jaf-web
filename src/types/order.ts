@@ -7,6 +7,7 @@ export interface OrderItemTypes {
   price: number;
   weight: number;
   quantity: number;
+  rating: RatingTypes | null;
 }
 
 export interface OrderTypes {
@@ -115,15 +116,6 @@ export interface CheckoutTypes {
   total_amount: number;
 }
 
-export interface OrderSuccessTypes {
-  id: number;
-  total_amount: number;
-  payment_method: string;
-  payment_info: PaymentInfoTypes;
-  payment_due_date: string;
-  created_at: string;
-}
-
 export interface PaymentInfoTypes {
   name?: string;
   code?: string;
@@ -139,4 +131,34 @@ export interface ConfirmPaymentReqTypes {
   account_number?: string;
   account_username?: string;
   phone?: string;
+}
+
+export interface OrderSuccessTypes {
+  id: number;
+  total_amount: number;
+  payment_method: string;
+  payment_info: {
+    name: string;
+    code: string;
+    account_name: number;
+    account_number: string;
+  };
+  payment_due_date: string;
+  created_at: string;
+}
+
+export interface RatingTypes {
+  order_item_id: number;
+  rating: number;
+  comment: string;
+  is_anonymous: boolean;
+  username: string;
+  created_at: string;
+}
+
+export interface RatingReqTypes {
+  order_item_id: number;
+  rating: number;
+  comment: string;
+  is_anonymous: boolean;
 }

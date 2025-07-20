@@ -12,3 +12,7 @@ export interface PageTypes {
   to: number;
   total: number;
 }
+
+export interface NoContentTypes {
+  data: true;
+}

@@ -89,13 +89,15 @@ export default function ProductDetailPage() {
                 <h1 className="h2 mb-2">{product?.name}</h1>
                 <div className="d-flex align-items-center fs-6 mb-3">
                   <div className="px-3 ps-0 border-end border-2">
-                    <span className="me-2 text-underline">0</span>
+                    <span className="me-2 text-underline">
+                      {product?.rating_avg}
+                    </span>
                     <span>
-                      <StarRating rate={4} />
+                      <StarRating rate={product?.rating_avg} />
                     </span>
                   </div>
                   <div className="px-3 border-end border-2">
-                    <span className="me-2">0</span>
+                    <span className="me-2">{product?.ratings.length}</span>
                     <span className="text-gray-600">Penilaian</span>
                   </div>
                   <div className="px-3">
@@ -180,7 +182,65 @@ export default function ProductDetailPage() {
                     eventKey="reviews"
                     title="Ulasan"
                     className="p-3 border text-break"
-                  ></Tab>
+                  >
+                    {product?.ratings && product.ratings.length > 0 ? (
+                      <div className="list-group list-group-flush">
+                        {product.ratings.map((rating, idx) => (
+                          <div
+                            className="list-group-item py-3 px-0 border-0 border-bottom"
+                            key={rating.order_item_id || idx}
+                          >
+                            <div className="d-flex align-items-center mb-2">
+                              <div
+                                className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3"
+                                style={{
+                                  width: 44,
+                                  height: 44,
+                                  fontWeight: 600,
+                                  fontSize: 18,
+                                  textTransform: "uppercase",
+                                }}
+                              >
+                                {rating.is_anonymous
+                                  ? "A"
+                                  : rating.username?.charAt(0) || "U"}
+                              </div>
+                              <div>
+                                <div className="fw-semibold">
+                                  {rating.username}
+                                </div>
+                                <div>
+                                  <StarRating rate={rating.rating} />
+                                </div>
+                                <div className="text-muted small">
+                                  {new Date(rating.created_at)
+                                    .toLocaleString("sv-SE", {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      hour12: false,
+                                      timeZone: "Asia/Jakarta",
+                                    })
+                                    .replace(",", "") // hilangkan koma
+                                    .replace(/\./g, ":") // ganti titik menjadi titik dua pada jam
+                                    .slice(0, 16)}
+                                </div>
+                                <div className="mb-1">
+                                  {rating.comment || "-"}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center text-muted py-4">
+                        Belum ada ulasan untuk produk ini.
+                      </div>
+                    )}
+                  </Tab>
                 </Tabs>
               </div>
             </div>

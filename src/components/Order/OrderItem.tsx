@@ -4,6 +4,8 @@ import { ORDER_STATUS_COLORS, ORDER_STATUSES } from "../../utils/constans";
 import { formatPrice } from "../../utils/functions";
 import { Alert, Button } from "react-bootstrap";
 import ProductImage from "../ProductImage";
+import AddRatingModal from "./AddRatingModal";
+import { useState } from "react";
 
 const formatDate = (date: string) => {
   const d = new Date(date);
@@ -31,10 +33,23 @@ interface OrderItemProps {
 }
 
 function OrderItem({
-  order: { id, status, created_at, payment_due_date, items, total_amount },
+  order,
   onConfirmPayment,
   onConfirmOrderReceived,
 }: OrderItemProps) {
+  const { id, status, created_at, payment_due_date, items, total_amount } =
+    order;
+
+  const [showRatingModal, setShowRatingModal] = useState(false);
+
+  const handleShowRatingModal = () => {
+    setShowRatingModal(true);
+  };
+
+  const handleCloseRatingModal = () => {
+    setShowRatingModal(false);
+  };
+
   return (
     <div className="card mb-2">
       <div className="card-body">
@@ -60,7 +75,7 @@ function OrderItem({
           {status === "pending_payment" && (
             <Alert variant="danger" className="p-2">
               <small>
-                Payment Due Date: {formatPaymentDueDate(payment_due_date)}
+                Batas waktu pembayaran: {formatPaymentDueDate(payment_due_date)}
               </small>
             </Alert>
           )}
@@ -103,6 +118,27 @@ function OrderItem({
           </div>
 
           <div className="d-flex gap-2 jutsify-content-start">
+            <AddRatingModal
+              order={order}
+              show={showRatingModal}
+              onClose={handleCloseRatingModal}
+            />
+
+            {status === "completed" && (
+              <>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="rounded-0"
+                  onClick={handleShowRatingModal}
+                >
+                  {items.every((item) => item.rating)
+                    ? "Edit Penilaian"
+                    : "Beri Penilaian"}
+                </Button>
+              </>
+            )}
+
             {status === "pending_payment" && (
               <Button
                 variant="primary"
@@ -110,7 +146,7 @@ function OrderItem({
                 className="rounded-0"
                 onClick={() => onConfirmPayment(id)}
               >
-                Confirm Payment
+                Konfirmasi Pembayaran
               </Button>
             )}
 
@@ -121,7 +157,7 @@ function OrderItem({
                 className="rounded-0"
                 onClick={() => onConfirmOrderReceived(id)}
               >
-                Order Received
+                Pesanan Selesai
               </Button>
             )}
           </div>
