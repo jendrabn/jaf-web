@@ -1,5 +1,10 @@
-import { type FormEvent, useState } from "react";
-import { useFetchCities, useFetchProvinces } from "../../services/api/region";
+import { type FormEvent, useState, useEffect } from "react";
+import {
+  useFetchCities,
+  useFetchDistricts,
+  useFetchProvinces,
+  useFetchSubDistricts,
+} from "../../services/api/region";
 import { Button, Form, Modal } from "react-bootstrap";
 import type { AddressTypes } from "../../types/checkout";
 import {
@@ -22,14 +27,29 @@ function DeliveryAddressModal({
   const dispatch = useCheckoutDispatch();
 
   const [data, setData] = useState<AddressTypes>({
-    name: address?.name || "",
-    phone: address?.phone || "",
-    province: address?.province || undefined,
-    city: address?.city || undefined,
-    district: address?.district || "",
-    postal_code: address?.postal_code || "",
-    address: address?.address || "",
+    name: "",
+    phone: "",
+    province: undefined,
+    city: undefined,
+    district: undefined,
+    subdistrict: undefined,
+    zip_code: "",
+    address: "",
   });
+
+  useEffect(() => {
+    setData((prev) => ({
+      ...prev,
+      name: address?.name,
+      phone: address?.phone,
+      province: address?.province,
+      city: address?.city,
+      district: address?.district,
+      subdistrict: address?.subdistrict,
+      zip_code: address?.zip_code,
+      address: address?.address,
+    }));
+  }, [address]);
 
   const shippingCostMutation = useFetchShippingCosts();
 
@@ -38,6 +58,20 @@ function DeliveryAddressModal({
   const { data: cities, isLoading: isLoadingCities } = useFetchCities(
     data.province?.id
   );
+  const { data: districts, isLoading: isLoadingDistricts } = useFetchDistricts(
+    data.city?.id
+  );
+  const { data: subDistricts, isLoading: isLoadingSubDistricts } =
+    useFetchSubDistricts(data.district?.id);
+
+  useEffect(() => {
+    if (data.subdistrict) {
+      setData((prev) => ({
+        ...prev,
+        zip_code: data?.subdistrict?.zip_code || "",
+      }));
+    }
+  }, [data.subdistrict]);
 
   const handleClose = () => {
     onClose();
@@ -52,7 +86,7 @@ function DeliveryAddressModal({
       !data.province ||
       !data.city ||
       !data.district ||
-      !data.postal_code ||
+      !data.zip_code ||
       !data.address
     ) {
       toast.error("Please fill in all the fields");
@@ -155,25 +189,63 @@ function DeliveryAddressModal({
               </Form.Select>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="district">
+            <Form.Group className="mb-3" controlId="cities">
               <Form.Label>Kecamatan</Form.Label>
-              <Form.Control
-                type="text"
-                name="district"
-                value={data.district}
-                onChange={(e) => setData({ ...data, district: e.target.value })}
-              />
+              <Form.Select
+                value={data.district?.id || ""}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    district: districts?.find(
+                      (district) => district.id === Number(e.target.value)
+                    ),
+                  })
+                }
+                disabled={isLoadingDistricts || !data.city}
+              >
+                <option>Pilih Kecamatan</option>
+                {districts?.map((district) => (
+                  <option key={`district-${district.id}`} value={district.id}>
+                    {district.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="cities">
+              <Form.Label>Keluarahan/Desa</Form.Label>
+              <Form.Select
+                value={data.subdistrict?.id || ""}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    subdistrict: subDistricts?.find(
+                      (subdistrict) => subdistrict.id === Number(e.target.value)
+                    ),
+                  })
+                }
+                disabled={isLoadingSubDistricts || !data.district}
+              >
+                <option>Pilih Keluarahan/Desa</option>
+                {subDistricts?.map((subdistrict) => (
+                  <option
+                    key={`subdistrict-${subdistrict.id}`}
+                    value={subdistrict.id}
+                  >
+                    {subdistrict.name}
+                  </option>
+                ))}
+              </Form.Select>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="postal_code">
               <Form.Label>Kode Pos</Form.Label>
               <Form.Control
                 type="text"
-                onChange={(e) =>
-                  setData({ ...data, postal_code: e.target.value })
-                }
-                name="postal_code"
-                value={data.postal_code}
+                onChange={(e) => setData({ ...data, zip_code: e.target.value })}
+                name="zip_code"
+                readOnly
+                value={data.zip_code}
               />
             </Form.Group>
 

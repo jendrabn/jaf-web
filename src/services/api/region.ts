@@ -19,3 +19,21 @@ export const useFetchCities = (provinceId?: number | null) =>
     enabled: !!provinceId,
     retry: 3,
   });
+
+export const useFetchDistricts = (cityId?: number | null) =>
+  useQuery<CityTypes[]>({
+    queryKey: [QUERY_KEYS.DISTRICTS, cityId],
+    queryFn: () => apiClient().get(`/region/districts/${cityId}`),
+    staleTime: Infinity,
+    enabled: !!cityId,
+    retry: 3,
+  });
+
+export const useFetchSubDistricts = (districtId?: number | null) =>
+  useQuery<CityTypes[]>({
+    queryKey: [QUERY_KEYS.SUBDISTRICTS, districtId],
+    queryFn: () => apiClient().get(`/region/sub-districts/${districtId}`),
+    staleTime: Infinity,
+    enabled: !!districtId,
+    retry: 3,
+  });

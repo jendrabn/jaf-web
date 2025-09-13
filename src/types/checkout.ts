@@ -1,6 +1,11 @@
 import type { CartItemTypes } from "./cart";
 import type { BankTypes, EwalletTypes } from "./payment-method";
-import type { CityTypes, ProvinceTypes } from "./region";
+import type {
+  CityTypes,
+  DistrictTypes,
+  ProvinceTypes,
+  SubDistrictTypes,
+} from "./region";
 
 export interface CheckoutTypes {
   shipping_address: AddressTypes;
@@ -55,11 +60,12 @@ export interface DeliveryAddressTypes {
 }
 
 export interface AddressTypes {
-  name: string;
-  phone: string;
+  name?: string;
+  phone?: string;
   province?: ProvinceTypes;
   city?: CityTypes;
-  district: string;
-  postal_code: string;
-  address: string;
+  district?: DistrictTypes;
+  subdistrict?: SubDistrictTypes;
+  zip_code?: string;
+  address?: string;
 }

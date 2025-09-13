@@ -23,7 +23,7 @@ function DeliveryAddress({
               <strong>{`${address?.name} (${address?.phone})`}</strong>
               <br />
               {address?.address} <br />
-              {`${address?.district}, ${address?.city?.type} ${address?.city?.name}, ${address?.province?.name}, ${address.postal_code}`}
+              {`${address?.subdistrict?.name}, ${address?.district?.name}, ${address?.city?.name}, ${address?.province?.name}, ${address.zip_code}`}
             </address>
           ) : (
             <NoData className="flex-grow-1 w-auto" />

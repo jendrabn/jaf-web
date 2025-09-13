@@ -61,9 +61,11 @@ function CheckoutPage() {
       shipping_address: {
         name: state.address?.name,
         phone: state.address?.phone,
+        province_id: state.address?.province?.id,
         city_id: state.address?.city?.id,
-        district: state.address?.district,
-        postal_code: state.address?.postal_code,
+        district_id: state.address?.district?.id,
+        subdistrict_id: state.address?.subdistrict?.id,
+        zip_code: state.address?.zip_code,
         address: state.address?.address,
       },
       shipping_courier: state.shipping?.courier,

@@ -45,4 +45,6 @@ export const QUERY_KEYS = {
   ORDER: "order",
   PROVINCES: "provinces",
   CITIES: "cities",
+  DISTRICTS: "districts",
+  SUBDISTRICTS: "subdistricts",
 };
