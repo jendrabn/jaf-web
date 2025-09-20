@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router";
 import Layout from "../layouts/Layout";
 import { useCreateOrder } from "../services/api/order";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import type { ChangeEvent } from "react";
 import { Button, Form, Table } from "react-bootstrap";
-import { formatPrice } from "../utils/functions";
+import { formatPrice, toNumber } from "../utils/functions";
 import { toast } from "react-toastify";
 import DeliveryAddressModal from "../components/Checkout/DeliveryAddressModal";
 import DeliveryAddress from "../components/Checkout/DeliveryAddress";
 import ProductOrderedList from "../components/Checkout/ProductOrderedList";
 import PaymentMethod from "../components/Checkout/PaymentMethod";
+import ApplyCouponForm from "../components/Checkout/ApplyCouponForm";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   useCheckoutDispatch,
@@ -19,6 +21,7 @@ import { useCartDispatch } from "../contexts/CartContext";
 import { Helmet } from "react-helmet-async";
 import { QUERY_KEYS } from "../utils/constans";
 
+
 function CheckoutPage() {
   const queryClient = useQueryClient();
   const createMutation = useCreateOrder();
@@ -28,62 +31,133 @@ function CheckoutPage() {
   const cartDispatch = useCartDispatch();
   const [showAddressModal, setShowAddressModal] = useState(false);
 
-  const handleCreateOrder = () => {
-    if (!state.address) {
-      toast.error("Silakan tambahkan alamat pengiriman terlebih dahulu");
-      return;
-    }
+  const {
+    checkout,
+    address,
+    shipping,
+    paymentMethod,
+    bank,
+    ewallet,
+    note,
+    coupon,
+  } = state;
 
-    if (!state.shipping) {
-      toast.error("Silakan pilih metode pengiriman terlebih dahulu");
-      return;
-    }
+  const {
+    subtotal,
+    shippingCost,
+    discountAmount,
+    couponLabel,
+    grandTotal,
+    totalQuantity,
+    totalWeightKg,
+  } = useMemo(() => {
+    const checkoutSubtotal = checkout?.total_price ?? 0;
+    const checkoutShipping = shipping?.cost ?? 0;
+    const totalQuantityValue = checkout?.total_quantity ?? 0;
+    const totalWeightValue = checkout?.total_weight ?? 0;
+    const rawDiscount =
+      coupon?.computed_discount_amount ?? toNumber(coupon?.discount_amount);
+    const sanitizedDiscount = Math.min(
+      Math.max(rawDiscount, 0),
+      checkoutSubtotal
+    );
+    const label = coupon?.code || coupon?.name || "Kupon";
+    const weightKg = Math.round(totalWeightValue / 1000);
 
-    if (!state.paymentMethod) {
-      toast.error("Silakan pilih metode pembayaran terlebih dahulu");
-      return;
-    }
-
-    if (state.paymentMethod === "bank") {
-      if (!state.bank) {
-        toast.error("Silakan pilih bank terlebih dahulu");
-        return;
-      }
-    } else if (state.paymentMethod === "ewallet") {
-      if (!state.ewallet) {
-        toast.error("Silakan pilih e-wallet terlebih dahulu");
-        return;
-      }
-    }
-
-    const requestData = {
-      cart_ids: state.checkout?.carts.map((cart) => cart.id),
-      shipping_address: {
-        name: state.address?.name,
-        phone: state.address?.phone,
-        province_id: state.address?.province?.id,
-        city_id: state.address?.city?.id,
-        district_id: state.address?.district?.id,
-        subdistrict_id: state.address?.subdistrict?.id,
-        zip_code: state.address?.zip_code,
-        address: state.address?.address,
-      },
-      shipping_courier: state.shipping?.courier,
-      shipping_service: state.shipping?.service,
-      payment_method: state.paymentMethod,
-      bank_id: state.bank?.id,
-      ewallet_id: state.ewallet?.id,
-      notes: state.note,
+    return {
+      subtotal: checkoutSubtotal,
+      shippingCost: checkoutShipping,
+      discountAmount: sanitizedDiscount,
+      couponLabel: label,
+      grandTotal: Math.max(checkoutSubtotal - sanitizedDiscount, 0) + checkoutShipping,
+      totalQuantity: totalQuantityValue,
+      totalWeightKg: weightKg,
     };
+  }, [checkout, shipping, coupon]);
 
-    createMutation.mutate(requestData as OrderReqTypes, {
+  const hasDiscount = discountAmount > 0;
+  const isSubmitting = createMutation.isPending;
+
+  const handleShowAddressModal = useCallback(() => {
+    setShowAddressModal(true);
+  }, []);
+
+  const handleHideAddressModal = useCallback(() => {
+    setShowAddressModal(false);
+  }, []);
+
+  const handleNoteChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      dispatch({ type: "SET_NOTE", payload: event.target.value });
+    },
+    [dispatch]
+  );
+
+  const validateOrder = useCallback(() => {
+    if (!address) {
+      toast.error("Silakan tambahkan alamat pengiriman terlebih dahulu");
+      return false;
+    }
+
+    if (!shipping) {
+      toast.error("Silakan pilih metode pengiriman terlebih dahulu");
+      return false;
+    }
+
+    if (!paymentMethod) {
+      toast.error("Silakan pilih metode pembayaran terlebih dahulu");
+      return false;
+    }
+
+    if (paymentMethod === "bank" && !bank) {
+      toast.error("Silakan pilih bank terlebih dahulu");
+      return false;
+    }
+
+    if (paymentMethod === "ewallet" && !ewallet) {
+      toast.error("Silakan pilih e-wallet terlebih dahulu");
+      return false;
+    }
+
+    return true;
+  }, [address, shipping, paymentMethod, bank, ewallet]);
+
+  const buildOrderPayload = useCallback((): OrderReqTypes => {
+    return {
+      cart_ids: checkout?.carts?.map((cart) => cart.id),
+      shipping_address: {
+        name: address?.name,
+        phone: address?.phone,
+        province_id: address?.province?.id,
+        city_id: address?.city?.id,
+        district_id: address?.district?.id,
+        subdistrict_id: address?.subdistrict?.id,
+        zip_code: address?.zip_code,
+        address: address?.address,
+      },
+      shipping_courier: shipping?.courier,
+      shipping_service: shipping?.service,
+      payment_method: paymentMethod,
+      bank_id: bank?.id,
+      ewallet_id: ewallet?.id,
+      notes: note,
+      ...(coupon?.code ? { coupon_code: coupon.code } : {}),
+    };
+  }, [checkout, address, shipping, paymentMethod, bank, ewallet, note, coupon]);
+
+  const handleCreateOrder = useCallback(() => {
+    if (!validateOrder()) {
+      return;
+    }
+
+    const payload = buildOrderPayload();
+
+    createMutation.mutate(payload, {
       onSuccess: (data) => {
         toast.success("Pesanan berhasil dibuat.");
 
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CARTS] });
-
         cartDispatch({ type: "SET_SELECTED_IDS", payload: [] });
-
         dispatch({ type: "RESET" });
 
         navigate(`/account/orders/${data.id}`, {
@@ -94,11 +168,15 @@ function CheckoutPage() {
         });
       },
     });
-  };
-
-  const handleShowAddressModal = () => {
-    setShowAddressModal(true);
-  };
+  }, [
+    validateOrder,
+    buildOrderPayload,
+    createMutation,
+    queryClient,
+    cartDispatch,
+    dispatch,
+    navigate,
+  ]);
 
   return (
     <Layout>
@@ -108,7 +186,7 @@ function CheckoutPage() {
 
       <DeliveryAddressModal
         show={showAddressModal}
-        onClose={() => setShowAddressModal(false)}
+        onClose={handleHideAddressModal}
       />
 
       <div className="container">
@@ -122,54 +200,56 @@ function CheckoutPage() {
             <ProductOrderedList className="mb-3" />
 
             <PaymentMethod />
+
+            <div className="mt-3">
+              <ApplyCouponForm />
+            </div>
           </div>
           <div className="col-lg-4">
             <div className="card mb-3">
               <div className="card-body">
                 <h5 className="card-title mb-3">Ringkasan Pesanan</h5>
+
                 <Table responsive>
                   <tbody>
                     <tr>
                       <td className="text-gray-700">
-                        Total Harga ({state.checkout?.total_quantity})
+                        Total Harga ({totalQuantity})
                       </td>
-                      <td className="text-end">
-                        {formatPrice(state.checkout?.total_price || 0)}
-                      </td>
+                      <td className="text-end">{formatPrice(subtotal)}</td>
                     </tr>
                     <tr>
                       <td className="text-gray-700">
-                        Biaya Pengiriman (
-                        {Math.round((state.checkout?.total_weight || 0) / 1000)}
-                        kg)
+                        Biaya Pengiriman ({totalWeightKg} kg)
                       </td>
-                      <td className="text-end">
-                        {formatPrice(state.shipping?.cost || 0)}
-                      </td>
+                      <td className="text-end">{formatPrice(shippingCost)}</td>
                     </tr>
+                    {hasDiscount && (
+                      <tr>
+                        <td className="text-gray-700 text-success">
+                          Diskon ({couponLabel})
+                        </td>
+                        <td className="text-end text-success">
+                          -{formatPrice(discountAmount)}
+                        </td>
+                      </tr>
+                    )}
                     <tr>
                       <td className="text-gray-700">Pajak</td>
                       <td className="text-end">{formatPrice(0)}</td>
                     </tr>
                     <tr>
                       <td className="text-gray-700">Jumlah Total</td>
-                      <td className="text-end">
-                        {formatPrice(
-                          (state.checkout?.total_price || 0) +
-                            (state.shipping?.cost || 0)
-                        )}
-                      </td>
+                      <td className="text-end">{formatPrice(grandTotal)}</td>
                     </tr>
                   </tbody>
                 </Table>
 
                 <Form.Group>
                   <Form.Control
-                    value={state.note}
+                    value={note}
                     placeholder="Catatan untuk penjual"
-                    onChange={(e) => {
-                      dispatch({ type: "SET_NOTE", payload: e.target.value });
-                    }}
+                    onChange={handleNoteChange}
                   />
                 </Form.Group>
               </div>
@@ -179,9 +259,9 @@ function CheckoutPage() {
               <Button
                 variant="primary"
                 onClick={handleCreateOrder}
-                disabled={createMutation.isPending}
+                disabled={isSubmitting}
               >
-                {createMutation.isPending ? "Loading..." : "Buat Pesanan"}
+                {isSubmitting ? "Loading..." : "Buat Pesanan"}
               </Button>
             </div>
           </div>
@@ -190,5 +270,6 @@ function CheckoutPage() {
     </Layout>
   );
 }
-
 export default CheckoutPage;
+
+

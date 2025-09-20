@@ -24,17 +24,20 @@ export interface OrderReqTypes {
   shipping_address: {
     name?: string;
     phone?: string;
+    province_id?: number;
     city_id?: number;
-    district?: string;
-    postal_code?: string;
+    district_id?: number;
+    subdistrict_id?: number;
+    zip_code?: string;
     address?: string;
   };
-  shipping_courier?: "jne" | "pos" | "tiki";
+  shipping_courier?: string;
   shipping_service?: string;
-  payment_method?: "bank" | "ewallet";
+  payment_method?: string;
   bank_id?: number;
   ewallet_id?: number;
   notes?: string;
+  coupon_code?: string;
 }
 
 export interface OrderParamsTypes {

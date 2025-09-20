@@ -4,6 +4,7 @@ import type {
   AddressTypes,
   CheckoutTypes,
   ShippingCostTypes,
+  CouponTypes,
 } from "../types/checkout";
 import type { BankTypes, EwalletTypes } from "../types/payment-method";
 import { useLocation } from "react-router";
@@ -14,6 +15,7 @@ type CheckoutAction =
   | { type: "SET_ADDRESS"; payload: AddressTypes | null }
   | { type: "SET_SHIPPING"; payload: ShippingCostTypes | null }
   | { type: "SET_SHIPPING_COSTS"; payload: ShippingCostTypes[] | [] }
+  | { type: "SET_COUPON"; payload: CouponTypes | null }
   | { type: "SET_PAYMENT_METHOD"; payload: string }
   | { type: "SET_BANK"; payload: BankTypes | null }
   | { type: "SET_EWALLET"; payload: EwalletTypes | null }
@@ -32,6 +34,7 @@ interface CheckoutState {
   ewallet: EwalletTypes | null;
   note: string;
   isLoadingShippingCosts: boolean;
+  coupon: CouponTypes | null;
 }
 
 // Initial state
@@ -45,6 +48,7 @@ const initialState: CheckoutState = {
   ewallet: null,
   note: "",
   isLoadingShippingCosts: false,
+  coupon: null,
 };
 
 // Reducer
@@ -59,6 +63,7 @@ const cartReducer = (
         checkout: action.payload,
         address: action.payload?.shipping_address || null,
         shippingCosts: action.payload?.shipping_methods || [],
+        coupon: action.payload?.coupon || null,
       };
     case "SET_ADDRESS":
       return { ...state, address: action.payload };
@@ -74,6 +79,8 @@ const cartReducer = (
       return { ...state, ewallet: action.payload };
     case "SET_NOTE":
       return { ...state, note: action.payload };
+    case "SET_COUPON":
+      return { ...state, coupon: action.payload };
     case "RESET":
       return initialState;
     case "SET_LOADING_SHIPPING_COSTS":

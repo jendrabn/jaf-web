@@ -49,3 +49,25 @@ export const setSelectedCartIds = (selectedIds: number[]) =>
 // get selected cart ids from local storage
 export const getSelectedCartIds = () =>
   JSON.parse(localStorage.getItem(KEY_SELECTED_CART_IDS) || "[]");
+
+export const toNumber = (value: unknown, fallback = 0): number => {
+  if (value === null || value === undefined) {
+    return fallback;
+  }
+
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : fallback;
+  }
+
+  if (typeof value === "string") {
+    const sanitized = value.replace(/[^\d.-]/g, "");
+    if (!sanitized) {
+      return fallback;
+    }
+
+    const parsed = Number(sanitized);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  return fallback;
+};

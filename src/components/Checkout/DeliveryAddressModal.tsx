@@ -1,4 +1,4 @@
-import { type FormEvent, useState, useEffect } from "react";
+import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import {
   useFetchCities,
   useFetchDistricts,
@@ -6,6 +6,7 @@ import {
   useFetchSubDistricts,
 } from "../../services/api/region";
 import { Button, Form, Modal } from "react-bootstrap";
+import Select, { type SingleValue } from "react-select";
 import type { AddressTypes } from "../../types/checkout";
 import {
   useCheckoutDispatch,
@@ -19,6 +20,17 @@ interface DeliveryAddressModalProps {
   show?: boolean;
 }
 
+const EMPTY_ADDRESS: AddressTypes = {
+  name: "",
+  phone: "",
+  province: undefined,
+  city: undefined,
+  district: undefined,
+  subdistrict: undefined,
+  zip_code: "",
+  address: "",
+};
+
 function DeliveryAddressModal({
   show = false,
   onClose,
@@ -26,35 +38,28 @@ function DeliveryAddressModal({
   const { address, checkout } = useCheckoutState();
   const dispatch = useCheckoutDispatch();
 
-  const [data, setData] = useState<AddressTypes>({
-    name: "",
-    phone: "",
-    province: undefined,
-    city: undefined,
-    district: undefined,
-    subdistrict: undefined,
-    zip_code: "",
-    address: "",
-  });
+  const [data, setData] = useState<AddressTypes>({ ...EMPTY_ADDRESS });
 
   useEffect(() => {
-    setData((prev) => ({
-      ...prev,
-      name: address?.name,
-      phone: address?.phone,
-      province: address?.province,
-      city: address?.city,
-      district: address?.district,
-      subdistrict: address?.subdistrict,
-      zip_code: address?.zip_code,
-      address: address?.address,
-    }));
-  }, [address]);
+    if (address) {
+      setData({
+        name: address.name ?? "",
+        phone: address.phone ?? "",
+        province: address.province,
+        city: address.city,
+        district: address.district,
+        subdistrict: address.subdistrict,
+        zip_code: address.zip_code ?? "",
+        address: address.address ?? "",
+      });
+    } else {
+      setData({ ...EMPTY_ADDRESS });
+    }
+  }, [address, show]);
 
   const shippingCostMutation = useFetchShippingCosts();
 
-  const { data: provinces, isLoading: isLoadingProvinces } =
-    useFetchProvinces();
+  const { data: provinces, isLoading: isLoadingProvinces } = useFetchProvinces();
   const { data: cities, isLoading: isLoadingCities } = useFetchCities(
     data.province?.id
   );
@@ -64,14 +69,127 @@ function DeliveryAddressModal({
   const { data: subDistricts, isLoading: isLoadingSubDistricts } =
     useFetchSubDistricts(data.district?.id);
 
-  useEffect(() => {
-    if (data.subdistrict) {
+  type Option = { value: number; label: string };
+
+  const provinceOptions = useMemo<Option[]>(
+    () => (provinces ?? []).map((province) => ({
+      value: province.id,
+      label: province.name,
+    })),
+    [provinces]
+  );
+
+  const cityOptions = useMemo<Option[]>(
+    () => (cities ?? []).map((city) => ({
+      value: city.id,
+      label: city.name,
+    })),
+    [cities]
+  );
+
+  const districtOptions = useMemo<Option[]>(
+    () => (districts ?? []).map((district) => ({
+      value: district.id,
+      label: district.name,
+    })),
+    [districts]
+  );
+
+  const subDistrictOptions = useMemo<Option[]>(
+    () => (subDistricts ?? []).map((subdistrict) => ({
+      value: subdistrict.id,
+      label: subdistrict.name,
+    })),
+    [subDistricts]
+  );
+
+  const selectedProvinceOption = useMemo<Option | null>(
+    () =>
+      provinceOptions.find((option) => option.value === data.province?.id) ?? null,
+    [provinceOptions, data.province?.id]
+  );
+
+  const selectedCityOption = useMemo<Option | null>(
+    () => cityOptions.find((option) => option.value === data.city?.id) ?? null,
+    [cityOptions, data.city?.id]
+  );
+
+  const selectedDistrictOption = useMemo<Option | null>(
+    () =>
+      districtOptions.find((option) => option.value === data.district?.id) ?? null,
+    [districtOptions, data.district?.id]
+  );
+
+  const selectedSubDistrictOption = useMemo<Option | null>(
+    () =>
+      subDistrictOptions.find((option) => option.value === data.subdistrict?.id) ??
+      null,
+    [subDistrictOptions, data.subdistrict?.id]
+  );
+
+  const handleProvinceChange = useCallback(
+    (option: SingleValue<Option>) => {
+      const selectedProvince = provinces?.find(
+        (province) => province.id === option?.value
+      );
+
       setData((prev) => ({
         ...prev,
-        zip_code: data?.subdistrict?.zip_code || "",
+        province: selectedProvince,
+        city: undefined,
+        district: undefined,
+        subdistrict: undefined,
+        zip_code: "",
       }));
-    }
-  }, [data.subdistrict]);
+    },
+    [provinces]
+  );
+
+  const handleCityChange = useCallback(
+    (option: SingleValue<Option>) => {
+      const selectedCity = cities?.find((city) => city.id === option?.value);
+
+      setData((prev) => ({
+        ...prev,
+        city: selectedCity,
+        district: undefined,
+        subdistrict: undefined,
+        zip_code: "",
+      }));
+    },
+    [cities]
+  );
+
+  const handleDistrictChange = useCallback(
+    (option: SingleValue<Option>) => {
+      const selectedDistrict = districts?.find(
+        (district) => district.id === option?.value
+      );
+
+      setData((prev) => ({
+        ...prev,
+        district: selectedDistrict,
+        subdistrict: undefined,
+        zip_code: "",
+      }));
+    },
+    [districts]
+  );
+
+  const handleSubDistrictChange = useCallback(
+    (option: SingleValue<Option>) => {
+      const selectedSubDistrict = subDistricts?.find(
+        (subdistrict) => subdistrict.id === option?.value
+      );
+
+      setData((prev) => ({
+        ...prev,
+        subdistrict: selectedSubDistrict,
+        zip_code: selectedSubDistrict?.zip_code ?? "",
+      }));
+    },
+    [subDistricts]
+  );
 
   const handleClose = () => {
     onClose();
@@ -143,99 +261,68 @@ function DeliveryAddressModal({
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="provinces">
+            <Form.Group className="mb-3" controlId="province">
               <Form.Label>Provinsi</Form.Label>
-              <Form.Select
-                disabled={isLoadingProvinces}
-                value={data.province?.id || ""}
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    province: provinces?.find(
-                      (province) => province.id === Number(e.target.value)
-                    ),
-                  })
-                }
-              >
-                <option>Pilih Provinsi</option>
-                {provinces?.map((province) => (
-                  <option key={`province-${province.id}`} value={province.id}>
-                    {province.name}
-                  </option>
-                ))}
-              </Form.Select>
+              <Select
+                inputId="province-select"
+                classNamePrefix="react-select"
+                options={provinceOptions}
+                value={selectedProvinceOption}
+                onChange={handleProvinceChange}
+                isLoading={isLoadingProvinces}
+                isDisabled={isLoadingProvinces}
+                isClearable
+                placeholder="Pilih Provinsi"
+                noOptionsMessage={() => "Provinsi tidak ditemukan"}
+              />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="cities">
+            <Form.Group className="mb-3" controlId="city">
               <Form.Label>Kabupaten/Kota</Form.Label>
-              <Form.Select
-                value={data.city?.id || ""}
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    city: cities?.find(
-                      (city) => city.id === Number(e.target.value)
-                    ),
-                  })
-                }
-                disabled={isLoadingCities || !data.province}
-              >
-                <option>Pilih Kabupaten/Kota</option>
-                {cities?.map((city) => (
-                  <option key={`city-${city.id}`} value={city.id}>
-                    {city.name}
-                  </option>
-                ))}
-              </Form.Select>
+              <Select
+                inputId="city-select"
+                classNamePrefix="react-select"
+                options={cityOptions}
+                value={selectedCityOption}
+                onChange={handleCityChange}
+                isLoading={isLoadingCities}
+                isDisabled={isLoadingCities || !data.province}
+                isClearable
+                placeholder="Pilih Kabupaten/Kota"
+                noOptionsMessage={() => "Kabupaten/Kota tidak ditemukan"}
+              />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="cities">
+            <Form.Group className="mb-3" controlId="district">
               <Form.Label>Kecamatan</Form.Label>
-              <Form.Select
-                value={data.district?.id || ""}
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    district: districts?.find(
-                      (district) => district.id === Number(e.target.value)
-                    ),
-                  })
-                }
-                disabled={isLoadingDistricts || !data.city}
-              >
-                <option>Pilih Kecamatan</option>
-                {districts?.map((district) => (
-                  <option key={`district-${district.id}`} value={district.id}>
-                    {district.name}
-                  </option>
-                ))}
-              </Form.Select>
+              <Select
+                inputId="district-select"
+                classNamePrefix="react-select"
+                options={districtOptions}
+                value={selectedDistrictOption}
+                onChange={handleDistrictChange}
+                isLoading={isLoadingDistricts}
+                isDisabled={isLoadingDistricts || !data.city}
+                isClearable
+                placeholder="Pilih Kecamatan"
+                noOptionsMessage={() => "Kecamatan tidak ditemukan"}
+              />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="cities">
+            <Form.Group className="mb-3" controlId="subdistrict">
               <Form.Label>Keluarahan/Desa</Form.Label>
-              <Form.Select
-                value={data.subdistrict?.id || ""}
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    subdistrict: subDistricts?.find(
-                      (subdistrict) => subdistrict.id === Number(e.target.value)
-                    ),
-                  })
-                }
-                disabled={isLoadingSubDistricts || !data.district}
-              >
-                <option>Pilih Keluarahan/Desa</option>
-                {subDistricts?.map((subdistrict) => (
-                  <option
-                    key={`subdistrict-${subdistrict.id}`}
-                    value={subdistrict.id}
-                  >
-                    {subdistrict.name}
-                  </option>
-                ))}
-              </Form.Select>
+              <Select
+                inputId="subdistrict-select"
+                classNamePrefix="react-select"
+                options={subDistrictOptions}
+                value={selectedSubDistrictOption}
+                onChange={handleSubDistrictChange}
+                isLoading={isLoadingSubDistricts}
+                isDisabled={isLoadingSubDistricts || !data.district}
+                isClearable
+                placeholder="Pilih Kelurahan/Desa"
+                noOptionsMessage={() => "Kelurahan/Desa tidak ditemukan"}
+              />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="postal_code">

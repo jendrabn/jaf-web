@@ -3,6 +3,8 @@ import type {
   CheckoutReqTypes,
   ShippingCostReqTypes,
   ShippingCostTypes,
+  ApplyCouponReqTypes,
+  ApplyCouponResTypes,
 } from "../../types/checkout";
 import type {
   ConfirmPaymentReqTypes,
@@ -25,6 +27,11 @@ export const useCheckoutState = () =>
 export const useFetchShippingCosts = () =>
   useMutation<ShippingCostTypes[], Error, ShippingCostReqTypes>({
     mutationFn: (data) => apiClient().post("/shipping_costs", data),
+  });
+
+export const useApplyCoupon = () =>
+  useMutation<ApplyCouponResTypes, Error, ApplyCouponReqTypes>({
+    mutationFn: (data) => apiClient().post("/apply_coupon", data),
   });
 
 export const useFetchOrders = (queryString?: string) =>
