@@ -82,32 +82,105 @@ function OrderItem({
 
           {/* Order Items image, quantity, and price */}
           <ul className="list-unstyled mt-2">
-            {items.map((item, index) => (
-              <li
-                key={`order-item-${item.id}`}
-                className={`d-flex justify-content-between align-items-center mb-2 ${
-                  index !== items.length - 1 ? "pb-2" : ""
-                }`}
-              >
-                <div className="d-flex align-items-center">
-                  <ProductImage
-                    url={item.product.image}
-                    width={50}
-                    alt={item.name}
-                    className="me-2"
-                  />
-                  <div>
-                    <p className="mb-0">{item.name}</p>
-                    <small className="text-muted">x {item.quantity}</small>
+            {items.map((item, index) => {
+              const {
+                product,
+                price,
+                price_after_discount,
+                discount_in_percent,
+                quantity,
+              } = item;
+
+              const originalPrice = price ?? 0;
+              const discountedPrice = price_after_discount ?? originalPrice;
+
+              const discountPercent =
+                typeof discount_in_percent === "number"
+                  ? Math.max(Math.round(discount_in_percent), 0)
+                  : originalPrice > 0 && discountedPrice < originalPrice
+                  ? Math.max(
+                      Math.round(
+                        ((originalPrice - discountedPrice) / originalPrice) * 100
+                      ),
+                      0
+                    )
+                  : null;
+
+              const isDiscounted =
+                discountPercent != null && discountPercent > 0 &&
+                discountedPrice < originalPrice;
+
+              const unitPrice = isDiscounted ? discountedPrice : originalPrice;
+              const subtotal = unitPrice * quantity;
+              const originalSubtotal = originalPrice * quantity;
+
+              const discountLabel =
+                discountPercent && discountPercent > 0
+                  ? `-${discountPercent}%`
+                  : null;
+
+              return (
+                <li
+                  key={`order-item-${item.id}`}
+                  className={`d-flex justify-content-between align-items-center mb-2 ${
+                    index !== items.length - 1 ? "pb-2" : ""
+                  }`}
+                >
+                  <div className="d-flex align-items-center">
+                    <ProductImage
+                      url={product.image}
+                      width={50}
+                      alt={item.name}
+                      className="me-2"
+                    />
+                    <div>
+                      <p className="mb-0">{item.name}</p>
+                      <small className="text-muted">
+                        {quantity} x{" "}
+                        {isDiscounted ? (
+                          <>
+                            <span className="text-danger">
+                              {formatPrice(unitPrice)}
+                            </span>
+                            (
+                            <span className="text-decoration-line-through text-muted">
+                              {formatPrice(originalPrice)}
+                            </span>
+                            {discountLabel && (
+                              <span className="ms-1">{discountLabel}</span>
+                            )}
+                            )
+                          </>
+                        ) : (
+                          formatPrice(unitPrice)
+                        )}
+                      </small>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <span style={{ fontSize: "0.9rem" }}>
-                    {formatPrice(item.price * item.quantity)}
-                  </span>
-                </div>
-              </li>
-            ))}
+                  <div>
+                    {isDiscounted ? (
+                      <div className="d-flex flex-column align-items-end" style={{ fontSize: "0.9rem" }}>
+                        <span>{formatPrice(subtotal)}</span>
+                        <small className="text-gray-600">
+                          (
+                          <span className="text-decoration-line-through text-muted">
+                            {formatPrice(originalSubtotal)}
+                          </span>
+                          {discountLabel && (
+                            <span className="ms-1">{discountLabel}</span>
+                          )}
+                          )
+                        </small>
+                      </div>
+                    ) : (
+                      <span style={{ fontSize: "0.9rem" }}>
+                        {formatPrice(subtotal)}
+                      </span>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </Link>
 

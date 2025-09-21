@@ -66,6 +66,29 @@ export default function ProductDetailPage() {
     );
   };
 
+  const isDiscounted = !!(
+    product?.is_discounted && product?.price_after_discount != null
+  );
+
+  const originalPrice = product?.price ?? 0;
+
+  const discountedPrice = product?.price_after_discount ?? originalPrice;
+
+  const discountPercent =
+    typeof product?.discount_in_percent === "number"
+      ? Math.max(Math.round(product.discount_in_percent), 0)
+      : originalPrice > 0 && discountedPrice < originalPrice
+      ? Math.max(
+          Math.round(((originalPrice - discountedPrice) / originalPrice) * 100),
+          0
+        )
+      : null;
+
+  const discountLabel =
+    discountPercent && discountPercent > 0 ? `-${discountPercent}%` : null;
+
+  const hasDiscountLabel = !!discountLabel;
+
   if (!isLoading && !product) return <NotFoundPage />;
 
   return (
@@ -109,7 +132,23 @@ export default function ProductDetailPage() {
                   <div className="row py-2">
                     <div className="col-md-3 fw-bold">Harga</div>
                     <div className="col-md-9 h4 mb-0">
-                      {formatPrice(product?.price)}
+                      {isDiscounted ? (
+                        <div className="d-flex flex-column">
+                          <span>{formatPrice(discountedPrice)}</span>
+                          <div className="fs-6 text-gray-600">
+                            (
+                            <span className="text-decoration-line-through text-muted">
+                              {formatPrice(originalPrice)}
+                            </span>
+                            {hasDiscountLabel && (
+                              <span className="ms-2">{discountLabel}</span>
+                            )}
+                            )
+                          </div>
+                        </div>
+                      ) : (
+                        formatPrice(product?.price)
+                      )}
                     </div>
                   </div>
 
@@ -269,3 +308,4 @@ export default function ProductDetailPage() {
     </Layout>
   );
 }
+

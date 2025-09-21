@@ -21,7 +21,6 @@ import { useCartDispatch } from "../contexts/CartContext";
 import { Helmet } from "react-helmet-async";
 import { QUERY_KEYS } from "../utils/constans";
 
-
 function CheckoutPage() {
   const queryClient = useQueryClient();
   const createMutation = useCreateOrder();
@@ -44,6 +43,7 @@ function CheckoutPage() {
 
   const {
     subtotal,
+    totalTax,
     shippingCost,
     discountAmount,
     couponLabel,
@@ -52,6 +52,7 @@ function CheckoutPage() {
     totalWeightKg,
   } = useMemo(() => {
     const checkoutSubtotal = checkout?.total_price ?? 0;
+    const checkoutTaxes = checkout?.total_tax ?? 0;
     const checkoutShipping = shipping?.cost ?? 0;
     const totalQuantityValue = checkout?.total_quantity ?? 0;
     const totalWeightValue = checkout?.total_weight ?? 0;
@@ -66,10 +67,14 @@ function CheckoutPage() {
 
     return {
       subtotal: checkoutSubtotal,
+      totalTax: checkoutTaxes,
       shippingCost: checkoutShipping,
       discountAmount: sanitizedDiscount,
       couponLabel: label,
-      grandTotal: Math.max(checkoutSubtotal - sanitizedDiscount, 0) + checkoutShipping,
+      grandTotal:
+        Math.max(checkoutSubtotal - sanitizedDiscount, 0) +
+        checkoutShipping +
+        checkoutTaxes,
       totalQuantity: totalQuantityValue,
       totalWeightKg: weightKg,
     };
@@ -140,7 +145,7 @@ function CheckoutPage() {
       payment_method: paymentMethod,
       bank_id: bank?.id,
       ewallet_id: ewallet?.id,
-      notes: note,
+      note: note,
       ...(coupon?.code ? { coupon_code: coupon.code } : {}),
     };
   }, [checkout, address, shipping, paymentMethod, bank, ewallet, note, coupon]);
@@ -235,8 +240,17 @@ function CheckoutPage() {
                       </tr>
                     )}
                     <tr>
-                      <td className="text-gray-700">Pajak</td>
-                      <td className="text-end">{formatPrice(0)}</td>
+                      <td className="text-gray-700">
+                        <div>Pajak</div>
+                        <div className="text-muted small">
+                          {checkout?.taxes.map((tax) => (
+                            <span className="me-1" key={tax.id}>
+                              {tax.name} ({tax.rate}%)
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="text-end">{formatPrice(totalTax)}</td>
                     </tr>
                     <tr>
                       <td className="text-gray-700">Jumlah Total</td>
@@ -271,5 +285,3 @@ function CheckoutPage() {
   );
 }
 export default CheckoutPage;
-
-

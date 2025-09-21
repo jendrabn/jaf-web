@@ -240,40 +240,122 @@ function OrderDetailPage() {
 
               <div className="order__product py-3 border-top">
                 <ul className="list-unstyled mb-0">
-                  {order.items.map((item, index) => (
-                    <li
-                      key={`order-item-${item.id}`}
-                      className={`d-flex justify-content-between align-items-center ${
-                        index !== order.items.length - 1
-                          ? "border-bottom mb-2 pb-2"
-                          : ""
-                      }`}
-                    >
-                      <div className="d-flex align-items-center">
-                        <ProductImage
-                          url={item.product.image}
-                          width={50}
-                          alt={item.name}
-                          className="me-2"
-                        />
-                        <div>
-                          <p className="mb-0 fw-bold">{item.name}</p>
-                          <small className="text-muted">
-                            {item.quantity} x {formatPrice(item.price)} (
-                            {(item.weight / 1000).toFixed(2)} Kg)
-                          </small>
+                  {order.items.map((item, index) => {
+                    const {
+                      product,
+                      price,
+                      price_after_discount,
+                      discount_in_percent,
+                      quantity,
+                      weight,
+                    } = item;
+
+                    const originalPrice = price ?? 0;
+                    const discountedPrice =
+                      price_after_discount ?? originalPrice;
+
+                    const discountPercent =
+                      typeof discount_in_percent === "number"
+                        ? Math.max(Math.round(discount_in_percent), 0)
+                        : originalPrice > 0 && discountedPrice < originalPrice
+                        ? Math.max(
+                            Math.round(
+                              ((originalPrice - discountedPrice) /
+                                originalPrice) *
+                                100
+                            ),
+                            0
+                          )
+                        : null;
+
+                    const isDiscounted =
+                      discountPercent != null &&
+                      discountPercent > 0 &&
+                      discountedPrice < originalPrice;
+
+                    const unitPrice = isDiscounted
+                      ? discountedPrice
+                      : originalPrice;
+                    const subtotal = unitPrice * quantity;
+                    const originalSubtotal = originalPrice * quantity;
+
+                    const discountLabel =
+                      discountPercent && discountPercent > 0
+                        ? `-${discountPercent}%`
+                        : null;
+
+                    return (
+                      <li
+                        key={`order-item-${item.id}`}
+                        className={`d-flex justify-content-between align-items-center ${
+                          index !== order.items.length - 1
+                            ? "border-bottom mb-2 pb-2"
+                            : ""
+                        }`}
+                      >
+                        <div className="d-flex align-items-center">
+                          <ProductImage
+                            url={product.image}
+                            width={50}
+                            alt={item.name}
+                            className="me-2"
+                          />
+                          <div>
+                            <p className="mb-0 fw-bold">{item.name}</p>
+                            <small className="text-muted">
+                              {quantity} x{" "}
+                              {isDiscounted ? (
+                                <>
+                                  <span className="text-danger">
+                                    {formatPrice(unitPrice)}
+                                  </span>
+                                  (
+                                  <span className="text-decoration-line-through text-muted">
+                                    {formatPrice(originalPrice)}
+                                  </span>
+                                  {discountLabel && (
+                                    <span className="ms-1">
+                                      {discountLabel}
+                                    </span>
+                                  )}
+                                  )
+                                </>
+                              ) : (
+                                formatPrice(unitPrice)
+                              )}{" "}
+                              ({(weight / 1000).toFixed(2)} Kg)
+                            </small>
+                          </div>
                         </div>
-                      </div>
-                      <div>
-                        <span style={{ fontSize: "0.9rem" }}>
-                          {formatPrice(item.price * item.quantity)}
-                        </span>
-                      </div>
-                    </li>
-                  ))}
+                        <div className="text-end">
+                          {isDiscounted ? (
+                            <div className="d-flex flex-column align-items-end">
+                              <span style={{ fontSize: "0.9rem" }}>
+                                {formatPrice(subtotal)}
+                              </span>
+                              <small className="text-gray-600">
+                                (
+                                <span className="text-decoration-line-through text-muted">
+                                  {formatPrice(originalSubtotal)}
+                                </span>
+                                {discountLabel && (
+                                  <span className="ms-1">{discountLabel}</span>
+                                )}
+                                )
+                              </small>
+                            </div>
+                          ) : (
+                            <span style={{ fontSize: "0.9rem" }}>
+                              {formatPrice(subtotal)}
+                            </span>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
                 <p className="mt-3 mb-0 border-top border-bottom py-2">
-                  <b>Catatan:</b> {order.notes || "-"}
+                  <b>Catatan:</b> {order.note || "-"}
                 </p>
               </div>
 
@@ -286,6 +368,19 @@ function OrderDetailPage() {
                     <span>{formatPrice(order.total_price)}</span>
                   </div>
                 </div>
+
+                {order.discount > 0 && (
+                  <div className="row mb-2">
+                    <div className="col-md-9 text-end">
+                      <span>Diskon</span>
+                    </div>
+                    <div className="col-md-3 text-end">
+                      <span className="text-success">
+                        -{formatPrice(order.discount)}
+                      </span>
+                    </div>
+                  </div>
+                )}
 
                 <div className="row mb-2">
                   <div className="col-md-9 text-end">
@@ -301,7 +396,7 @@ function OrderDetailPage() {
                     <span>Pajak</span>
                   </div>
                   <div className="col-md-3 text-end">
-                    <span>{formatPrice(0)}</span>
+                    <span>{formatPrice(order.tax_amount)}</span>
                   </div>
                 </div>
 

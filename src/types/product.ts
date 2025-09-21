@@ -23,6 +23,23 @@ export interface ProductParamsTypes {
   max_price?: number;
 }
 
+export interface ProductDiscountTypes {
+  id: number;
+  name: string;
+  description: string;
+  promo_type: string;
+  code: string | null;
+  discount_type: "fixed" | "percentage";
+  discount_amount: number;
+  limit: number | null;
+  limit_per_user: number | null;
+  start_date: string | null;
+  end_date: string | null;
+  is_active: boolean;
+  available_coupons?: number | null;
+  pivot?: { product_id: number; coupon_id: number } | null;
+}
+
 export interface ProductItemTypes {
   id: number;
   name: string;
@@ -37,6 +54,10 @@ export interface ProductItemTypes {
   sold_count: number;
   is_wishlist: boolean;
   rating_avg: number;
+  discount?: ProductDiscountTypes | null;
+  price_after_discount?: number | null;
+  is_discounted?: boolean;
+  discount_in_percent?: number | null;
 }
 
 export interface ProductDetailTypes {
@@ -54,5 +75,10 @@ export interface ProductDetailTypes {
   sold_count: number;
   is_wishlist: boolean;
   rating_avg: number;
+  discount?: ProductDiscountTypes | null;
+  price_after_discount?: number | null;
+  is_discounted?: boolean;
+  discount_in_percent?: number | null;
   ratings: RatingTypes[];
 }
+

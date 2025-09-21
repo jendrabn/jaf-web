@@ -5,6 +5,9 @@ export interface OrderItemTypes {
   product: ProductItemTypes;
   name: string;
   price: number;
+  price_before_discount?: number | null;
+  price_after_discount?: number | null;
+  discount_in_percent?: number | null;
   weight: number;
   quantity: number;
   rating: RatingTypes | null;
@@ -36,7 +39,7 @@ export interface OrderReqTypes {
   payment_method?: string;
   bank_id?: number;
   ewallet_id?: number;
-  notes?: string;
+  note?: string;
   coupon_code?: string;
 }
 
@@ -88,12 +91,16 @@ export interface OrderDetailTypes {
     tracking_number: string;
     status: string;
   };
-  notes: string;
+  note: string;
   cancel_reason: string;
   status: string;
   total_quantity: number;
   total_weight: number;
   total_price: number;
+  tax_amount: number;
+  tax_name: string;
+  discount: number;
+  discount_name: string;
   shipping_cost: number;
   total_amount: number;
   payment_due_date: string;

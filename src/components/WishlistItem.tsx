@@ -17,6 +17,26 @@ interface WishlistItemProps {
 }
 
 function WishlistItem({ item: { id, product } }: WishlistItemProps) {
+  const { price, price_after_discount, is_discounted, discount_in_percent } =
+    product;
+
+  const isDiscounted = Boolean(is_discounted && price_after_discount != null);
+  const currentPrice = isDiscounted
+    ? price_after_discount ?? price
+    : price;
+
+  const discountPercent =
+    typeof discount_in_percent === "number"
+      ? Math.max(Math.round(discount_in_percent), 0)
+      : price > 0 && price_after_discount != null
+      ? Math.max(
+          Math.round(((price - price_after_discount) / price) * 100),
+          0
+        )
+      : null;
+
+  const discountLabel =
+    discountPercent && discountPercent > 0 ? `-${discountPercent}%` : null;
   const { selectedIds } = useWishlistState();
   const dispatch = useWishlistDispatch();
   const queryClient = useQueryClient();
@@ -81,7 +101,23 @@ function WishlistItem({ item: { id, product } }: WishlistItemProps) {
             {product.name}
           </p>
           <p className="mb-1 text-gray-700 mb-1">
-            {formatPrice(product.price)}
+            {isDiscounted ? (
+              <>
+                <span className="text-danger me-2">
+                  {formatPrice(currentPrice)}
+                </span>
+                <small className="text-gray-600">
+                  (
+                  <span className="text-decoration-line-through text-muted">
+                    {formatPrice(price)}
+                  </span>
+                  {discountLabel && <span className="ms-1">{discountLabel}</span>}
+                  )
+                </small>
+              </>
+            ) : (
+              formatPrice(currentPrice)
+            )}
           </p>
           <div className="d-flex g-2 align-items-center justify-content-end">
             <Button
@@ -127,7 +163,21 @@ function WishlistItem({ item: { id, product } }: WishlistItemProps) {
           <span style={{ fontWeight: 500 }}>{product.name}</span>
         </div>
         <div className="text-center" style={{ width: "20%" }}>
-          {formatPrice(product.price)}
+          {isDiscounted ? (
+            <div className="d-flex flex-column align-items-center">
+              <span>{formatPrice(currentPrice)}</span>
+              <small className="text-gray-600">
+                (
+                <span className="text-decoration-line-through text-muted">
+                  {formatPrice(price)}
+                </span>
+                {discountLabel && <span className="ms-1">{discountLabel}</span>}
+                )
+              </small>
+            </div>
+          ) : (
+            formatPrice(currentPrice)
+          )}
         </div>
 
         <div className="text-center" style={{ width: "25%" }}>

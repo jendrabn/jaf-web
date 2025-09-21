@@ -15,10 +15,18 @@ export interface CheckoutTypes {
     bank: Array<BankTypes>;
     ewallet: Array<EwalletTypes>;
   };
+  taxes: Array<TaxTypes>;
   total_quantity: number;
   total_weight: number;
   total_price: number;
+  total_tax: number;
   coupon?: CouponTypes | null;
+}
+
+export interface TaxTypes {
+  id: number;
+  name: string;
+  rate: number;
 }
 
 export type CouponPromoType = "limit" | "period" | "product";

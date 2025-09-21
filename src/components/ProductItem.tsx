@@ -13,7 +13,30 @@ export default function ProductItem({
   showSoldCount = true,
   showRating = true,
 }: ProductItemProps) {
-  const { id, name, image, price, sold_count } = product;
+  const {
+    id,
+    name,
+    image,
+    price,
+    price_after_discount,
+    is_discounted,
+    discount_in_percent,
+    sold_count,
+  } = product;
+
+  const isDiscounted = Boolean(is_discounted && price_after_discount != null);
+  const currentPrice = isDiscounted ? price_after_discount ?? price : price;
+  const discountPercent =
+    typeof discount_in_percent === "number"
+      ? Math.max(Math.round(discount_in_percent), 0)
+      : price > 0 && price_after_discount != null
+      ? Math.max(
+          Math.round(((price - price_after_discount) / price) * 100),
+          0
+        )
+      : null;
+  const discountLabel =
+    discountPercent && discountPercent > 0 ? `-${discountPercent}%` : null;
 
   return (
     <NavLink
@@ -41,7 +64,21 @@ export default function ProductItem({
             {name}
           </div>
           <div className="card__product-item-price h5 mb-2 fw-bold">
-            {formatPrice(price)}
+            {isDiscounted ? (
+              <>
+                <span className="text-danger me-2">
+                  {formatPrice(currentPrice)}
+                </span>
+                <small className="text-gray-600 fw-normal d-block">
+                  <span className="text-decoration-line-through me-2">
+                    {formatPrice(price)}
+                  </span>
+                  {discountLabel && <span>{discountLabel}</span>}
+                </small>
+              </>
+            ) : (
+              formatPrice(currentPrice)
+            )}
           </div>
         </div>
 

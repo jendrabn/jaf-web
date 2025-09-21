@@ -137,7 +137,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     () =>
       state.carts
         .filter((cart) => state.selectedIds.includes(cart.id))
-        .reduce((total, cart) => total + cart.product.price * cart.quantity, 0),
+        .reduce(
+          (total, cart) =>
+            total +
+            (cart.product.price_after_discount || cart.product.price) *
+              cart.quantity,
+          0
+        ),
     [state.carts, state.selectedIds]
   );
 

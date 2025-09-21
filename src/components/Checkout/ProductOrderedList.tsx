@@ -42,23 +42,89 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
               </tr>
             </thead>
             <tbody>
-              {carts.map((cart) => (
-                <tr key={cart.id}>
-                  <td>
-                    <ProductImage
-                      className="me-2"
-                      url={cart.product.image}
-                      alt={cart.product.name}
-                    />
-                    {cart.product.name}
-                  </td>
-                  <td>{formatPrice(cart.product.price)}</td>
-                  <td className="text-center">{cart.quantity}</td>
-                  <td className="text-end">
-                    {formatPrice(cart.product.price * cart.quantity)}
-                  </td>
-                </tr>
-              ))}
+              {carts.map((cart) => {
+                const { product, quantity } = cart;
+                const { price, price_after_discount, is_discounted, discount_in_percent } =
+                  product;
+
+                const isDiscounted = Boolean(
+                  is_discounted && price_after_discount != null
+                );
+                const unitPrice = isDiscounted
+                  ? price_after_discount ?? price
+                  : price;
+                const subtotal = unitPrice * quantity;
+                const originalSubtotal = price * quantity;
+
+                const discountPercent =
+                  typeof discount_in_percent === "number"
+                    ? Math.max(Math.round(discount_in_percent), 0)
+                    : price > 0 && price_after_discount != null
+                    ? Math.max(
+                        Math.round(
+                          ((price - price_after_discount) / price) * 100
+                        ),
+                        0
+                      )
+                    : null;
+
+                const discountLabel =
+                  discountPercent && discountPercent > 0
+                    ? `-${discountPercent}%`
+                    : null;
+
+                return (
+                  <tr key={cart.id}>
+                    <td>
+                      <ProductImage
+                        className="me-2"
+                        url={product.image}
+                        alt={product.name}
+                      />
+                      {product.name}
+                    </td>
+                    <td className="text-center">
+                      {isDiscounted ? (
+                        <div className="d-flex flex-column align-items-center">
+                          <span>{formatPrice(unitPrice)}</span>
+                          <small className="text-gray-600">
+                            (
+                            <span className="text-decoration-line-through text-muted">
+                              {formatPrice(price)}
+                            </span>
+                            {discountLabel && (
+                              <span className="ms-1">{discountLabel}</span>
+                            )}
+                            )
+                          </small>
+                        </div>
+                      ) : (
+                        formatPrice(unitPrice)
+                      )}
+                    </td>
+                    <td className="text-center">{quantity}</td>
+                    <td className="text-end">
+                      {isDiscounted ? (
+                        <div className="d-flex flex-column align-items-end">
+                          <span>{formatPrice(subtotal)}</span>
+                          <small className="text-gray-600">
+                            (
+                            <span className="text-decoration-line-through text-muted">
+                              {formatPrice(originalSubtotal)}
+                            </span>
+                            {discountLabel && (
+                              <span className="ms-1">{discountLabel}</span>
+                            )}
+                            )
+                          </small>
+                        </div>
+                      ) : (
+                        formatPrice(subtotal)
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
               {/* <tr>
                 <td colSpan={3}></td>
                 <td>

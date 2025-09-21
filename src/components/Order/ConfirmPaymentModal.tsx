@@ -1,6 +1,7 @@
 import { Button, Form, Modal } from "react-bootstrap";
+import Select, { type SingleValue } from "react-select";
 import { useConfirmPayment, useFetchOrder } from "../../services/api/order";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import ErrorValidationAlert from "../ErrorValidationAlert";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -32,9 +33,9 @@ function ConfirmPaymentModal({
 
   const { data: order, isLoading } = useFetchOrder(orderId!);
 
-  const { mutate, error, reset, isPending } = useConfirmPayment();
+  const { mutate, error, reset: resetMutation, isPending } = useConfirmPayment();
 
-  const { register, handleSubmit, setValue, getValues } =
+  const { register, handleSubmit, setValue, reset, watch } =
     useForm<ConfirmPaymentReqTypes>({
       defaultValues: {
         name: "",
@@ -44,6 +45,34 @@ function ConfirmPaymentModal({
         phone: "",
       },
     });
+
+  useEffect(() => {
+    register("name");
+  }, [register]);
+
+  const bankOptions = useMemo(
+    () =>
+      bankList.map((bank) => ({
+        value: bank.name,
+        label: bank.name,
+      })),
+    []
+  );
+
+  const watchedBankName = watch("name");
+
+  const selectedBankOption = useMemo(
+    () =>
+      bankOptions.find((option) => option.value === watchedBankName) ?? null,
+    [bankOptions, watchedBankName]
+  );
+
+  const handleBankChange = useCallback(
+    (option: SingleValue<{ value: string; label: string }>) => {
+      setValue("name", option?.value ?? "", { shouldValidate: true, shouldDirty: true });
+    },
+    [setValue]
+  );
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -58,15 +87,21 @@ function ConfirmPaymentModal({
     !!location.state?.new_order_created
   );
 
-  const currentName = getValues("name");
   useEffect(() => {
-    if (order && order.payment?.method === PAYMENT_METHOD_EWALLET) {
-      // Check if the current value is different from the new value
-      if (currentName !== order.payment.info.name) {
-        setValue("name", order.payment.info.name || "");
+    if (!order) return;
+
+    if (order.payment?.method === PAYMENT_METHOD_EWALLET) {
+      setValue("name", order.payment.info.name || "", { shouldValidate: true });
+    } else if (order.payment?.method === PAYMENT_METHOD_BANK) {
+      const bankOption = bankOptions.find(
+        (option) => option.value === order.payment?.info?.name
+      );
+
+      if (bankOption) {
+        setValue("name", bankOption.value, { shouldValidate: true });
       }
     }
-  }, [order, currentName, setValue, getValues]);
+  }, [order, bankOptions, setValue]);
 
   useEffect(() => {
     clearState();
@@ -81,6 +116,9 @@ function ConfirmPaymentModal({
         onSuccess() {
           toast.success("Pesanan berhasil dikonfirmasi.");
 
+          reset();
+          resetMutation();
+
           onClose?.();
 
           queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ORDERS] });
@@ -94,6 +132,7 @@ function ConfirmPaymentModal({
 
   const handleClose = () => {
     reset();
+    resetMutation();
 
     onClose();
 
@@ -140,7 +179,7 @@ function ConfirmPaymentModal({
               akan memverifikasi pembayaran Anda secepatnya.
             </p>
 
-            <ErrorValidationAlert error={error} onClose={reset} />
+            <ErrorValidationAlert error={error} onClose={resetMutation} />
 
             <Form onSubmit={handleSubmit(onConfirm)}>
               <fieldset disabled={isPending}>
@@ -148,14 +187,17 @@ function ConfirmPaymentModal({
                   <>
                     <Form.Group className="mb-3">
                       <Form.Label>Nama Bank</Form.Label>
-                      <Form.Select {...register("name")} autoFocus>
-                        <option>Pilih Bank</option>
-                        {bankList.map((bank) => (
-                          <option key={bank.id} value={bank.name}>
-                            {bank.name}
-                          </option>
-                        ))}
-                      </Form.Select>
+                      <Select
+                        inputId="bank-select"
+                        classNamePrefix="react-select"
+                        options={bankOptions}
+                        value={selectedBankOption}
+                        onChange={handleBankChange}
+                        isClearable
+                        placeholder="Pilih Bank"
+                        noOptionsMessage={() => "Bank tidak ditemukan"}
+                        autoFocus
+                      />
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label>Nama Pemilik Rekening</Form.Label>
