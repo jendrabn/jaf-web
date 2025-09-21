@@ -12,13 +12,13 @@ export default function Footer() {
               Sumbersari, Kab. Jember, Jawa Timur 68121
             </p>
             <p className="mb-2">
-              <i className="fa fa-envelope me-3"></i>cs.jaf.co.id
+              <i className="bi bi-envelope-fill me-3"></i>cs.jaf.co.id
             </p>
             <p className="mb-2">
-              <i className="fa-brands fa-whatsapp me-3"></i>+62 811 3132 502
+              <i className="bi bi-whatsapp me-3"></i>+62 811 3132 502
             </p>
             <p className="mb-0">
-              <i className="fa fa-phone-alt me-3"></i>0331 322070
+              <i className="bi bi-telephone-fill me-3"></i>0331 322070
             </p>
           </div>
           <div className="col-lg-8 col-md-12">
@@ -27,23 +27,22 @@ export default function Footer() {
                 <h5 className=" text-uppercase mb-4">Quick Shop</h5>
                 <div className="d-flex flex-column justify-content-start">
                   <a className=" mb-2" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Home
+                    <i className="bi bi-chevron-right me-2"></i>Home
                   </a>
                   <a className=" mb-2" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Our Shop
+                    <i className="bi bi-chevron-right me-2"></i>Our Shop
                   </a>
                   <a className=" mb-2" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Shop Detail
+                    <i className="bi bi-chevron-right me-2"></i>Shop Detail
                   </a>
                   <a className=" mb-2" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Shopping
-                    Cart
+                    <i className="bi bi-chevron-right me-2"></i>Shopping Cart
                   </a>
                   <a className=" mb-2" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Checkout
+                    <i className="bi bi-chevron-right me-2"></i>Checkout
                   </a>
                   <a className="" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Contact Us
+                    <i className="bi bi-chevron-right me-2"></i>Contact Us
                   </a>
                 </div>
               </div>
@@ -51,23 +50,22 @@ export default function Footer() {
                 <h5 className=" text-uppercase mb-4">My Account</h5>
                 <div className="d-flex flex-column justify-content-start">
                   <a className=" mb-2" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Home
+                    <i className="bi bi-chevron-right me-2"></i>Home
                   </a>
                   <a className=" mb-2" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Our Shop
+                    <i className="bi bi-chevron-right me-2"></i>Our Shop
                   </a>
                   <a className=" mb-2" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Shop Detail
+                    <i className="bi bi-chevron-right me-2"></i>Shop Detail
                   </a>
                   <a className=" mb-2" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Shopping
-                    Cart
+                    <i className="bi bi-chevron-right me-2"></i>Shopping Cart
                   </a>
                   <a className=" mb-2" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Checkout
+                    <i className="bi bi-chevron-right me-2"></i>Checkout
                   </a>
                   <a className="" href="#">
-                    <i className="fa-solid fa-angle-right me-2"></i>Contact Us
+                    <i className="bi bi-chevron-right me-2"></i>Contact Us
                   </a>
                 </div>
               </div>
@@ -75,16 +73,16 @@ export default function Footer() {
                 <h5 className=" text-uppercase mb-4">Follow Us</h5>
                 <div className="d-flex" style={{ fontSize: "1.5rem" }}>
                   <NavLink className="me-3" to={"/"}>
-                    <i className="fa-brands fa-facebook-f"></i>
+                    <i className="bi bi-facebook"></i>
                   </NavLink>
                   <NavLink className="me-3" to={"/"}>
-                    <i className="fa-brands fa-x-twitter"></i>
+                    <i className="bi bi-twitter-x"></i>
                   </NavLink>
                   <NavLink className="me-3" to={"/"}>
-                    <i className="fa-brands fa-instagram"></i>
+                    <i className="bi bi-instagram"></i>
                   </NavLink>
                   <NavLink to={"/"}>
-                    <i className="fa-brands fa-tiktok"></i>
+                    <i className="bi bi-tiktok"></i>
                   </NavLink>
                 </div>
               </div>

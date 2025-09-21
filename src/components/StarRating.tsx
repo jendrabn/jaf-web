@@ -4,7 +4,7 @@ function StarRating({ rate }: { rate: number }) {
       {[1, 2, 3, 4, 5].map((star) => (
         <i
           key={star}
-          className={`fa fa-star text-${
+          className={`bi bi-star-fill text-${
             star <= rate ? "warning" : "secondary"
           }`}
         ></i>

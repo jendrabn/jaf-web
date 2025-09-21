@@ -82,7 +82,7 @@ function OrderDetailPage() {
           <div className="stepper">
             <div className={`step completed`}>
               <div className="icon">
-                <i className="fas fa-check"></i>
+                <i className="bi bi-check-lg"></i>
               </div>
               <div>Pesanan Dibuat</div>
               <div className="timestamp">
@@ -99,7 +99,7 @@ function OrderDetailPage() {
               }`}
             >
               <div className="icon">
-                <i className="fas fa-check"></i>
+                <i className="bi bi-check-lg"></i>
               </div>
               <div>
                 Pesanan Dibayar <br /> ({formatPrice(order.total_amount)})
@@ -114,7 +114,7 @@ function OrderDetailPage() {
               } ${["completed"].includes(order.status) ? "completed" : ""}`}
             >
               <div className="icon">
-                <i className="fas fa-truck"></i>
+                <i className="bi bi-truck"></i>
               </div>
               <div>Pesanan Dikirim</div>
               <div className="timestamp">
@@ -127,7 +127,7 @@ function OrderDetailPage() {
               } ${order.status === "completed" ? "completed" : ""}`}
             >
               <div className="icon">
-                <i className="fas fa-box"></i>
+                <i className="bi bi-box"></i>
               </div>
               <div>Pesanan Selesai</div>
               <div className="timestamp">

@@ -103,15 +103,24 @@ body {
   display: inline-block;
   margin-left: 0.255em;
   vertical-align: middle;
-  content: "\f107";
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
+  content: "";
+  font-family: inherit;
+  font-weight: normal;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%236c757d" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>')
+    no-repeat center center;
+  background-size: 1em 1em;
   border: 0 !important;
   color: $gray-700;
 }
 
 .dropdown-toggle[aria-expanded="true"]::after {
-  content: "\f106";
+  content: "";
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%236c757d" class="bi bi-chevron-up" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 11.354a.5.5 0 0 0 .708 0L8 5.707l5.646 5.647a.5.5 0 0 0 .708-.708l-6-6a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 0 .708z"/></svg>')
+    no-repeat center center;
+  background-size: 1em 1em;
 }
 // End Dropdown
 

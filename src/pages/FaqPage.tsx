@@ -8,7 +8,7 @@ function FaqPage() {
     <Layout>
       <Helmet>
         <meta name="description" content="Frequently Asked Questions" />
-        <title>FAQ | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Pertanyaan Umum | {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
 
       <div className="container">

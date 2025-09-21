@@ -39,7 +39,7 @@ function QuantityInput({
         onClick={() => handleChange(quantity - 1)}
         disabled={quantity <= 1 || disabled}
       >
-        <i className="fa-solid fa-minus"></i>
+        <i className="bi bi-dash"></i>
       </Button>
       <input
         type="text"
@@ -56,7 +56,7 @@ function QuantityInput({
         onClick={() => handleChange(quantity + 1)}
         disabled={(maxValue && quantity >= maxValue) || disabled}
       >
-        <i className="fa-solid fa-plus"></i>
+        <i className="bi bi-plus"></i>
       </Button>
     </div>
   );

@@ -30,10 +30,7 @@ export default function ProductItem({
     typeof discount_in_percent === "number"
       ? Math.max(Math.round(discount_in_percent), 0)
       : price > 0 && price_after_discount != null
-      ? Math.max(
-          Math.round(((price - price_after_discount) / price) * 100),
-          0
-        )
+      ? Math.max(Math.round(((price - price_after_discount) / price) * 100), 0)
       : null;
   const discountLabel =
     discountPercent && discountPercent > 0 ? `-${discountPercent}%` : null;
@@ -85,7 +82,7 @@ export default function ProductItem({
         <div className="card__product-item-rating-and-sold d-flex justify-content-between align-items-center text-gray-700 mt-auto">
           {showRating && (
             <div className="card__product-item-rating">
-              <i className="fa fa-star text-warning"></i>
+              <i className="bi bi-star-fill text-warning"></i>
               <span className="ms-1">{product.rating_avg}</span>
             </div>
           )}

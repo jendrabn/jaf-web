@@ -23,9 +23,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           className="cursor-pointer border-start-0"
           onClick={() => setShowPassword(!showPassword)}
         >
-          <i
-            className={`fa-solid ${showPassword ? "fa-eye" : "fa-eye-slash"}`}
-          ></i>
+          <i className={`bi ${showPassword ? "bi-eye" : "bi-eye-slash"}`}></i>
         </InputGroup.Text>
       </InputGroup>
     );

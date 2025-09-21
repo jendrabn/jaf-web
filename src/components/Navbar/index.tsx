@@ -159,7 +159,7 @@ export default function Navbar() {
                   <li className="nav-item me-2">
                     <NavLink className="nav-link" to={"/cart"}>
                       <div className="position-relative">
-                        <i className="fa-solid fa-cart-shopping"></i>
+                        <i className="bi bi-cart2 fs-5"></i>
                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                           {carts?.length}
                         </span>
@@ -174,27 +174,25 @@ export default function Navbar() {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      <i className="fa-regular fa-user"></i>
+                      <i className="bi bi-person fs-5"></i>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end">
                       <li>
-                        <h6 className="dropdown-header">Hi, {user?.name}</h6>
+                        <h6 className="dropdown-header">Hai, {user?.name}</h6>
                       </li>
                       <li>
                         <Link className="dropdown-item" to="/account/profile">
-                          <i className="fa-solid fa-user me-2"></i> Akun Saya
+                          <i className="bi bi-person me-2"></i> Akun Saya
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item" to="/account/orders">
-                          <i className="fa-solid fa-box-archive me-2"></i>{" "}
-                          Pesanan Saya
+                          <i className="bi bi-box-seam me-2"></i> Pesanan Saya
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item" to="/account/wishlist">
-                          <i className="fa-solid fa-heart me-2"></i> Wishlist
-                          Saya
+                          <i className="bi bi-heart me-2"></i> Wishlist Saya
                         </Link>
                       </li>
                       <li>
@@ -206,7 +204,7 @@ export default function Navbar() {
                           onClick={handleLogout}
                           to="/"
                         >
-                          <i className="fa-solid fa-right-from-bracket me-2"></i>
+                          <i className="bi bi-box-arrow-right me-2"></i>
                           Logout
                         </Link>
                       </li>

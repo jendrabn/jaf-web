@@ -113,8 +113,7 @@ function ProfilePage() {
                 inputAvatarRef.current?.click();
               }}
             >
-              <i className="fa-solid fa-arrow-up-from-bracket me-2"></i> Pilih
-              Gambar
+              <i className="bi bi-upload me-2"></i> Upload Foto
             </Button>
           </div>
         </div>
@@ -185,7 +184,7 @@ function ProfilePage() {
                 <Form.Label column sm="3"></Form.Label>
                 <Col sm="9">
                   <Button variant="primary" type="submit">
-                    <i className="fa-solid fa-floppy-disk me-2"></i>Simpan
+                    <i className="bi bi-check2-circle me-2"></i>Simpan
                   </Button>
                 </Col>
               </Form.Group>

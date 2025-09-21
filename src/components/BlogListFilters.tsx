@@ -12,7 +12,7 @@ function BlogListFilters() {
   return (
     <div className="blog__filter">
       <h5 className="mb-4 d-none d-lg-block">
-        <i className="fa-solid fa-filter"></i> Filter
+        <i className="bi bi-funnel"></i> Filter
       </h5>
 
       <Accordion defaultActiveKey="0" flush alwaysOpen>

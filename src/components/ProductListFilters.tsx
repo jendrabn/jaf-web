@@ -21,7 +21,7 @@ function ProductListFilters() {
     <div className="product__filter ">
       {/* only show on desktop */}
       <h5 className="mb-4 d-none d-lg-block">
-        <i className="fa-solid fa-filter"></i> Filter
+        <i className="bi bi-funnel"></i> Filter
       </h5>
 
       <Accordion defaultActiveKey="0" flush alwaysOpen>
@@ -106,7 +106,7 @@ function ProductListFilters() {
 
             <div className="d-grid">
               <button
-                className="btn btn-outline-primary btn-sm"
+                className="btn btn-outline-primary"
                 onClick={() => {
                   setFilter("min_price", minPrice);
                   setFilter("max_price", maxPrice);
@@ -150,7 +150,7 @@ function ProductListFilters() {
 
       <div className="d-grid mt-4">
         <button
-          className="btn btn-outline-danger btn-sm"
+          className="btn btn-outline-danger"
           onClick={() => {
             clearFilters(
               "category_id",

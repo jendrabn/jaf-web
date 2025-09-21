@@ -186,7 +186,7 @@ function CheckoutPage() {
   return (
     <Layout>
       <Helmet>
-        <title>Checkout | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Checkout & Pembayaran | {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
 
       <DeliveryAddressModal

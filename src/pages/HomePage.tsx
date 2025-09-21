@@ -60,7 +60,7 @@ function HomePage() {
                 data-bs-slide="prev"
               >
                 <span className="control__prev-icon">
-                  <i className="fa-solid fa-chevron-left"></i>
+                  <i className="bi bi-chevron-left"></i>
                 </span>
                 <span className="visually-hidden">Previous</span>
               </button>
@@ -71,7 +71,7 @@ function HomePage() {
                 data-bs-slide="next"
               >
                 <span className="control__next-icon">
-                  <i className="fa-solid fa-chevron-right"></i>
+                  <i className="bi bi-chevron-right"></i>
                 </span>
                 <span className="visually-hidden">Next</span>
               </button>

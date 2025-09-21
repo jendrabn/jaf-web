@@ -32,7 +32,7 @@ function WishlistPage() {
   return (
     <AccountLayout title="Wishlist">
       <Helmet>
-        <title>Wishlist | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Daftar Keinginan | {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
 
       {wishlists && wishlists?.length > 0 ? (

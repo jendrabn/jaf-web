@@ -190,7 +190,7 @@ export default function ProductDetailPage() {
                       disabled={cartMutation.isPending}
                       onClick={handleAddToCart}
                     >
-                      <i className="fa-solid fa-cart-plus me-2"></i> Tambah ke
+                      <i className="bi bi-cart-plus me-2"></i> Tambah ke
                       Keranjang
                     </Button>
                     <Button
@@ -199,7 +199,7 @@ export default function ProductDetailPage() {
                       onClick={handleAddToWishlist}
                       disabled={createWishlistMutation.isPending}
                     >
-                      <i className="fa-solid fa-heart"></i>
+                      <i className="bi bi-heart"></i>
                     </Button>
                   </div>
                 </div>
@@ -308,4 +308,3 @@ export default function ProductDetailPage() {
     </Layout>
   );
 }
-

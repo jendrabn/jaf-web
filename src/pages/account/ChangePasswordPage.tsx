@@ -68,7 +68,7 @@ function ChangePassword() {
                 <Col sm={3} />
                 <Col sm={9}>
                   <Button type="submit" variant="primary">
-                    Ubah Password
+                    <i className="bi bi-check2-circle me-2"></i>Ubah Password
                   </Button>
                 </Col>
               </Form.Group>

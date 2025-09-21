@@ -73,7 +73,7 @@ function ProductPage() {
   return (
     <Layout>
       <Helmet>
-        <title>Products | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Produk | {import.meta.env.VITE_APP_NAME}</title>
         <meta name="description" content="Products" />
       </Helmet>
 
@@ -86,8 +86,7 @@ function ProductPage() {
             {params.search && (
               <div className="d-flex align-items-center justify-content-start mb-3">
                 <p className="text-gray-700 mb-0">
-                  <i className="fa-solid fa-magnifying-glass me-2"></i>Hasil
-                  pencarian untuk "
+                  <i className="bi bi-search me-2"></i>Hasil pencarian untuk "
                   <span className="fw-bold text-body">{params.search}</span>"
                 </p>
               </div>

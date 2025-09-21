@@ -36,7 +36,7 @@ function SearchBar({ className }: SearchBarProps) {
           }
         />
         <button className="btn" type="submit">
-          <i className="fa-solid fa-magnifying-glass"></i>
+          <i className="bi bi-search"></i>
         </button>
       </div>
     </form>

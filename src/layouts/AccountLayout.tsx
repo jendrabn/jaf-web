@@ -19,7 +19,7 @@ const NavAccount = () => {
           to="/account/profile"
           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         >
-          <i className="fa-solid fa-angle-right me-2"></i> Profil
+          <i className="bi bi-chevron-right me-2"></i> Profil
         </NavLink>
       </Nav.Item>
 
@@ -28,7 +28,7 @@ const NavAccount = () => {
           to="/account/orders"
           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         >
-          <i className="fa-solid fa-angle-right me-2"></i> Pesanan
+          <i className="bi bi-chevron-right me-2"></i> Pesanan
         </NavLink>
       </Nav.Item>
 
@@ -37,7 +37,7 @@ const NavAccount = () => {
           to="/account/wishlist"
           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         >
-          <i className="fa-solid fa-angle-right me-2"></i> Wishlist
+          <i className="bi bi-chevron-right me-2"></i> Wishlist
         </NavLink>
       </Nav.Item>
 
@@ -46,7 +46,7 @@ const NavAccount = () => {
           to="/account/address"
           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         >
-          <i className="fa-solid fa-angle-right me-2"></i> Alamat
+          <i className="bi bi-chevron-right me-2"></i> Alamat
         </NavLink>
       </Nav.Item>
 
@@ -55,7 +55,7 @@ const NavAccount = () => {
           to="/account/change-password"
           className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         >
-          <i className="fa-solid fa-angle-right me-2"></i> Ubah Password
+          <i className="bi bi-chevron-right me-2"></i> Ubah Password
         </NavLink>
       </Nav.Item>
     </Nav>

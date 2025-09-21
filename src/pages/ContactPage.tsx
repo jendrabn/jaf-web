@@ -52,7 +52,7 @@ function ContactPage() {
                   />
                 </Form.Group>
                 <button className="btn btn-primary" type="submit">
-                  <i className="fa-solid fa-paper-plane me-2"></i>Kirim Pesan
+                  <i className="bi bi-send me-2"></i>Kirim Pesan
                 </button>
               </Form>
               <div className="mt-4 border-top pt-4">

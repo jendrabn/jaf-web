@@ -6,7 +6,7 @@ function CSContact() {
       <h5 className="fw-bold mb-3">Kontak Customer Service</h5>
       <ul className="list-unstyled mb-3">
         <li className="mb-2">
-          <i className="fa-solid fa-envelope me-2"></i>
+          <i className="bi bi-envelope me-2"></i>
           <a
             href="mailto:cs@jaf.co.id"
             className="text-decoration-none text-dark"
@@ -15,7 +15,7 @@ function CSContact() {
           </a>
         </li>
         <li className="mb-2">
-          <i className="fa-brands fa-whatsapp me-2"></i>
+          <i className="bi bi-whatsapp me-2"></i>
           <a
             href="https://wa.me/628113132502"
             target="_blank"
@@ -26,18 +26,18 @@ function CSContact() {
           </a>
         </li>
         <li className="mb-2">
-          <i className="fa fa-phone-alt me-2"></i>
+          <i className="bi bi-telephone me-2"></i>
           Phone: 0331 322070
         </li>
         <li>
-          <i className="fa-regular fa-clock me-2"></i>Jam Operasional: Senin -
-          Sabtu, 09.00 - 18.00 WIB
+          <i className="bi bi-clock me-2"></i>Jam Operasional: Senin - Sabtu,
+          09.00 - 18.00 WIB
         </li>
       </ul>
       <div>
         <span className="me-2">Butuh jawaban cepat?</span>
         <Link to="/faq" className="btn btn-outline-primary btn-sm">
-          <i className="fa-regular fa-circle-question me-1"></i>
+          <i className="bi bi-question-circle me-1"></i>
           Lihat FAQ
         </Link>
       </div>

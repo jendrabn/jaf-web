@@ -36,7 +36,7 @@ function LoginPage() {
   return (
     <AuthLayout title="Sign In">
       <Helmet>
-        <title>Sign In | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Masuk | {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
 
       <ErrorValidationAlert error={error} onClose={reset} />

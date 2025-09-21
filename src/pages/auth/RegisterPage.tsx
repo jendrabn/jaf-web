@@ -29,7 +29,7 @@ function RegisterPage() {
   return (
     <AuthLayout title="Sign Up">
       <Helmet>
-        <title>Sign Up | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Daftar | {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
 
       <ErrorValidationAlert error={error} onClose={reset} />
