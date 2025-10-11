@@ -1,7 +1,7 @@
 import { type PropsWithChildren, useEffect } from "react";
 import { NavLink } from "react-router";
-import Navbar from "../components/shared/Navbar";
-import Footer from "../components/shared/Footer";
+import Navbar from "../shared/Navbar";
+import Footer from "../shared/Footer";
 import { Accordion, Nav } from "react-bootstrap";
 
 type AuthLayoutProps = PropsWithChildren & {

@@ -1,8 +1,8 @@
 import { Link, Navigate } from "react-router";
-import { useAuthState } from "../contexts/AuthContext";
+import { useAuthState } from "../../contexts/AuthContext";
 import { useLocation } from "react-router";
 import { type PropsWithChildren } from "react";
-import Loading from "../components/ui/Loading";
+import Loading from "../ui/Loading";
 
 function AuthLayout({
   children,
