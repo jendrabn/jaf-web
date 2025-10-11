@@ -1,4 +1,4 @@
-import { useFetchProducts } from "../../services/api/product";
+import { useFetchProducts } from "../../hooks/api/product";
 import type { ProductItemTypes, ProductParamsTypes } from "../../types/product";
 import ProductItem from "../../components/shared/ProductItem";
 import ProductListFilters from "./ProductListFilters";

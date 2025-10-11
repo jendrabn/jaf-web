@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router";
-import { useFetchBlog } from "../../services/api/blog";
+import { useFetchBlog } from "../../hooks/api/blog";
 import Layout from "../../components/layout/Layout";
 import NotFoundPage from "../../pages/NotFound";
 import Loading from "../../components/ui/Loading";

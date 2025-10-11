@@ -2,7 +2,7 @@ import { Row, Col, Button, Form } from "react-bootstrap";
 import { useAuthState } from "../../../contexts/AuthContext";
 import type { UserTypes } from "../../../types/user";
 import AccountLayout from "../../../components/layout/AccountLayout";
-import { useUpdateUser } from "../../../services/api/user";
+import { useUpdateUser } from "../../../hooks/api/user";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { type ChangeEvent, useRef } from "react";

@@ -3,7 +3,7 @@ import type { CartItemTypes } from "../../types/cart";
 import { formatPrice } from "../../utils/functions";
 import ProductImage from "./ProductImage";
 import QuantityInput from "../ui/QuantityInput";
-import { useUpdateCart, useDeleteCart } from "../../services/api/cart";
+import { useUpdateCart, useDeleteCart } from "../../hooks/api/cart";
 import { useCartDispatch, useCartState } from "../../contexts/CartContext";
 
 interface CartItemProps {

@@ -1,5 +1,5 @@
 import { Button, Modal } from "react-bootstrap";
-import { useConfirmOrderReceived } from "../../../services/api/order";
+import { useConfirmOrderReceived } from "../../../hooks/api/order";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { QUERY_KEYS } from "../../../utils/constans";

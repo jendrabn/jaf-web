@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useEffect, useReducer } from "react";
 import type { WishlistTypes } from "../types/wishlist";
-import { useFetchWishlist } from "../services/api/wishlist";
+import { useFetchWishlist } from "../hooks/api/wishlist";
 
 // Action type
 type WishlistAction =

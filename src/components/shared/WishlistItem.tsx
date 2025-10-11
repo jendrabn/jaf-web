@@ -6,8 +6,8 @@ import {
   useWishlistDispatch,
   useWishlistState,
 } from "../../contexts/WishlistContext";
-import { useDeleteWishlist } from "../../services/api/wishlist";
-import { useCreateCart } from "../../services/api/cart";
+import { useDeleteWishlist } from "../../hooks/api/wishlist";
+import { useCreateCart } from "../../hooks/api/cart";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../utils/constans";

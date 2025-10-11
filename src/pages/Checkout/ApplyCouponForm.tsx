@@ -1,7 +1,7 @@
 import { type FormEvent, useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { useApplyCoupon } from "../../services/api/order";
+import { useApplyCoupon } from "../../hooks/api/order";
 import {
   useCheckoutDispatch,
   useCheckoutState,

@@ -1,7 +1,7 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import type { OrderTypes } from "../../../types/order";
 import { useState } from "react";
-import { useAddRating } from "../../../services/api/order";
+import { useAddRating } from "../../../hooks/api/order";
 import { useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../../utils/constans";
 import ProductImage from "../ProductImage";

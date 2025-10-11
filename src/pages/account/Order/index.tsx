@@ -1,5 +1,5 @@
 import AccountLayout from "../../../components/layout/AccountLayout";
-import { useFetchOrders } from "../../../services/api/order";
+import { useFetchOrders } from "../../../hooks/api/order";
 import Pagination from "../../../components/ui/Pagination";
 import useFilters from "../../../hooks/useFilters";
 import { type ChangeEvent, useState } from "react";

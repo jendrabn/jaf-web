@@ -4,8 +4,8 @@ import { useAuthState } from "../../contexts/AuthContext";
 import {
   useFetchProductBrands,
   useFetchProductCategories,
-} from "../../services/api/product";
-import { useLogout } from "../../services/api/auth";
+} from "../../hooks/api/product";
+import { useLogout } from "../../hooks/api/auth";
 import type { MouseEvent } from "react";
 import { useCartState } from "../../contexts/CartContext";
 import { removeAuthToken } from "../../utils/functions";

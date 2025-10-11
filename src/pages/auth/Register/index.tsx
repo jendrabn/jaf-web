@@ -2,7 +2,7 @@ import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router";
 import type { RegisterReqTypes } from "../../../types/auth";
-import { useRegister } from "../../../services/api/auth";
+import { useRegister } from "../../../hooks/api/auth";
 import AuthLayout from "../../../components/layout/AuthLayout";
 import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";
 import PasswordInput from "../../../components/ui/PasswordInput";

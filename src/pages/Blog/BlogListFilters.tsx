@@ -1,10 +1,7 @@
 import type { BlogCategoryTypes, BlogTagTypes } from "../../types/blog";
 import { Accordion, Button } from "react-bootstrap";
 import useFilters from "../../hooks/useFilters";
-import {
-  useFetchBlogCategories,
-  useFetchBlogTags,
-} from "../../services/api/blog";
+import { useFetchBlogCategories, useFetchBlogTags } from "../../hooks/api/blog";
 
 function BlogListFilters() {
   const { setFilter, clearFilters, params } = useFilters();

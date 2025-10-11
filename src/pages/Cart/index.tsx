@@ -1,9 +1,9 @@
 import Layout from "../../components/layout/Layout";
 import { useNavigate } from "react-router";
-import { useCheckoutState } from "../../services/api/order";
+import { useCheckoutState } from "../../hooks/api/order";
 import { formatPrice } from "../../utils/functions";
 import { Button, Form } from "react-bootstrap";
-import { useDeleteCart } from "../../services/api/cart";
+import { useDeleteCart } from "../../hooks/api/cart";
 import CartItem from "../../components/shared/CartItem";
 import { useCartDispatch, useCartState } from "../../contexts/CartContext";
 import NoData from "../../components/ui/NoData";

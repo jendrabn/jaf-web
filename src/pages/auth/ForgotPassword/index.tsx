@@ -1,6 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 import AuthLayout from "../../../components/layout/AuthLayout";
-import { useForgotPassword } from "../../../services/api/auth";
+import { useForgotPassword } from "../../../hooks/api/auth";
 import type { ForgotPasswordReqTypes } from "../../../types/auth";
 import { toast } from "react-toastify";
 import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";

@@ -5,7 +5,7 @@ import {
 } from "../../../contexts/WishlistContext";
 import { Button, Form } from "react-bootstrap";
 import WishlistItem from "../../../components/shared/WishlistItem";
-import { useDeleteWishlist } from "../../../services/api/wishlist";
+import { useDeleteWishlist } from "../../../hooks/api/wishlist";
 import NoData from "../../../components/ui/NoData";
 import { Helmet } from "react-helmet-async";
 

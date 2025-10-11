@@ -1,6 +1,6 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import Select, { type SingleValue } from "react-select";
-import { useConfirmPayment, useFetchOrder } from "../../../services/api/order";
+import { useConfirmPayment, useFetchOrder } from "../../../hooks/api/order";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ErrorValidationAlert from "../../ui/ErrorValidationAlert";
 import { useQueryClient } from "@tanstack/react-query";

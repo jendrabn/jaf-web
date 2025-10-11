@@ -3,7 +3,7 @@ import { Accordion } from "react-bootstrap";
 import {
   useFetchProductBrands,
   useFetchProductCategories,
-} from "../../services/api/product";
+} from "../../hooks/api/product";
 import type { ProductParamsTypes } from "../../types/product";
 import useFilters from "../../hooks/useFilters";
 import { SEXS } from "../../utils/constans";

@@ -3,14 +3,14 @@ import { useParams } from "react-router";
 import { getGenderLabel, formatPrice } from "../../utils/functions";
 import ProductItem from "../../components/shared/ProductItem";
 import { useState } from "react";
-import { useCreateCart } from "../../services/api/cart";
+import { useCreateCart } from "../../hooks/api/cart";
 import Layout from "../../components/layout/Layout";
 import NotFoundPage from "../../pages/NotFound";
 import {
   useFetchProduct,
   useFetchRelatedProducts,
-} from "../../services/api/product";
-import { useCreateWishlist } from "../../services/api/wishlist";
+} from "../../hooks/api/product";
+import { useCreateWishlist } from "../../hooks/api/wishlist";
 import Loading from "../../components/ui/Loading";
 import QuantityInput from "../../components/ui/QuantityInput";
 import { toast } from "react-toastify";

@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import AccountLayout from "../../../components/layout/AccountLayout";
-import { useFetchOrder } from "../../../services/api/order";
+import { useFetchOrder } from "../../../hooks/api/order";
 import NotFoundPage from "../../../pages/NotFound";
 import Loading from "../../../components/ui/Loading";
 import { formatDateTime, formatPrice } from "../../../utils/functions";

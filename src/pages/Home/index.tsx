@@ -1,4 +1,4 @@
-import { useFetchLanding } from "../../services/api/landing";
+import { useFetchLanding } from "../../hooks/api/landing";
 import ProductItem from "../../components/shared/ProductItem";
 import BlogItem from "../../components/shared/BlogItem";
 import type { ProductItemTypes } from "../../types/product";

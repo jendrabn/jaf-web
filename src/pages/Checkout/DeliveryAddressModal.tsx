@@ -1,10 +1,16 @@
-import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  type FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   useFetchCities,
   useFetchDistricts,
   useFetchProvinces,
   useFetchSubDistricts,
-} from "../../services/api/region";
+} from "../../hooks/api/region";
 import { Button, Form, Modal } from "react-bootstrap";
 import Select, { type SingleValue } from "react-select";
 import type { AddressTypes } from "../../types/checkout";
@@ -13,7 +19,7 @@ import {
   useCheckoutState,
 } from "../../contexts/CheckoutContext";
 import { toast } from "react-toastify";
-import { useFetchShippingCosts } from "../../services/api/order";
+import { useFetchShippingCosts } from "../../hooks/api/order";
 
 interface DeliveryAddressModalProps {
   onClose: () => void;
@@ -59,7 +65,8 @@ function DeliveryAddressModal({
 
   const shippingCostMutation = useFetchShippingCosts();
 
-  const { data: provinces, isLoading: isLoadingProvinces } = useFetchProvinces();
+  const { data: provinces, isLoading: isLoadingProvinces } =
+    useFetchProvinces();
   const { data: cities, isLoading: isLoadingCities } = useFetchCities(
     data.province?.id
   );
@@ -72,40 +79,45 @@ function DeliveryAddressModal({
   type Option = { value: number; label: string };
 
   const provinceOptions = useMemo<Option[]>(
-    () => (provinces ?? []).map((province) => ({
-      value: province.id,
-      label: province.name,
-    })),
+    () =>
+      (provinces ?? []).map((province) => ({
+        value: province.id,
+        label: province.name,
+      })),
     [provinces]
   );
 
   const cityOptions = useMemo<Option[]>(
-    () => (cities ?? []).map((city) => ({
-      value: city.id,
-      label: city.name,
-    })),
+    () =>
+      (cities ?? []).map((city) => ({
+        value: city.id,
+        label: city.name,
+      })),
     [cities]
   );
 
   const districtOptions = useMemo<Option[]>(
-    () => (districts ?? []).map((district) => ({
-      value: district.id,
-      label: district.name,
-    })),
+    () =>
+      (districts ?? []).map((district) => ({
+        value: district.id,
+        label: district.name,
+      })),
     [districts]
   );
 
   const subDistrictOptions = useMemo<Option[]>(
-    () => (subDistricts ?? []).map((subdistrict) => ({
-      value: subdistrict.id,
-      label: subdistrict.name,
-    })),
+    () =>
+      (subDistricts ?? []).map((subdistrict) => ({
+        value: subdistrict.id,
+        label: subdistrict.name,
+      })),
     [subDistricts]
   );
 
   const selectedProvinceOption = useMemo<Option | null>(
     () =>
-      provinceOptions.find((option) => option.value === data.province?.id) ?? null,
+      provinceOptions.find((option) => option.value === data.province?.id) ??
+      null,
     [provinceOptions, data.province?.id]
   );
 
@@ -116,14 +128,16 @@ function DeliveryAddressModal({
 
   const selectedDistrictOption = useMemo<Option | null>(
     () =>
-      districtOptions.find((option) => option.value === data.district?.id) ?? null,
+      districtOptions.find((option) => option.value === data.district?.id) ??
+      null,
     [districtOptions, data.district?.id]
   );
 
   const selectedSubDistrictOption = useMemo<Option | null>(
     () =>
-      subDistrictOptions.find((option) => option.value === data.subdistrict?.id) ??
-      null,
+      subDistrictOptions.find(
+        (option) => option.value === data.subdistrict?.id
+      ) ?? null,
     [subDistrictOptions, data.subdistrict?.id]
   );
 

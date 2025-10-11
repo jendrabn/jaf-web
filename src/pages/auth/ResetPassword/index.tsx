@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from "react-router";
 import AuthLayout from "../../../components/layout/AuthLayout";
 import type { ResetPasswordReqTypes } from "../../../types/auth";
 import { Button, Form, FormControl } from "react-bootstrap";
-import { useResetPassword } from "../../../services/api/auth";
+import { useResetPassword } from "../../../hooks/api/auth";
 import { toast } from "react-toastify";
 import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";
 import PasswordInput from "../../../components/ui/PasswordInput";

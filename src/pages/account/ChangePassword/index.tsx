@@ -1,7 +1,7 @@
 import { Button, Col, Form, Row } from "react-bootstrap";
 import AccountLayout from "../../../components/layout/AccountLayout";
 import type { PasswordReqTypes } from "../../../types/user";
-import { useUpdatePassword } from "../../../services/api/user";
+import { useUpdatePassword } from "../../../hooks/api/user";
 import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";
 import PasswordInput from "../../../components/ui/PasswordInput";
 import { Helmet } from "react-helmet-async";

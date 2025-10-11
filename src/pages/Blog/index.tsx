@@ -1,4 +1,4 @@
-import { useFetchBlogs } from "../../services/api/blog";
+import { useFetchBlogs } from "../../hooks/api/blog";
 import type { BlogParamsTypes } from "../../types/blog";
 import BlogItem from "../../components/shared/BlogItem";
 import Loading from "../../components/ui/Loading";
