@@ -68,10 +68,12 @@ function App() {
     <>
       <ToastContainer
         limit={10}
-        theme="light"
-        position="top-center"
+        theme="colored"
+        position="top-right"
         closeButton={false}
-        autoClose={3000}
+        autoClose={1000}
+        pauseOnHover={false}
+        hideProgressBar={true}
         newestOnTop
       />
 
