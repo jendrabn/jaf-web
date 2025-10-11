@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import ErrorValidationAlert from "../../ui/ErrorValidationAlert";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import bankList from "../../../assets/bank-list.json";
+import bankList from "../../../data/bank-list.json";
 import CheckIcon from "../../../assets/check-complete-done.svg";
 import { useLocation, useNavigate } from "react-router";
 import Loading from "../../ui/Loading";

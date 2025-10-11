@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "name": "GoPay",
+        "code": "GOPAY"
+    },
+    {
+        "id": 2,
+        "name": "OVO",
+        "code": "OVO"
+    },
+    {
+        "id": 3,
+        "name": "DANA",
+        "code": "DANA"
+    },
+    {
+        "id": 4,
+        "name": "ShopeePay",
+        "code": "SHOPEEPAY"
+    },
+    {
+        "id": 5,
+        "name": "LinkAja",
+        "code": "LINKAJA"
+    },
+    {
+        "id": 6,
+        "name": "DOKU",
+        "code": "DOKU"
+    },
+    {
+        "id": 7,
+        "name": "Sakuku",
+        "code": "SAKUKU"
+    },
+    {
+        "id": 8,
+        "name": "i.Saku",
+        "code": "ISAKU"
+    },
+    {
+        "id": 9,
+        "name": "Mekari Pay",
+        "code": "MEKARIPAY"
+    },
+    {
+        "id": 10,
+        "name": "YUKK",
+        "code": "YUKK"
+    }
+]

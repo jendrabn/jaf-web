@@ -1,0 +1,667 @@
+[
+    {
+        "id": 156,
+        "name": "SeaBank",
+        "code": "535"
+    },
+    {
+        "id": 2,
+        "name": "BCA",
+        "code": "014"
+    },
+    {
+        "id": 4,
+        "name": "BRI",
+        "code": "002"
+    },
+    {
+        "id": 3,
+        "name": "BNI",
+        "code": "009"
+    },
+    {
+        "id": 1,
+        "name": "Bank Mandiri",
+        "code": "008"
+    },
+    {
+        "id": 33,
+        "name": "Bank Raya Indonesia",
+        "code": "494"
+    },
+    {
+        "id": 150,
+        "name": "ANZ Panin",
+        "code": "061"
+    },
+    {
+        "id": 34,
+        "name": "ANZ Panin Bank",
+        "code": "061"
+    },
+    {
+        "id": 157,
+        "name": "Bank Syariah Indonesia",
+        "code": "BSMDIDJAXXX"
+    },
+    {
+        "id": 13,
+        "name": "Bangkok Bank Public CO",
+        "code": "040"
+    },
+    {
+        "id": 41,
+        "name": "BCA Syariah",
+        "code": "SYCAIDJ1XXX"
+    },
+    {
+        "id": 63,
+        "name": "BJB",
+        "code": "110"
+    },
+    {
+        "id": 15,
+        "name": "BJB Syariah",
+        "code": "SYJBIDJ1XXX"
+    },
+    {
+        "id": 121,
+        "name": "BNP PARIBAS Indonesia",
+        "code": "057"
+    },
+    {
+        "id": 10,
+        "name": "BTN",
+        "code": "200"
+    },
+    {
+        "id": 139,
+        "name": "BTN UUS",
+        "code": "200"
+    },
+    {
+        "id": 111,
+        "name": "BTPN",
+        "code": "213"
+    },
+    {
+        "id": 112,
+        "name": "BTPN Syariah",
+        "code": "PUBAIDJ1XXX"
+    },
+    {
+        "id": 11,
+        "name": "Bukopin",
+        "code": "441"
+    },
+    {
+        "id": 140,
+        "name": "Centratama Nasional Bank",
+        "code": "559"
+    },
+    {
+        "id": 6,
+        "name": "CIMB Niaga",
+        "code": "022"
+    },
+    {
+        "id": 7,
+        "name": "CITIBANK",
+        "code": "031"
+    },
+    {
+        "id": 8,
+        "name": "Danamon",
+        "code": "011"
+    },
+    {
+        "id": 29,
+        "name": "Deutsche Bank AG",
+        "code": "067"
+    },
+    {
+        "id": 9,
+        "name": "HSBC",
+        "code": "HSBCIDJA"
+    },
+    {
+        "id": 32,
+        "name": "JPMorgan Chase Bank NA",
+        "code": "032"
+    },
+    {
+        "id": 147,
+        "name": "Maybank",
+        "code": "016"
+    },
+    {
+        "id": 12,
+        "name": "Mega",
+        "code": "426"
+    },
+    {
+        "id": 142,
+        "name": "Prima Master Bank",
+        "code": "520"
+    },
+    {
+        "id": 93,
+        "name": "RABOBANK International IND",
+        "code": "060"
+    },
+    {
+        "id": 143,
+        "name": "Standard Chartered Bank",
+        "code": "050"
+    },
+    {
+        "id": 144,
+        "name": "MUFG Bank",
+        "code": "042"
+    },
+    {
+        "id": 36,
+        "name": "Bank Agris",
+        "code": "AGSSIDJA"
+    },
+    {
+        "id": 37,
+        "name": "Bank OKE Indonesia",
+        "code": "526"
+    },
+    {
+        "id": 38,
+        "name": "Bank Antar Daerah",
+        "code": "088"
+    },
+    {
+        "id": 39,
+        "name": "Bank Artha Graha INT",
+        "code": "037"
+    },
+    {
+        "id": 40,
+        "name": "Bank Jago",
+        "code": "542"
+    },
+    {
+        "id": 42,
+        "name": "Krom",
+        "code": "459"
+    },
+    {
+        "id": 45,
+        "name": "Bank Bumi Arta",
+        "code": "076"
+    },
+    {
+        "id": 46,
+        "name": "Bank Capital Indonesia",
+        "code": "054"
+    },
+    {
+        "id": 47,
+        "name": "Bank China Trust Indonesia",
+        "code": "949"
+    },
+    {
+        "id": 49,
+        "name": "Bank Commonwealth",
+        "code": "950"
+    },
+    {
+        "id": 50,
+        "name": "Bank Danamon IND. UU Syariah",
+        "code": "SYBDIDJ1XXX"
+    },
+    {
+        "id": 51,
+        "name": "Bank DBS Indonesia",
+        "code": "046"
+    },
+    {
+        "id": 48,
+        "name": "Cimb Niaga UUS",
+        "code": "022"
+    },
+    {
+        "id": 52,
+        "name": "Bank Sahabat Sampoerna",
+        "code": "523"
+    },
+    {
+        "id": 53,
+        "name": "Bank DKI",
+        "code": "111"
+    },
+    {
+        "id": 54,
+        "name": "Bank DKI UUS",
+        "code": "111"
+    },
+    {
+        "id": 55,
+        "name": "Bank HSBC Indonesia",
+        "code": "087"
+    },
+    {
+        "id": 56,
+        "name": "Superbank",
+        "code": "562"
+    },
+    {
+        "id": 57,
+        "name": "Bank Ganesha",
+        "code": "161"
+    },
+    {
+        "id": 14,
+        "name": "Bank Hana",
+        "code": "484"
+    },
+    {
+        "id": 58,
+        "name": "Allo Bank",
+        "code": "567"
+    },
+    {
+        "id": 60,
+        "name": "Bank ICBC Indonesia",
+        "code": "164"
+    },
+    {
+        "id": 61,
+        "name": "Bank INA Perdana",
+        "code": "IAPTIDJA"
+    },
+    {
+        "id": 62,
+        "name": "Bank Index Selindo",
+        "code": "555"
+    },
+    {
+        "id": 64,
+        "name": "Bank Jasa Jakarta",
+        "code": "472"
+    },
+    {
+        "id": 16,
+        "name": "Bank Jatim Unit Usaha Syariah",
+        "code": "PDJTIDJ1"
+    },
+    {
+        "id": 65,
+        "name": "Bank Kalbar UUS",
+        "code": "123"
+    },
+    {
+        "id": 70,
+        "name": "Bank Maspion Indonesia",
+        "code": "157"
+    },
+    {
+        "id": 152,
+        "name": "Bank Mayapada International",
+        "code": "097"
+    },
+    {
+        "id": 71,
+        "name": "Bank Mayapada International T",
+        "code": "097"
+    },
+    {
+        "id": 72,
+        "name": "Bank Aladin Syariah",
+        "code": "NETBIDJAXXX"
+    },
+    {
+        "id": 73,
+        "name": "Bank Mayora Indonesia",
+        "code": "HBNIIDJA"
+    },
+    {
+        "id": 74,
+        "name": "Bank Mestika Dharma",
+        "code": "151"
+    },
+    {
+        "id": 75,
+        "name": "Bank Shinhan Indonesia",
+        "code": "152"
+    },
+    {
+        "id": 76,
+        "name": "Bank Mitraniaga",
+        "code": "491"
+    },
+    {
+        "id": 77,
+        "name": "Bank Mizuho Indonesia",
+        "code": "048"
+    },
+    {
+        "id": 155,
+        "name": "Bank MNC Internasional",
+        "code": "485"
+    },
+    {
+        "id": 78,
+        "name": "Bank Muamalat Indonesia",
+        "code": "147"
+    },
+    {
+        "id": 79,
+        "name": "Bank Multiarta Sentosa",
+        "code": "548"
+    },
+    {
+        "id": 80,
+        "name": "Bank Jtrust Indonesia",
+        "code": "095"
+    },
+    {
+        "id": 148,
+        "name": "Bank Nagari",
+        "code": "118"
+    },
+    {
+        "id": 81,
+        "name": "Bank National NOBU",
+        "code": "503"
+    },
+    {
+        "id": 83,
+        "name": "Bank Nusantara Parahyangan",
+        "code": "NUPAIDJ6"
+    },
+    {
+        "id": 84,
+        "name": "Bank OCBC NISP",
+        "code": "NISPIDJA"
+    },
+    {
+        "id": 85,
+        "name": "Bank OCBC NISP Syariah",
+        "code": "SYONIDJ1XXX"
+    },
+    {
+        "id": 17,
+        "name": "Bank Of America",
+        "code": "033"
+    },
+    {
+        "id": 18,
+        "name": "Bank Of China Limited",
+        "code": "069"
+    },
+    {
+        "id": 153,
+        "name": "Bank Panin",
+        "code": "019"
+    },
+    {
+        "id": 154,
+        "name": "Bank Panin Syariah",
+        "code": "ARFAIDJ1XXX"
+    },
+    {
+        "id": 90,
+        "name": "Bank Permata",
+        "code": "013"
+    },
+    {
+        "id": 91,
+        "name": "Bank Permata Syariah",
+        "code": "SYBBIDJ1"
+    },
+    {
+        "id": 92,
+        "name": "Bank Pembangunan Daerah Banten (BPDB)",
+        "code": "137"
+    },
+    {
+        "id": 151,
+        "name": "Bank QNB Indonesia",
+        "code": "167"
+    },
+    {
+        "id": 94,
+        "name": "Bank Resona Perdania",
+        "code": "047"
+    },
+    {
+        "id": 95,
+        "name": "BCA Digital",
+        "code": "BBLUIDJA"
+    },
+    {
+        "id": 97,
+        "name": "Bank SBI Indonesia",
+        "code": "498"
+    },
+    {
+        "id": 98,
+        "name": "Bank Mandiri Taspen",
+        "code": "564"
+    },
+    {
+        "id": 99,
+        "name": "Bank Sinarmas",
+        "code": "153"
+    },
+    {
+        "id": 100,
+        "name": "Bank Nano Syariah",
+        "code": "NANOIDJ1XXX"
+    },
+    {
+        "id": 101,
+        "name": "Bank Sulselbar",
+        "code": "PDWSIDJA"
+    },
+    {
+        "id": 102,
+        "name": "Bank Sulselbar Syariah",
+        "code": "SYWSIDJ1"
+    },
+    {
+        "id": 103,
+        "name": "Bank Sulut",
+        "code": "127"
+    },
+    {
+        "id": 104,
+        "name": "Bank Sumitomo Mitsui Indonesia",
+        "code": "045"
+    },
+    {
+        "id": 106,
+        "name": "Bank Swadesi",
+        "code": "SWBAIDJ1"
+    },
+    {
+        "id": 108,
+        "name": "Bank Syariah Bukopin",
+        "code": "SDOBIDJ1XXX"
+    },
+    {
+        "id": 110,
+        "name": "Bank Syariah Mega Indonesia",
+        "code": "BUTGIDJ1"
+    },
+    {
+        "id": 113,
+        "name": "Bank UOB Indonesia",
+        "code": "023"
+    },
+    {
+        "id": 114,
+        "name": "Bank Victoria International",
+        "code": "566"
+    },
+    {
+        "id": 115,
+        "name": "Bank Victoria Syariah",
+        "code": "SWAGIDJ1XXX"
+    },
+    {
+        "id": 116,
+        "name": "Bank Windu Kentjana",
+        "code": "MCORIDJA"
+    },
+    {
+        "id": 117,
+        "name": "Bank Woori Indonesia",
+        "code": "BSDRIDJA"
+    },
+    {
+        "id": 118,
+        "name": "Bank Neo Commerce",
+        "code": "490"
+    },
+    {
+        "id": 122,
+        "name": "BPD Aceh",
+        "code": "116"
+    },
+    {
+        "id": 44,
+        "name": "BPD Aceh UUS",
+        "code": "116"
+    },
+    {
+        "id": 123,
+        "name": "BPD Bali",
+        "code": "129"
+    },
+    {
+        "id": 124,
+        "name": "BPD Bengkulu",
+        "code": "133"
+    },
+    {
+        "id": 28,
+        "name": "BPD DIY",
+        "code": "112"
+    },
+    {
+        "id": 125,
+        "name": "BPD DIY Syariah",
+        "code": "SYYKIDJ1XXX"
+    },
+    {
+        "id": 88,
+        "name": "BPD Jambi",
+        "code": "115"
+    },
+    {
+        "id": 126,
+        "name": "BPD Jateng",
+        "code": "113"
+    },
+    {
+        "id": 127,
+        "name": "BPD Jateng UUS",
+        "code": "113"
+    },
+    {
+        "id": 19,
+        "name": "BPD Jatim",
+        "code": "114"
+    },
+    {
+        "id": 128,
+        "name": "BPD Kalbar",
+        "code": "123"
+    },
+    {
+        "id": 20,
+        "name": "BPD Kalsel",
+        "code": "122"
+    },
+    {
+        "id": 21,
+        "name": "BPD Kalsel UUS",
+        "code": "122"
+    },
+    {
+        "id": 130,
+        "name": "BPD Kalteng",
+        "code": "125"
+    },
+    {
+        "id": 129,
+        "name": "BPD Kaltim",
+        "code": "124"
+    },
+    {
+        "id": 22,
+        "name": "BPD Kaltim UUS",
+        "code": "124"
+    },
+    {
+        "id": 23,
+        "name": "BPD Lampung",
+        "code": "121"
+    },
+    {
+        "id": 131,
+        "name": "BPD Maluku",
+        "code": "131"
+    },
+    {
+        "id": 132,
+        "name": "BPD NTB",
+        "code": "128"
+    },
+    {
+        "id": 24,
+        "name": "BPD NTT",
+        "code": "PDNTIDJA"
+    },
+    {
+        "id": 89,
+        "name": "BPD Papua",
+        "code": "132"
+    },
+    {
+        "id": 133,
+        "name": "BPD Riau",
+        "code": "119"
+    },
+    {
+        "id": 135,
+        "name": "BPD Sulteng",
+        "code": "134"
+    },
+    {
+        "id": 136,
+        "name": "BPD Sultra",
+        "code": "135"
+    },
+    {
+        "id": 26,
+        "name": "BPD Sumbar UUS",
+        "code": "118"
+    },
+    {
+        "id": 27,
+        "name": "BPD Sumsel Dan Babel",
+        "code": "120"
+    },
+    {
+        "id": 137,
+        "name": "BPD Sumsel dan BABEL Syariah",
+        "code": "SYSSIDJ1XXX"
+    },
+    {
+        "id": 105,
+        "name": "BPD Sumut",
+        "code": "117"
+    },
+    {
+        "id": 138,
+        "name": "BPD Sumut Syariah",
+        "code": "SYSUIDJ1XXX"
+    }
+]
