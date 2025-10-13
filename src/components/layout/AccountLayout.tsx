@@ -1,63 +1,45 @@
 import { type PropsWithChildren, useEffect } from "react";
-import { NavLink } from "react-router";
 import Navbar from "../shared/Navbar";
 import Footer from "../shared/Footer";
 import { Accordion, Nav } from "react-bootstrap";
+import { NavLink, useLocation } from "react-router";
 
 type AuthLayoutProps = PropsWithChildren & {
   title: string;
 };
 
 const NavAccount = () => {
+  const location = useLocation();
+
+  const menus = [
+    { to: "/account/profile", label: "Profil" },
+    { to: "/account/orders", label: "Pesanan" },
+    { to: "/account/wishlist", label: "Wishlist" },
+    { to: "/account/address", label: "Alamat" },
+    { to: "/account/change-password", label: "Ubah Password" },
+  ];
+
   return (
     <Nav
-      defaultActiveKey="/account/profile"
-      className="flex-column nav__account"
+      defaultActiveKey={location.pathname}
+      className="flex-column"
+      variant="pills"
+      as={"ul"}
     >
-      <Nav.Item>
-        <NavLink
-          to="/account/profile"
-          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
-        >
-          <i className="bi bi-chevron-right me-2"></i> Profil
-        </NavLink>
-      </Nav.Item>
-
-      <Nav.Item>
-        <NavLink
-          to="/account/orders"
-          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
-        >
-          <i className="bi bi-chevron-right me-2"></i> Pesanan
-        </NavLink>
-      </Nav.Item>
-
-      <Nav.Item>
-        <NavLink
-          to="/account/wishlist"
-          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
-        >
-          <i className="bi bi-chevron-right me-2"></i> Wishlist
-        </NavLink>
-      </Nav.Item>
-
-      <Nav.Item>
-        <NavLink
-          to="/account/address"
-          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
-        >
-          <i className="bi bi-chevron-right me-2"></i> Alamat
-        </NavLink>
-      </Nav.Item>
-
-      <Nav.Item>
-        <NavLink
-          to="/account/change-password"
-          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
-        >
-          <i className="bi bi-chevron-right me-2"></i> Ubah Password
-        </NavLink>
-      </Nav.Item>
+      {menus.map((menu) => (
+        <Nav.Item key={menu.to} as={"li"}>
+          <NavLink
+            to={menu.to}
+            className={({ isActive }) =>
+              `nav-link link-body-emphasis fw-medium active-text-white ${
+                isActive ? "active" : ""
+              }`
+            }
+          >
+            <i className="bi bi-chevron-right me-2"></i> {menu.label}
+          </NavLink>
+        </Nav.Item>
+      ))}
     </Nav>
   );
 };
@@ -82,7 +64,7 @@ function AccountLayout({ children, title }: AuthLayoutProps) {
               {/* Mobile Only */}
               <Accordion
                 defaultActiveKey="0"
-                className="mb-3 d-lg-none accordion__menu-account"
+                className="mb-3 d-lg-none accordion-menu-account"
               >
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>Menu Saya</Accordion.Header>

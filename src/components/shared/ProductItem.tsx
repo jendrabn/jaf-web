@@ -1,6 +1,7 @@
-import { NavLink } from "react-router";
 import type { ProductItemTypes } from "../../types/product";
-import { formatPrice } from "../../utils/functions";
+import { Card } from "react-bootstrap";
+import { formatCurrency } from "../../utils/format";
+import { Link } from "react-router";
 
 interface ProductItemProps {
   product: ProductItemTypes;
@@ -36,61 +37,56 @@ export default function ProductItem({
     discountPercent && discountPercent > 0 ? `-${discountPercent}%` : null;
 
   return (
-    <NavLink
-      to={`/products/${id}`}
-      className="card card__product-item text-decoration-none bg-gray-100 h-100"
-    >
-      <figure
-        className="card__product-item-image w-100 bg-gray-300 m-0"
-        style={{ aspectRatio: "1/1" }}
-      >
-        <img
-          src={image}
-          className="object-fit-contain w-100 h-100 card-img-top"
-          alt={name}
-          loading="lazy"
-        />
-      </figure>
+    <Card className="h-100 text-decoration-none border-0 hover-up">
+      <Link to={`/products/${id}`} className="text-decoration-none">
+        <div className="w-100 ratio ratio-1x1 bg-gray-300 overflow-hidden rounded-3 img-hover-zoom">
+          <img
+            src={image}
+            alt={name}
+            loading="lazy"
+            className="w-100 h-100 object-fit-cover"
+          />
+        </div>
+      </Link>
 
-      <div
-        className="card-body d-flex flex-column justify-content-between"
-        style={{ padding: "0.5rem" }}
-      >
-        <div>
-          <div className="card__product-item-name title-truncate fs-6 mb-1">
+      <Card.Body className="px-0">
+        <Card.Title className="fs-6 line-clamp-2">
+          <Link
+            className="text-body-emphasis text-decoration-none hover-text-primary"
+            to={`/products/${id}`}
+          >
             {name}
-          </div>
-          <div className="card__product-item-price h5 mb-2 fw-bold">
-            {isDiscounted ? (
-              <>
-                <span className="text-danger me-2">
-                  {formatPrice(currentPrice)}
+          </Link>
+        </Card.Title>
+        <Card.Text>
+          {isDiscounted ? (
+            <>
+              <span className="fw-semibold text-danger">
+                {formatCurrency(currentPrice)}
+              </span>
+              <small className="text-body-secondary fw-normal d-block">
+                <span className="text-decoration-line-through me-2">
+                  {formatCurrency(price)}
                 </span>
-                <small className="text-gray-600 fw-normal d-block">
-                  <span className="text-decoration-line-through me-2">
-                    {formatPrice(price)}
-                  </span>
-                  {discountLabel && <span>{discountLabel}</span>}
-                </small>
-              </>
-            ) : (
-              formatPrice(currentPrice)
+                {discountLabel && <span>{discountLabel}</span>}
+              </small>
+            </>
+          ) : (
+            <span className="fw-semibold">{formatCurrency(currentPrice)}</span>
+          )}
+        </Card.Text>
+        {(showRating || showSoldCount) && (
+          <div className="d-flex justify-content-between align-items-center small text-body-secondary">
+            {showRating && (
+              <div>
+                <i className="bi bi-star-fill text-warning me-1"></i>
+                <span>{product.rating_avg}</span>
+              </div>
             )}
+            {showSoldCount && <span>{sold_count} Terjual</span>}
           </div>
-        </div>
-
-        <div className="card__product-item-rating-and-sold d-flex justify-content-between align-items-center text-gray-700 mt-auto">
-          {showRating && (
-            <div className="card__product-item-rating">
-              <i className="bi bi-star-fill text-warning"></i>
-              <span className="ms-1">{product.rating_avg}</span>
-            </div>
-          )}
-          {showSoldCount && (
-            <div className="card__product-item-sold">{sold_count} Terjual</div>
-          )}
-        </div>
-      </div>
-    </NavLink>
+        )}
+      </Card.Body>
+    </Card>
   );
 }

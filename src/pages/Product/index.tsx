@@ -1,7 +1,7 @@
 import { useFetchProducts } from "../../hooks/api/product";
 import type { ProductItemTypes, ProductParamsTypes } from "../../types/product";
 import ProductItem from "../../components/shared/ProductItem";
-import ProductListFilters from "./ProductListFilters";
+import ProductFilters from "./ProductFilters";
 import Loading from "../../components/ui/Loading";
 import Pagination from "../../components/ui/Pagination";
 import useFilters from "../../hooks/useFilters";
@@ -78,14 +78,14 @@ function ProductPage() {
       </Helmet>
 
       <div className="container">
-        <div className="row">
+        <div className="row g-5">
           <div className="col-lg-2 d-none d-lg-block">
-            <ProductListFilters />
+            <ProductFilters />
           </div>
           <div className="col-lg-10">
             {params.search && (
               <div className="d-flex align-items-center justify-content-start mb-3">
-                <p className="text-gray-700 mb-0">
+                <p className="text-body-emphasis mb-0">
                   <i className="bi bi-search me-2"></i>Hasil pencarian untuk "
                   <span className="fw-bold text-body">{params.search}</span>"
                 </p>
@@ -95,7 +95,9 @@ function ProductPage() {
             <div className="d-flex justify-content-between align-items-center mb-4">
               {/* Desktop Only */}
               <div className="d-none d-lg-block">
-                <span className="text-gray-700 mb-0 me-2">Urutkan:</span>
+                <span className="text-secondary-emphasis mb-0 me-2">
+                  Urutkan:
+                </span>
                 <Form.Select
                   className="w-auto d-inline-block cursor-pointer"
                   onChange={(e) => {
@@ -111,11 +113,6 @@ function ProductPage() {
                 </Form.Select>
               </div>
               {/* End Desktop Only */}
-
-              <p className="text-gray-700 mb-0">
-                {products?.page?.from || 0} - {products?.page?.to || 0} dari{" "}
-                {products?.page?.total || 0}
-              </p>
 
               {/* Mobile Only */}
               <div className="d-flex align-items-center gap-2 d-lg-none">
@@ -146,7 +143,7 @@ function ProductPage() {
                     </Offcanvas.Title>
                   </Offcanvas.Header>
                   <Offcanvas.Body>
-                    <ProductListFilters />
+                    <ProductFilters />
                   </Offcanvas.Body>
                 </Offcanvas>
 
@@ -182,10 +179,10 @@ function ProductPage() {
 
             {products?.data && products?.data?.length > 0 && (
               <>
-                <div className="row g-3">
+                <div className="row g-4">
                   {products.data.map((product: ProductItemTypes) => (
                     <div
-                      className="col-6 col-sm-6 col-lg-1of5"
+                      className="col-6 col-md-4 col-lg-1of5"
                       key={`product-${product.id}`}
                     >
                       <ProductItem product={product} />

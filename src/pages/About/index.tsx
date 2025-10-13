@@ -92,13 +92,13 @@ function AboutPage() {
         <section className="py-5 mb-5">
           <div className="row gy-4 text-center">
             <div className="col-6 col-md-3">
-              <div className="bg-white rounded-4 shadow-sm py-4">
+              <div className="bg-white-subtle rounded-4 shadow py-4">
                 <div className="number display-5 fw-bold ">50+</div>
                 <div className="label text-muted">JENIS PARFUM</div>
               </div>
             </div>
             <div className="col-6 col-md-3">
-              <div className="bg-white rounded-4 shadow-sm py-4">
+              <div className="bg-white-subtle rounded-4 shadow py-4">
                 <div className="number display-5 fw-bold ">19</div>
                 <div className="label text-muted">
                   OUTLET DI JEMBER & SEKITARNYA
@@ -106,13 +106,13 @@ function AboutPage() {
               </div>
             </div>
             <div className="col-6 col-md-3">
-              <div className="bg-white rounded-4 shadow-sm py-4">
+              <div className="bg-white-subtle rounded-4 shadow py-4">
                 <div className="number display-5 fw-bold ">100+</div>
                 <div className="label text-muted">PRODUK BERKUALITAS</div>
               </div>
             </div>
             <div className="col-6 col-md-3">
-              <div className="bg-white rounded-4 shadow-sm py-4">
+              <div className="bg-white-subtle rounded-4 shadow py-4">
                 <div className="number display-5 fw-bold ">1K+</div>
                 <div className="label text-muted">PELANGGAN YANG PUAS</div>
               </div>
@@ -123,7 +123,7 @@ function AboutPage() {
         {/* Google Business Review Section */}
         <section className="">
           <div
-            className="bg-white rounded-4 shadow-sm p-4 p-md-5 mx-auto"
+            className="bg-white-subtle rounded-4 shadow-sm p-4 p-md-5 mx-auto"
             style={{ maxWidth: 600 }}
           >
             <div className="mb-3 text-center">

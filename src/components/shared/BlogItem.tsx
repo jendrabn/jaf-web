@@ -1,41 +1,89 @@
-import { NavLink } from "react-router";
 import { type BlogItemTypes } from "../../types/blog";
+import { Badge, Card, Col, Image, Row } from "react-bootstrap";
+import { formatDiffForHumans } from "../../utils/format";
+import { Link } from "react-router";
 
-const formatDate = (date: string): string =>
-  new Date(date).toLocaleDateString("id-ID", {
-    day: "2-digit",
-    month: "short",
-  });
+type Props = { blog: BlogItemTypes };
 
-export default function BlogItem({ blog }: { blog: BlogItemTypes }) {
-  return (
-    <NavLink
-      to={`/blogs/${blog.slug}`}
-      className="card card__blog-item text-decoration-none bg-gray-100 h-100"
-    >
-      <figure
-        className="card__blog-item-image w-100 bg-gray-300 m-0"
-        style={{ aspectRatio: "4/3" }}
-      >
-        <img
-          src={blog.featured_image}
-          alt={blog.title}
-          className="card-img-top object-fit-contain w-100 h-100"
-          loading="lazy"
-        />
-      </figure>
+const BlogItem = ({ blog }: Props) => (
+  <Card as="article" className="h-100 border-0 hover-up">
+    <Row className="g-0 g-md-2">
+      <Col xs={3} md={12}>
+        <div className="position-relative">
+          <Link
+            to={`/blog/${blog.slug}`}
+            aria-label={blog.title}
+            className="d-block"
+          >
+            <div className="w-100 ratio ratio-16x9 overflow-hidden rounded-3 bg-gray-300 img-hover-zoom">
+              <img
+                className="w-100 h-100 object-fit-cover"
+                loading="lazy"
+                src={blog.featured_image}
+                alt={blog.title}
+              />
+            </div>
+          </Link>
 
-      <div className="card-body">
-        <h5 className="card-title title-truncate" style={{ fontWeight: 700 }}>
-          {blog.title}
-        </h5>
-        <p className="card-text text-muted">{blog.content_thumbnail}</p>
-        <p className="mb-0 text-gray-700">
-          <span>{formatDate(blog.created_at)}</span> &bull;{" "}
-          <span className="text-uppercase fw-bold">{blog.category.name}</span>{" "}
-          &bull; <span>{blog.min_read} min read</span>
-        </p>
-      </div>
-    </NavLink>
-  );
-}
+          <Link
+            to={`/blog/category/${blog.category.slug}`}
+            className="position-absolute top-0 start-0 m-2 z-1 text-decoration-none d-none d-md-inline-block"
+          >
+            <Badge bg="primary" className="fw-medium">
+              {blog.category.name}
+            </Badge>
+          </Link>
+        </div>
+      </Col>
+
+      <Col xs={9} md={12}>
+        <Card.Body className="py-0 pe-0 px-md-0">
+          <Card.Title as="h5" className="line-clamp-2 m-0">
+            <Link
+              to={`/blog/${blog.slug}`}
+              className="text-decoration-none text-body-emphasis hover-text-primary"
+            >
+              {blog.title}
+            </Link>
+          </Card.Title>
+
+          <Card.Text className="d-flex align-items-center gap-2 small mt-2">
+            {blog.author ? (
+              <Link
+                to={`/blog/author/${encodeURIComponent(blog.author)}`}
+                className="text-decoration-none text-body-secondary d-inline-flex align-items-center"
+              >
+                <Image
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    blog.author
+                  )}`}
+                  alt={blog.author}
+                  roundedCircle
+                  width={32}
+                  height={32}
+                  className="d-none d-md-inline-block me-2"
+                />
+                <span className="fw-semibold">{blog.author}</span>
+              </Link>
+            ) : (
+              <span className="text-body-secondary fw-semibold">
+                {blog.author}
+              </span>
+            )}
+
+            <span className="text-body-secondary">•</span>
+            <time
+              className="text-body-secondary"
+              dateTime={new Date(blog.created_at).toISOString()}
+              title={new Date(blog.created_at).toLocaleString()}
+            >
+              {formatDiffForHumans(blog.created_at)}
+            </time>
+          </Card.Text>
+        </Card.Body>
+      </Col>
+    </Row>
+  </Card>
+);
+
+export default BlogItem;

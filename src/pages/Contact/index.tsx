@@ -17,9 +17,9 @@ function ContactPage() {
       <div className="container">
         <h1 className="mb-5 fw-bold text-center">Hubungi Kami</h1>
 
-        <div className="row align-items-stretch">
+        <div className="row g-5 align-items-stretch">
           <div className="col-lg-6">
-            <div className="bg-white rounded-4 shadow-sm h-100 d-flex flex-column justify-content-center">
+            <div className="bg-white-subtle rounded-4 shadow-sm h-100 d-flex flex-column justify-content-center">
               <p className="mb-4 text-muted">
                 Ada pertanyaan, kritik, saran, atau ingin kerjasama? Silakan isi
                 form di bawah ini. Tim kami akan membalas dalam 1x24 jam pada
@@ -61,18 +61,15 @@ function ContactPage() {
             </div>
           </div>
           <div className="col-lg-6 d-flex align-items-stretch">
-            <div className="rounded-4 overflow-hidden shadow-sm w-100 bg-white">
-              <iframe
-                title="Lokasi JAF Parfum's"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.21554637957!2d113.7107621745602!3d-8.181028682013878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd6942986b10fb5%3A0x25e647f267f7b636!2sKANTOR%20JAF%20PARFUM&#39;s!5e0!3m2!1sid!2sid!4v1750245222336!5m2!1sid!2sid"
-                width="100%"
-                height="320"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
+            <iframe
+              title="Lokasi JAF Parfum's"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.21554637957!2d113.7107621745602!3d-8.181028682013878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd6942986b10fb5%3A0x25e647f267f7b636!2sKANTOR%20JAF%20PARFUM&#39;s!5e0!3m2!1sid!2sid!4v1750245222336!5m2!1sid!2sid"
+              allowFullScreen
+              loading="lazy"
+              className="w-100 rounded-3"
+              style={{ maxHeight: 400 }}
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </div>
       </div>

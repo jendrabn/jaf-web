@@ -9,6 +9,8 @@ import { useLogout } from "../../hooks/api/auth";
 import type { MouseEvent } from "react";
 import { useCartState } from "../../contexts/CartContext";
 import { removeAuthToken } from "../../utils/functions";
+import ThemeToggle from "./ThemeToggle";
+import { Image } from "react-bootstrap";
 
 export default function Navbar() {
   const { isAuthenticated, user } = useAuthState();
@@ -33,31 +35,36 @@ export default function Navbar() {
 
   return (
     <header className="sticky-top bg-body-tertiary">
-      <div className="top__bar d-none d-lg-block">
+      <div className="d-none d-lg-block py-2 border-bottom">
         <div className="container">
-          <div className="d-flex justify-content-between">
-            <div className="top__bar-left">
-              <NavLink className="me-3" to="/about">
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="">
+              <NavLink className="me-3 link-body-emphasis" to="/about">
                 Tentang Kami
               </NavLink>
-              <NavLink className="me-3" to="/contact">
+              <NavLink className="me-3 link-body-emphasis" to="/contact">
                 Kontak
               </NavLink>
-              <NavLink className="me-3" to="/help">
+              <NavLink className="me-3 link-body-emphasis" to="/help">
                 Bantuan
               </NavLink>
-              <NavLink to="/faq">FAQs</NavLink>
+              <NavLink className="link-body-emphasis" to="/faq">
+                FAQs
+              </NavLink>
             </div>
-            <div className="top__bar-right">
-              <p>Gratis ongkir untuk semua pesanan di atas 100k</p>
+            <div className="">
+              <p className="mb-0">
+                Gratis ongkir untuk semua pesanan di atas 100k
+              </p>
             </div>
           </div>
         </div>
       </div>
+
       <nav className="navbar navbar-expand-lg">
         <div className="container">
           <NavLink className="navbar-brand d-none d-md-block" to="/">
-            <img src="/img/logo.png" alt="Logo" className="img-fluid" />
+            <Image src="/img/logo-light.png" alt="Logo" fluid />
           </NavLink>
 
           <SearchBar className="flex-grow-1 me-2 d-lg-none" />
@@ -147,15 +154,19 @@ export default function Navbar() {
                   className={({ isActive }) =>
                     "nav-link " + (isActive ? "active" : "")
                   }
-                  to="/blogs"
+                  to="/blog"
                 >
                   Blog
                 </NavLink>
               </li>
             </ul>
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
               {isAuthenticated ? (
                 <>
+                  <li className="nav-item me-2">
+                    <ThemeToggle />
+                  </li>
                   <li className="nav-item me-2">
                     <NavLink className="nav-link" to={"/cart"}>
                       <div className="position-relative">
@@ -208,6 +219,7 @@ export default function Navbar() {
                           Logout
                         </Link>
                       </li>
+                      {/* theme toggle removed from dropdown to keep navbar cleaner */}
                     </ul>
                   </li>
                 </>

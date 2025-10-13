@@ -1,4 +1,4 @@
-import { Button, Tab, Tabs } from "react-bootstrap";
+import { Breadcrumb, Button, Tab, Tabs } from "react-bootstrap";
 import { useParams } from "react-router";
 import { getGenderLabel, formatPrice } from "../../utils/functions";
 import ProductItem from "../../components/shared/ProductItem";
@@ -15,7 +15,7 @@ import Loading from "../../components/ui/Loading";
 import QuantityInput from "../../components/ui/QuantityInput";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
-import ProductImagesCarousel from "../Home/ProductImagesCarousel";
+import ProductImagesCarousel from "./ProductImagesCarousel";
 import StarRating from "../../components/ui/StarRating";
 import NoData from "../../components/ui/NoData";
 import { Helmet } from "react-helmet-async";
@@ -104,6 +104,16 @@ export default function ProductDetailPage() {
           </Helmet>
 
           <div className="container">
+            <Breadcrumb className="mb-5">
+              <Breadcrumb.Item href="/">
+                <i className="bi bi-house-door-fill"></i>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item href="/products">Produk</Breadcrumb.Item>
+              <Breadcrumb.Item active className="text-truncate">
+                {product?.name}
+              </Breadcrumb.Item>
+            </Breadcrumb>
+
             <div className="row gx-5">
               <div className="col-lg-6">
                 <ProductImagesCarousel images={product?.images || []} />
@@ -165,7 +175,7 @@ export default function ProductDetailPage() {
                   <div className="row py-2">
                     <div className="col-md-3 fw-bold">Gender</div>
                     <div className="col-md-9">
-                      {getGenderLabel(product?.sex)}
+                      {getGenderLabel(product?.sex) || "-"}
                     </div>
                   </div>
 
@@ -186,7 +196,7 @@ export default function ProductDetailPage() {
                   <div className="d-flex gap-2 mt-3 mb-3 fs-6 fw-bold text-gray-600 align-items-center ">
                     <Button
                       variant="primary"
-                      className="py-2 w-50"
+                      className="py-2 px-5 flex-grow-1 flex-md-grow-0"
                       disabled={cartMutation.isPending}
                       onClick={handleAddToCart}
                     >
@@ -285,7 +295,7 @@ export default function ProductDetailPage() {
             </div>
 
             <section className="mt-5">
-              <h2 className="section__title">Produk Terkait</h2>
+              <h2 className="section-title">Produk Terkait</h2>
 
               {relatedProducts?.length === 0 && <NoData />}
 

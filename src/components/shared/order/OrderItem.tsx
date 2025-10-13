@@ -191,7 +191,7 @@ function OrderItem({
 
         <div className="d-flex flex-column flex-lg-row flex-lg-row-reverse justify-content-between border-top pt-2">
           <div className="d-flex justify-content-end align-items-center mb-2 mb-lg-0">
-            <span className="text-gray-700 me-2">Jumlah Total:</span>
+            <span className="text-secondary-emphasis me-2">Jumlah Total:</span>
             <span className="fw-bold">{formatPrice(total_amount)}</span>
           </div>
 

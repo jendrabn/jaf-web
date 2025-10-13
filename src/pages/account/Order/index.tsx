@@ -123,21 +123,18 @@ function OrderPage() {
         {/* Desktop */}
         <div className="d-none d-lg-flex align-items-center gap-2">
           <div>
-            <Form.Label className="text-gray-700 mb-0 me-2">Status:</Form.Label>
+            <Form.Label className="text-secondary-emphasis mb-0 me-2">
+              Status:
+            </Form.Label>
             <StatusSelect onChange={handleStatusChange} className="w-auto" />
           </div>
           <div>
-            <Form.Label className="text-gray-700 mb-0 me-2">
+            <Form.Label className="text-secondary mb-0 me-2">
               Urutkan:
             </Form.Label>
             <SortSelect onChange={handleSortChange} className="w-auto" />
           </div>
         </div>
-
-        <p className="text-gray-700 mb-0">
-          {orders?.page?.from || 0} - {orders?.page?.to || 0} dari{" "}
-          {orders?.page?.total || 0}
-        </p>
 
         {/* Mobile */}
         <div className="d-flex gap-2 d-lg-none">

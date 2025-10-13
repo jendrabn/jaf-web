@@ -4,22 +4,16 @@ import Layout from "../../components/layout/Layout";
 import NotFoundPage from "../../pages/NotFound";
 import Loading from "../../components/ui/Loading";
 import { Helmet } from "react-helmet-async";
-
-const formatDate = (date: string) => {
-  const d = new Date(date);
-  const day = d.getDate();
-  const month = d.toLocaleString("id-ID", { month: "long" });
-  const year = d.getFullYear();
-  const hours = d.getHours();
-  const minutes = d.getMinutes();
-
-  return `${day} ${month} ${year} ${hours}:${minutes}`;
-};
+import { Badge, Breadcrumb, Button, Image } from "react-bootstrap";
+import { formatDateTime } from "../../utils/format";
+import { useState } from "react";
+import ShareModal from "./ShareModal";
 
 function BlogDetailPage() {
   const { slug } = useParams();
 
   const { data: blog, isLoading } = useFetchBlog(slug);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   if (!isLoading && !blog) return <NotFoundPage />;
 
@@ -36,86 +30,126 @@ function BlogDetailPage() {
           </Helmet>
 
           <div className="container">
-            <div className="row flex-column-reverse flex-lg-row">
-              <div className="col-lg-7">
-                <figure style={{ aspectRatio: "4/2" }} className="mb-0">
-                  <img
-                    src={blog.featured_image}
-                    alt={blog.title}
-                    className="object-fit-fill w-100 h-100 img-fluid rounded-3"
-                    loading="lazy"
-                  />
-                  {blog.featured_image_description && (
-                    <figcaption className="text-center text-gray-700">
-                      {blog.featured_image_description}
-                    </figcaption>
-                  )}
-                </figure>
-              </div>
-              <div className="col-lg-5 align-self-center mb-3 mb-lg-0">
-                <div className="blog__category mb-3">
-                  <Link
-                    className="btn btn-light btn-sm border border-1 rounded-0 px-3 border-dark-subtle"
-                    to={`/blogs?category_id=${blog.category.id}`}
+            <div className="row justify-content-center">
+              <div className="col-12 col-md-10 col-lg-8">
+                <Breadcrumb className="mb-5">
+                  <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
+                    Home
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/blog" }}>
+                    Blog
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item active className="text-truncate">
+                    {blog.title}
+                  </Breadcrumb.Item>
+                </Breadcrumb>
+
+                <article className="blog-detail">
+                  <Badge
+                    as={"a"}
+                    href={`/blog?category_id=${blog.category.id}`}
+                    className="blog-category fs-6 rounded-0 mb-3"
                   >
                     {blog.category.name}
-                  </Link>
-                </div>
+                  </Badge>
 
-                <h1 className="fw-bold mb-3 text-gray-800">{blog.title}</h1>
+                  <h1 className="blog-title fw-bold lh-sm mb-3 text-body-emphasis">
+                    {blog.title}
+                  </h1>
 
-                <div className="blog__meta d-flex align-items-center">
-                  <div className="pe-2 me-2 border-end">
-                    <picture
-                      className="me-2 rounded-circle bg-gray-300 d-none d-md-inline-block"
-                      style={{ width: 35, height: 35 }}
-                    >
+                  <div className="blog-meta d-flex align-items-center justify-content-between flex-wrap mb-3">
+                    <div className="d-flex justify-content-start align-items-center gap-3">
+                      <div>
+                        <Image
+                          src={`https://ui-avatars.com/api/?name=${blog.author}`}
+                          alt={blog.author}
+                          width={40}
+                          height={40}
+                          roundedCircle
+                        />
+                      </div>
+                      <div className="d-flex flex-column">
+                        <Link
+                          to={`/blog?author=${blog.author}`}
+                          style={{ fontWeight: 700 }}
+                          className="fw-semibold text-decoration-none link-body-emphasis"
+                        >
+                          {blog.author}
+                        </Link>
+                        <time
+                          className="small text-secondary-emphasis"
+                          dateTime={blog.created_at}
+                        >
+                          <i className="bi bi-clock me-1"></i>
+                          {formatDateTime(blog.created_at)}
+                        </time>
+                      </div>
+                    </div>
+
+                    <div className="d-flex gap-2">
+                      <Button
+                        variant="light"
+                        onClick={() => setShowShareModal(true)}
+                      >
+                        <i className="bi bi-share-fill me-2"></i>
+                        Share
+                      </Button>
+                    </div>
+                  </div>
+
+                  <figure className="blog-image mb-3">
+                    <div className="w-100 ratio ratio-16x9 bg-gray-300 rounded-3 overflow-hidden">
                       <img
-                        src="/img/user.png"
-                        alt="Author"
-                        className="w-100 h-100"
+                        src={blog.featured_image}
+                        alt={blog.title}
+                        className="object-fit-fill w-100 h-100"
+                        loading="lazy"
                       />
-                    </picture>
-                    <span style={{ fontWeight: 700 }}>{blog.author}</span>
+                    </div>
+                    {blog.featured_image_description && (
+                      <figcaption className="text-center text-secondary-emphasis mt-2">
+                        {blog.featured_image_description}
+                      </figcaption>
+                    )}
+                  </figure>
+
+                  <div
+                    className="blog-content mb-3"
+                    style={{ fontSize: "1.125rem" }}
+                    dangerouslySetInnerHTML={{ __html: blog.content }}
+                  ></div>
+
+                  <div className="blog-tags d-flex flex-wrap gap-2">
+                    <span className="text-secondary-emphasis fw-semibold">
+                      Tag:
+                    </span>
+                    {blog.tags.map((tag) => (
+                      <Badge
+                        as={"a"}
+                        href={`/blog?tag=${tag}`}
+                        key={tag.id}
+                        bg="light"
+                        text="dark"
+                        className="fs-6 border"
+                      >
+                        <i className="bi bi-tag me-1"></i>
+                        {tag.name}
+                      </Badge>
+                    ))}
                   </div>
-
-                  <div className="pe-2 me-2 border-end">
-                    {formatDate(blog.created_at)}
-                  </div>
-
-                  <div className="pe-2 me-2 border-end">
-                    <i className="bi bi-eye-fill me-2"></i>
-                    {blog.views_count}
-                  </div>
-
-                  <div className="">{blog.min_read} min read</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="row mt-3 mt-lg-5">
-              <div className="col-md-8 offset-md-2">
-                <div
-                  className="mb-3"
-                  style={{ fontSize: "1.125rem" }}
-                  dangerouslySetInnerHTML={{ __html: blog.content }}
-                ></div>
-
-                <div className="blog__tags">
-                  {blog.tags.map((tag) => (
-                    <Link
-                      key={tag.id}
-                      to={`/blogs?tag_id=${tag.id}`}
-                      className="btn btn-sm btn-primary border rounded-0 me-2"
-                    >
-                      #{tag.name}
-                    </Link>
-                  ))}
-                </div>
+                </article>
               </div>
             </div>
           </div>
         </>
+      )}
+
+      {!isLoading && blog && (
+        <ShareModal
+          show={showShareModal}
+          onHide={() => setShowShareModal(false)}
+          blog={blog}
+        />
       )}
     </Layout>
   );

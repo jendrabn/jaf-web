@@ -49,7 +49,7 @@ function CartPage() {
       </Helmet>
 
       <div className="container">
-        <h2 className="section__title">Keranjang Belanja</h2>
+        <h2 className="section-title">Keranjang Belanja</h2>
 
         {carts.length > 0 ? (
           <>

@@ -106,9 +106,9 @@ function ProfilePage() {
             <br />
 
             <Button
-              variant="light"
+              variant="outline-primary"
               size="sm"
-              className="border"
+              // className="text-body-emphasis"
               onClick={() => {
                 inputAvatarRef.current?.click();
               }}
@@ -121,7 +121,7 @@ function ProfilePage() {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <fieldset disabled={isPending}>
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="3" className="text-gray-700">
+                <Form.Label column sm="3" className="text-secondary-emphasis">
                   Nama
                 </Form.Label>
                 <Col sm="9">
@@ -130,7 +130,7 @@ function ProfilePage() {
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="3" className="text-gray-700">
+                <Form.Label column sm="3" className="text-secondary-emphasis">
                   Email
                 </Form.Label>
                 <Col sm="9">
@@ -139,7 +139,7 @@ function ProfilePage() {
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="3" className="text-gray-700">
+                <Form.Label column sm="3" className="text-secondary-emphasis">
                   Nomor Telepon
                 </Form.Label>
                 <Col sm="9">
@@ -148,7 +148,7 @@ function ProfilePage() {
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="3" className="text-gray-700">
+                <Form.Label column sm="3" className="text-secondary-emphasis">
                   Jenis Kelamin
                 </Form.Label>
                 <Col sm="9">
@@ -172,7 +172,7 @@ function ProfilePage() {
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="3" className="text-gray-700">
+                <Form.Label column sm="3" className="text-secondary-emphasis">
                   Tanggal Lahir
                 </Form.Label>
                 <Col sm="9">

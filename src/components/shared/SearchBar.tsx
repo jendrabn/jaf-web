@@ -22,7 +22,7 @@ function SearchBar({ className }: SearchBarProps) {
 
   return (
     <form
-      className={`d-flex flex-row search__bar ${className}`}
+      className={`search-bar d-flex flex-row ${className}`}
       onSubmit={handleSubmit}
     >
       <div className="input-group">

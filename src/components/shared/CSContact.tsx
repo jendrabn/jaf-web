@@ -9,7 +9,7 @@ function CSContact() {
           <i className="bi bi-envelope me-2"></i>
           <a
             href="mailto:cs@jaf.co.id"
-            className="text-decoration-none text-dark"
+            className="text-decoration-none text-body-emphasis"
           >
             Email: cs@jaf.co.id
           </a>
@@ -20,7 +20,7 @@ function CSContact() {
             href="https://wa.me/628113132502"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-decoration-none text-dark"
+            className="text-decoration-none text-body-emphasis"
           >
             WhatsApp: +62 811 3132 502
           </a>

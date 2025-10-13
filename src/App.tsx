@@ -93,8 +93,8 @@ function App() {
                         path="products/:productId"
                         element={<ProductDetailPage />}
                       />
-                      <Route path="blogs" element={<BlogPage />} />
-                      <Route path="blogs/:slug" element={<BlogDetailPage />} />
+                      <Route path="blog" element={<BlogPage />} />
+                      <Route path="blog/:slug" element={<BlogDetailPage />} />
                       <Route path="contact" element={<ContactPage />} />
                       <Route path="about" element={<AboutPage />} />
                       <Route path="faq" element={<FaqPage />} />

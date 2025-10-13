@@ -16,7 +16,7 @@ function Pagination({ current_page, last_page, onClick }: PaginationProps) {
   };
 
   return (
-    <BootstrapPagination className="d-flex justify-content-center align-items-center mt-5">
+    <BootstrapPagination className="d-flex justify-content-center align-items-center flex-wrap gap-2 mt-5">
       <BootstrapPagination.First
         disabled={active == 1}
         onClick={handleClick(1)}

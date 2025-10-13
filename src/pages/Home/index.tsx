@@ -24,7 +24,7 @@ function HomePage() {
           <div className="container-lg">
             <div
               id="bannerCarousel"
-              className="carousel slide banner__carousel-wrapper"
+              className="carousel slide banner-carousel-wrapper"
             >
               <div className="carousel-indicators">
                 {landing.banners.map((banner, index: number) => (
@@ -82,7 +82,7 @@ function HomePage() {
 
       <section className="mt-4 mt-lg-5">
         <div className="container">
-          <h2 className="section__title">New Arrivals</h2>
+          <h2 className="section-title">New Arrivals</h2>
 
           {isLoading && <Loading className="py-5" />}
 
@@ -114,14 +114,14 @@ function HomePage() {
 
       <section className="mt-4 mt-lg-5">
         <div className="container">
-          <h2 className="section__title">Our Services</h2>
+          <h2 className="section-title">Our Services</h2>
           <OurServices />
         </div>
       </section>
 
       <section className="mt-4 mt-lg-5 mb-4 mb-lg-5">
         <div className="container">
-          <h2 className="section__title">New Blogs</h2>
+          <h2 className="section-title">New Blogs</h2>
 
           {isLoading && <Loading className="py-5" />}
 
@@ -130,9 +130,9 @@ function HomePage() {
           )}
 
           {landing?.blogs && landing?.blogs.length > 0 && (
-            <div className="row g-3">
+            <div className="row g-4">
               {landing.blogs.slice(0, 4).map((blog) => (
-                <div className="col-6 col-md-3 col-lg-3" key={blog.id}>
+                <div className="col-12 col-md-6 col-lg-4" key={blog.id}>
                   <BlogItem blog={blog} />
                 </div>
               ))}

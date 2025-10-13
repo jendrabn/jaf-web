@@ -82,7 +82,7 @@ function AccountLayout({ children, title }: AuthLayoutProps) {
               {/* Mobile Only */}
               <Accordion
                 defaultActiveKey="0"
-                className="mb-3 d-lg-none accordion__menu-account"
+                className="mb-3 d-lg-none accordion-menu-account"
               >
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>Menu Saya</Accordion.Header>

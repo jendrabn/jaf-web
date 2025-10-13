@@ -160,7 +160,7 @@ function CartItem({ cart }: CartItemProps) {
         </div>
 
         <div className="flex-grow-1">
-          <p className="mb-1 title-truncate" style={{ fontWeight: 500 }}>
+          <p className="mb-1 line-clamp-2" style={{ fontWeight: 500 }}>
             {product.name}
           </p>
           <p className="mb-1 text-gray-700">

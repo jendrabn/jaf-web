@@ -14,7 +14,7 @@ function FaqPage() {
       <div className="container">
         <h1 className="mb-5 fw-bold text-center">FAQ</h1>
 
-        <Accordion defaultActiveKey="0" className="faq__accordion-container">
+        <Accordion defaultActiveKey="0" className="faqs-accordion">
           {data.map((item, index) => (
             <Accordion.Item eventKey={index.toString()} key={index}>
               <Accordion.Header>{item.question}</Accordion.Header>

@@ -38,7 +38,7 @@ function ChangePassword() {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <fieldset disabled={isPending}>
               <Form.Group className="mb-3" as={Row}>
-                <Form.Label column sm={3} className="text-gray-700">
+                <Form.Label column sm={3} className="text-secondary-emphasis">
                   Password Saat Ini
                 </Form.Label>
                 <Col sm={9}>
@@ -47,7 +47,7 @@ function ChangePassword() {
               </Form.Group>
 
               <Form.Group className="mb-3" as={Row}>
-                <Form.Label column sm={3} className="text-gray-700">
+                <Form.Label column sm={3} className="text-secondary-emphasis">
                   Password
                 </Form.Label>
                 <Col sm={9}>
@@ -56,7 +56,7 @@ function ChangePassword() {
               </Form.Group>
 
               <Form.Group className="mb-3" as={Row}>
-                <Form.Label column sm={3} className="text-gray-700">
+                <Form.Label column sm={3} className="text-secondary-emphasis">
                   Konfirmasi Password
                 </Form.Label>
                 <Col sm={9}>

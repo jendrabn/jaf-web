@@ -4,10 +4,10 @@ import BlogItem from "../../components/shared/BlogItem";
 import Loading from "../../components/ui/Loading";
 import Pagination from "../../components/ui/Pagination";
 import Layout from "../../components/layout/Layout";
-import BlogListFilters from "./BlogListFilters";
+import BlogFilters from "./BlogFilters";
 import useFilters from "../../hooks/useFilters";
 import { type ChangeEvent, type FormEvent, useState } from "react";
-import { Button, Form, Offcanvas } from "react-bootstrap";
+import { Button, Form, InputGroup, Offcanvas } from "react-bootstrap";
 import NoData from "../../components/ui/NoData";
 import { Helmet } from "react-helmet-async";
 
@@ -63,15 +63,17 @@ function BlogPage() {
       </Helmet>
 
       <div className="container">
-        <div className="row">
-          <div className="col-lg-2 d-none d-lg-block">
-            <BlogListFilters />
+        <div className="row g-5">
+          <div className="col-lg-2 d-none d-lg-block ">
+            <BlogFilters />
           </div>
           <div className="col-lg-10">
-            <div className="d-flex justify-content-between align-items-center mb-3">
+            <div className="d-flex align-items-center justify-content-between gap-2 mb-4">
               {/* Desktop Only */}
               <div className="d-none d-lg-block">
-                <span className="text-gray-700 mb-0 me-2">Urutkan:</span>
+                <span className="text-secondary-emphasis mb-0 me-2">
+                  Urutkan:
+                </span>
                 <Form.Select
                   defaultValue=""
                   onChange={handleSortChange}
@@ -86,15 +88,29 @@ function BlogPage() {
               </div>
               {/* End Desktop Only */}
 
-              <p className="text-gray-700 mb-0">
-                {blogs?.page?.from || 0} - {blogs?.page?.to || 0} dari{" "}
-                {blogs?.page?.total || 0}
-              </p>
+              <form
+                className="blog-search-form w-100"
+                onSubmit={handleSearchSubmit}
+              >
+                <InputGroup>
+                  <Form.Control
+                    type="search"
+                    placeholder="Cari artikel disini..."
+                    value={searchTerm}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setSearchTerm(e.target.value)
+                    }
+                    id="blog-search-input"
+                  />
+                  <Button type="submit" variant="outline-secondary">
+                    <i className="bi bi-search"></i>
+                  </Button>
+                </InputGroup>
+              </form>
 
               {/* Mobile Only */}
               <div className="d-flex gap-2 d-lg-none">
                 <Button
-                  size="sm"
                   variant="outline-dark"
                   onClick={() => setShowSort(true)}
                 >
@@ -102,7 +118,6 @@ function BlogPage() {
                 </Button>
 
                 <Button
-                  size="sm"
                   variant="outline-dark"
                   onClick={() => setShowFilter(true)}
                 >
@@ -120,7 +135,7 @@ function BlogPage() {
                     </Offcanvas.Title>
                   </Offcanvas.Header>
                   <Offcanvas.Body>
-                    <BlogListFilters />
+                    <BlogFilters />
                   </Offcanvas.Body>
                 </Offcanvas>
 
@@ -153,29 +168,17 @@ function BlogPage() {
               {/* End Mobile Only */}
             </div>
 
-            <div className="d-flex justify-content-center align-items-center mb-3 bg-primary py-2 rounded">
-              <form className="mx-auto w-50" onSubmit={handleSearchSubmit}>
-                <input
-                  className="form-control w-100 border-0"
-                  type="search"
-                  placeholder="Cari blog disini..."
-                  name="search"
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </form>
-            </div>
-
             {isLoading && <Loading className="py-5" />}
 
             {blogs?.data?.length === 0 && <NoData />}
 
             {blogs?.data && blogs?.data?.length > 0 && (
               <>
-                <div className="row g-3">
+                <div className="row g-4">
                   {blogs.data.map((blog) => (
                     <div
                       key={`blog-${blog.id}`}
-                      className="col-6 col-md-4 col-lg-3"
+                      className="col-12 col-md-6 col-lg-4"
                     >
                       <BlogItem blog={blog} />
                     </div>
