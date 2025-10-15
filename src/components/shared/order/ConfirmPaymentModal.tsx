@@ -24,13 +24,10 @@ interface ConfirmPaymentModalProps {
   onClose: () => void;
 }
 
-function ConfirmPaymentModal({
-  show,
-  orderId,
-  onClose,
-}: ConfirmPaymentModalProps) {
-  const queryClient = useQueryClient();
+const ConfirmPaymentModal = (props: ConfirmPaymentModalProps) => {
+  const { show, orderId, onClose } = props;
 
+  const queryClient = useQueryClient();
   const { data: order, isLoading } = useFetchOrder(orderId!);
 
   const {
@@ -157,40 +154,40 @@ function ConfirmPaymentModal({
       backdrop="static"
       animation
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className="border-bottom-0">
         <Modal.Title>Konfirmasi Pembayaran</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="py-3">
-        {isLoading && show && <Loading className="py-5" />}
+      <Form onSubmit={handleSubmit(onConfirm)}>
+        <fieldset disabled={isPending}>
+          <Modal.Body className="py-3">
+            {isLoading && show && <Loading className="py-5" />}
 
-        {order && (
-          <>
-            {showOrderSuccess && (
-              <div className="text-center mb-3">
-                <img
-                  src={CheckIcon}
-                  alt="Check Complete"
-                  className="mb-1"
-                  style={{ width: "100%", maxWidth: 100 }}
+            {order && (
+              <>
+                {showOrderSuccess && (
+                  <div className="text-center mb-3">
+                    <img
+                      src={CheckIcon}
+                      alt="Check Complete"
+                      className="mb-1"
+                      style={{ width: "100%", maxWidth: 100 }}
+                    />
+                    <p className="mb-0 fs-6">Pesanan berhasil dibuat</p>
+                  </div>
+                )}
+
+                <PaymentInfo
+                  paymentDueDate={order.payment_due_date}
+                  payment={order.payment}
                 />
-                <p className="mb-0 fs-6">Pesanan berhasil dibuat</p>
-              </div>
-            )}
 
-            <PaymentInfo
-              paymentDueDate={order.payment_due_date}
-              payment={order.payment}
-            />
+                <p className="text-muted text-center">
+                  Konfirmasi pembayaran Anda dengan mengisi form di bawah ini.
+                  Kami akan memverifikasi pembayaran Anda secepatnya.
+                </p>
 
-            <p className="text-muted text-center">
-              Konfirmasi pembayaran Anda dengan mengisi form di bawah ini. Kami
-              akan memverifikasi pembayaran Anda secepatnya.
-            </p>
+                <ErrorValidationAlert error={error} onClose={resetMutation} />
 
-            <ErrorValidationAlert error={error} onClose={resetMutation} />
-
-            <Form onSubmit={handleSubmit(onConfirm)}>
-              <fieldset disabled={isPending}>
                 {order?.payment?.method === PAYMENT_METHOD_BANK && (
                   <>
                     <Form.Group className="mb-3">
@@ -253,22 +250,21 @@ function ConfirmPaymentModal({
                     </Form.Group>
                   </>
                 )}
-
-                <div className="d-flex justify-content-end gap-2">
-                  <Button variant="outline-secondary" onClick={handleClose}>
-                    Konfirmasi Nanti
-                  </Button>
-                  <Button variant="primary" type="submit">
-                    Konfirmasi Pembayaran
-                  </Button>
-                </div>
-              </fieldset>
-            </Form>
-          </>
-        )}
-      </Modal.Body>
+              </>
+            )}
+          </Modal.Body>
+          <Modal.Footer className="border-top-0">
+            <Button variant="outline-secondary" onClick={handleClose}>
+              Konfirmasi Nanti
+            </Button>
+            <Button variant="primary" type="submit">
+              Konfirmasi Pembayaran
+            </Button>
+          </Modal.Footer>
+        </fieldset>
+      </Form>
     </Modal>
   );
-}
+};
 
 export default ConfirmPaymentModal;

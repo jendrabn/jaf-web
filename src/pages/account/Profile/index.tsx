@@ -1,4 +1,4 @@
-import { Row, Col, Button, Form } from "react-bootstrap";
+import { Row, Col, Button, Form, Image } from "react-bootstrap";
 import { useAuthState } from "../../../contexts/AuthContext";
 import type { UserTypes } from "../../../types/user";
 import AccountLayout from "../../../components/layout/AccountLayout";
@@ -10,7 +10,7 @@ import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 
-function ProfilePage() {
+const ProfilePage = () => {
   const { user } = useAuthState();
 
   const queryClient = useQueryClient();
@@ -88,16 +88,22 @@ function ProfilePage() {
     <AccountLayout title="Profil">
       <Helmet>
         <title>Profil | {import.meta.env.VITE_APP_NAME}</title>
+        <meta
+          name="description"
+          content="Kelola informasi profil akun Anda di sini."
+        />
       </Helmet>
 
       <ErrorValidationAlert error={error} onClose={reset} />
       <div className="row flex-row-reverse">
         <div className="col-lg-3">
           <div className="text-center mb-3 mb-lg-0">
-            <img
+            <Image
               src={user?.avatar}
               alt="Avatar"
-              className="rounded-circle img-fluid object-fit-cover border-primary border border-primary border-3 border-opacity-50 mb-2"
+              roundedCircle
+              fluid
+              className="object-fit-cover border border-primary border-3 border-opacity-50 mb-2"
               style={{ width: 100, height: 100 }}
               ref={avatarRef}
               loading="lazy"
@@ -108,7 +114,6 @@ function ProfilePage() {
             <Button
               variant="outline-primary"
               size="sm"
-              // className="text-body-emphasis"
               onClick={() => {
                 inputAvatarRef.current?.click();
               }}
@@ -121,7 +126,7 @@ function ProfilePage() {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <fieldset disabled={isPending}>
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="3" className="text-secondary-emphasis">
+                <Form.Label column sm="3" className="text-muted">
                   Nama
                 </Form.Label>
                 <Col sm="9">
@@ -130,7 +135,7 @@ function ProfilePage() {
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="3" className="text-secondary-emphasis">
+                <Form.Label column sm="3" className="text-muted">
                   Email
                 </Form.Label>
                 <Col sm="9">
@@ -139,7 +144,7 @@ function ProfilePage() {
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="3" className="text-secondary-emphasis">
+                <Form.Label column sm="3" className="text-muted">
                   Nomor Telepon
                 </Form.Label>
                 <Col sm="9">
@@ -148,7 +153,7 @@ function ProfilePage() {
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="3" className="text-secondary-emphasis">
+                <Form.Label column sm="3" className="text-muted">
                   Jenis Kelamin
                 </Form.Label>
                 <Col sm="9">
@@ -172,7 +177,7 @@ function ProfilePage() {
               </Form.Group>
 
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm="3" className="text-secondary-emphasis">
+                <Form.Label column sm="3" className="text-muted">
                   Tanggal Lahir
                 </Form.Label>
                 <Col sm="9">
@@ -203,6 +208,6 @@ function ProfilePage() {
       </div>
     </AccountLayout>
   );
-}
+};
 
 export default ProfilePage;

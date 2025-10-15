@@ -368,10 +368,10 @@ function DeliveryAddressModal({
 
             <div className="d-flex justify-content-end gap-2">
               <Button variant="outline-secondary" onClick={handleClose}>
-                Batal
+                <i className="bi bi-x-circle"></i> Batal
               </Button>
               <Button variant="primary" type="submit">
-                Simpan
+                <i className="bi bi-check-circle"></i> Simpan
               </Button>
             </div>
           </fieldset>

@@ -9,7 +9,7 @@ import { useDeleteWishlist } from "../../../hooks/api/wishlist";
 import NoData from "../../../components/ui/NoData";
 import { Helmet } from "react-helmet-async";
 
-function WishlistPage() {
+const WishlistPage = () => {
   const deleteWishlistMutation = useDeleteWishlist();
   const { wishlists, selectedIds } = useWishlistState();
   const dispatch = useWishlistDispatch();
@@ -33,6 +33,10 @@ function WishlistPage() {
     <AccountLayout title="Wishlist">
       <Helmet>
         <title>Daftar Keinginan | {import.meta.env.VITE_APP_NAME}</title>
+        <meta
+          name="description"
+          content="Lihat dan kelola daftar keinginan produk favorit Anda di sini."
+        />
       </Helmet>
 
       {wishlists && wishlists?.length > 0 ? (
@@ -103,6 +107,6 @@ function WishlistPage() {
       )}
     </AccountLayout>
   );
-}
+};
 
 export default WishlistPage;

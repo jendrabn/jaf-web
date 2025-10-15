@@ -119,7 +119,8 @@ export default function ProductDetailPage() {
                 <ProductImagesCarousel images={product?.images || []} />
               </div>
               <div className="col-lg-6">
-                <h1 className="h2 mb-2">{product?.name}</h1>
+                <h1 className="lh-sm mb-3">{product?.name}</h1>
+
                 <div className="d-flex align-items-center fs-6 mb-3">
                   <div className="px-3 ps-0 border-end border-2">
                     <span className="me-2 text-underline">
@@ -138,7 +139,8 @@ export default function ProductDetailPage() {
                     <span className="text-gray-600">Terjual</span>
                   </div>
                 </div>
-                <div>
+
+                <div className="product-info">
                   <div className="row py-2">
                     <div className="col-md-3 fw-bold">Harga</div>
                     <div className="col-md-9 h4 mb-0">

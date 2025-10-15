@@ -10,7 +10,7 @@ import type { MouseEvent } from "react";
 import { useCartState } from "../../contexts/CartContext";
 import { removeAuthToken } from "../../utils/functions";
 import ThemeToggle from "./ThemeToggle";
-import { Image } from "react-bootstrap";
+import Logo from "./Logo";
 
 export default function Navbar() {
   const { isAuthenticated, user } = useAuthState();
@@ -64,7 +64,7 @@ export default function Navbar() {
       <nav className="navbar navbar-expand-lg">
         <div className="container">
           <NavLink className="navbar-brand d-none d-md-block" to="/">
-            <Image src="/img/logo-light.png" alt="Logo" fluid />
+            <Logo className="img-fluid" />
           </NavLink>
 
           <SearchBar className="flex-grow-1 me-2 d-lg-none" />
@@ -161,12 +161,11 @@ export default function Navbar() {
               </li>
             </ul>
 
+            <ThemeToggle />
+
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
               {isAuthenticated ? (
                 <>
-                  <li className="nav-item me-2">
-                    <ThemeToggle />
-                  </li>
                   <li className="nav-item me-2">
                     <NavLink className="nav-link" to={"/cart"}>
                       <div className="position-relative">
@@ -187,7 +186,77 @@ export default function Navbar() {
                     >
                       <i className="bi bi-person fs-5"></i>
                     </a>
-                    <ul className="dropdown-menu dropdown-menu-end">
+
+                    <ul
+                      className="dropdown-menu dropdown-menu-end shadow p-3"
+                      style={{ minWidth: 300 }}
+                    >
+                      <div className="d-flex align-items-center mb-3">
+                        <div
+                          className="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center"
+                          style={{ width: "40px", height: "40px" }}
+                        >
+                          Z
+                        </div>
+                        <div className="ms-2">
+                          <h6 className="mb-0">Zeeland</h6>
+                          <small className="text-muted">
+                            Sejak 02 Jul 2025
+                          </small>
+                        </div>
+                      </div>
+                      <hr className="my-2" />
+
+                      <div className="d-flex justify-content-between text-center gap-3 mb-2">
+                        <div>
+                          <i className="bi bi-wallet2 fs-4"></i>
+                          <div className="text-xs text-muted">
+                            Belum Dibayar
+                          </div>
+                        </div>
+                        <div>
+                          <i className="bi bi-box-seam fs-4"></i>
+                          <div className="text-xs text-muted">Berlangsung</div>
+                        </div>
+                        <div>
+                          <i className="bi bi-geo-alt fs-4"></i>
+                          <div className="text-xs text-muted">
+                            Tiba di Tujuan
+                          </div>
+                        </div>
+                      </div>
+
+                      <a
+                        href="#"
+                        className="d-block text-center fw-semibold text-primary mb-2"
+                      >
+                        Lihat Semua Pesanan
+                      </a>
+
+                      <hr className="my-2" />
+
+                      <a
+                        href="#"
+                        className="dropdown-item d-flex align-items-center"
+                      >
+                        <i className="bi bi-headset me-2"></i> Chat Admin Toco
+                      </a>
+                      <a
+                        href="#"
+                        className="dropdown-item d-flex align-items-center"
+                      >
+                        <i className="bi bi-gear me-2"></i> Pengaturan Akun
+                      </a>
+                      <a
+                        href="#"
+                        className="dropdown-item d-flex align-items-center text-danger"
+                      >
+                        <i className="bi bi-box-arrow-right me-2"></i> Keluar
+                        Akun
+                      </a>
+                    </ul>
+
+                    {/* <ul className="dropdown-menu dropdown-menu-end">
                       <li>
                         <h6 className="dropdown-header">Hai, {user?.name}</h6>
                       </li>
@@ -219,8 +288,7 @@ export default function Navbar() {
                           Logout
                         </Link>
                       </li>
-                      {/* theme toggle removed from dropdown to keep navbar cleaner */}
-                    </ul>
+                    </ul> */}
                   </li>
                 </>
               ) : (

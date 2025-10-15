@@ -10,11 +10,9 @@ interface ConfirmOrderReceivedModalProps {
   onClose: () => void;
 }
 
-function ConfirmOrderReceivedModal({
-  orderId,
-  show,
-  onClose,
-}: ConfirmOrderReceivedModalProps) {
+const ConfirmOrderReceivedModal = (props: ConfirmOrderReceivedModalProps) => {
+  const { orderId, show, onClose } = props;
+
   const queryClient = useQueryClient();
   const { mutate, isPending } = useConfirmOrderReceived();
 
@@ -37,35 +35,31 @@ function ConfirmOrderReceivedModal({
 
   return (
     <Modal onHide={() => onClose()} show={show} backdrop="static" centered>
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className="border-bottom-0">
         <Modal.Title>Konfirmasi Pesanan Diterima</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>
+        <p className="mb-0">
           Pastikan Anda telah menerima semua barang dalam kondisi baik (tidak
           ada retur/pengembalian) sebelum mengonfirmasi pesanan diterima.
           Setelah Anda konfirmasi, pesanan akan dianggap selesai dan pembayaran
           akan diteruskan ke penjual.
         </p>
-        <div className="d-flex justify-content-end gap-2">
-          <Button
-            variant="outline-secondary"
-            onClick={() => onClose()}
-            disabled={isPending}
-          >
-            Nanti Saja
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleConfirm}
-            disabled={isPending}
-          >
-            Konfirmasi
-          </Button>
-        </div>
       </Modal.Body>
+      <Modal.Footer className="border-top-0">
+        <Button
+          variant="outline-secondary"
+          onClick={() => onClose()}
+          disabled={isPending}
+        >
+          Nanti Saja
+        </Button>
+        <Button variant="primary" onClick={handleConfirm} disabled={isPending}>
+          Konfirmasi
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default ConfirmOrderReceivedModal;

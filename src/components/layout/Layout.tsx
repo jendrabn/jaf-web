@@ -14,7 +14,7 @@ function Layout({ children }: PropsWithChildren) {
   return (
     <>
       <Navbar />
-      <main className="py-4 py-lg-5">{children}</main>
+      <main className="main-content">{children}</main>
       <Footer />
     </>
   );

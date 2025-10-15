@@ -1,5 +1,6 @@
 import { Link, Navigate } from "react-router";
 import { useAuthState } from "../../contexts/AuthContext";
+import Logo from "../shared/Logo";
 import { useLocation } from "react-router";
 import { type PropsWithChildren } from "react";
 import Loading from "../ui/Loading";
@@ -12,7 +13,7 @@ function AuthLayout({
   const { isAuthenticated, isLoading } = useAuthState();
 
   if (isLoading) {
-    return <Loading className="min-vh-100" />;
+    return <Loading className="min-dvh-100" />;
   }
 
   if (isAuthenticated) {
@@ -26,15 +27,11 @@ function AuthLayout({
           <div className="col-12 col-md-6 col-lg-4">
             <Link to="/" className="mb-4 d-block text-center">
               <figure style={{ maxWidth: 200 }} className="mx-auto">
-                <img
-                  src="/img/logo.png"
-                  alt="Logo"
-                  className="img-fluid w-100"
-                />
+                <Logo className="img-fluid w-100" />
               </figure>
             </Link>
 
-            <div className="card bg-gray-100 shadow">
+            <div className="card bg-body shadow">
               <div className="card-body px-4 py-5">
                 <h4 className="card-title mb-4 text-center">{title}</h4>
                 {children}

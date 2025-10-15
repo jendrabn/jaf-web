@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 
-function ChangePassword() {
+const ChangePassword = () => {
   const {
     register,
     handleSubmit,
@@ -30,6 +30,10 @@ function ChangePassword() {
     <AccountLayout title="Ubah Password">
       <Helmet>
         <title>Ubah Password | {import.meta.env.VITE_APP_NAME}</title>
+        <meta
+          name="description"
+          content="Kelola dan ubah password akun Anda untuk keamanan yang lebih baik."
+        />
       </Helmet>
 
       <div className="row">
@@ -38,7 +42,7 @@ function ChangePassword() {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <fieldset disabled={isPending}>
               <Form.Group className="mb-3" as={Row}>
-                <Form.Label column sm={3} className="text-secondary-emphasis">
+                <Form.Label column sm={3} className="text-muted">
                   Password Saat Ini
                 </Form.Label>
                 <Col sm={9}>
@@ -47,7 +51,7 @@ function ChangePassword() {
               </Form.Group>
 
               <Form.Group className="mb-3" as={Row}>
-                <Form.Label column sm={3} className="text-secondary-emphasis">
+                <Form.Label column sm={3} className="text-muted">
                   Password
                 </Form.Label>
                 <Col sm={9}>
@@ -56,7 +60,7 @@ function ChangePassword() {
               </Form.Group>
 
               <Form.Group className="mb-3" as={Row}>
-                <Form.Label column sm={3} className="text-secondary-emphasis">
+                <Form.Label column sm={3} className="text-muted">
                   Konfirmasi Password
                 </Form.Label>
                 <Col sm={9}>
@@ -79,6 +83,6 @@ function ChangePassword() {
       </div>
     </AccountLayout>
   );
-}
+};
 
 export default ChangePassword;

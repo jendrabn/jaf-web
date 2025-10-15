@@ -1,3 +1,138 @@
+/* Custom styles: decorative background for blog header (cleaned up) */
+
+.blog-header {
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  background-color: rgba($primary, 0.06);
+  transition: background-color 200ms ease;
+
+  // title color tweak
+  .display-6 {
+    color: darken($primary, 12%);
+  }
+
+  // blurred background circles
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate3d(0, 0, 0);
+  }
+
+  &::before {
+    width: 300px;
+    height: 300px;
+    right: -100px;
+    top: -80px;
+    background: linear-gradient(135deg, lighten($primary, 6%), $primary);
+    filter: blur(28px);
+    opacity: 0.2;
+  }
+
+  &::after {
+    width: 160px;
+    height: 160px;
+    left: -60px;
+    bottom: -40px;
+    background: rgba($primary, 0.14);
+    filter: blur(20px);
+    opacity: 0.16;
+  }
+
+  // small floating bubbles
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba($primary, 0.12);
+    filter: blur(6px);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  .bubble.b1 {
+    width: 52px;
+    height: 52px;
+    right: 18%;
+    top: 18%;
+  }
+  .bubble.b2 {
+    width: 30px;
+    height: 30px;
+    left: 12%;
+    top: 28%;
+  }
+  .bubble.b3 {
+    width: 40px;
+    height: 40px;
+    left: 22%;
+    bottom: 12%;
+  }
+
+  // ensure badges and buttons are readable
+  .badge {
+    box-shadow: none;
+  }
+
+  @media (max-width: 767px) {
+    &::before {
+      right: -140px;
+      top: -100px;
+      width: 180px;
+      height: 180px;
+    }
+    &::after {
+      left: -80px;
+      bottom: -80px;
+      width: 120px;
+      height: 120px;
+    }
+  }
+}
+
+/* Theme-specific tweaks: make bubbles more visible in light mode */
+html[data-bs-theme="light"] {
+  .blog-header {
+    background-color: rgba($primary, 0.08);
+
+    &::before {
+      opacity: 0.32;
+      filter: blur(30px);
+    }
+    &::after {
+      opacity: 0.26;
+      filter: blur(22px);
+    }
+
+    .bubble {
+      background: rgba($primary, 0.22);
+      filter: blur(4px);
+      opacity: 0.95;
+    }
+  }
+}
+
+html[data-bs-theme="dark"] {
+  .blog-header {
+    background-color: rgba($primary, 0.04);
+    &::before {
+      opacity: 0.12;
+      filter: blur(24px);
+    }
+    &::after {
+      opacity: 0.1;
+      filter: blur(18px);
+    }
+    .bubble {
+      background: rgba($primary, 0.1);
+      filter: blur(6px);
+      opacity: 0.9;
+    }
+  }
+}
 body {
   font-family: "Roboto", serif;
   min-height: 100dvh;

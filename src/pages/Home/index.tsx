@@ -132,7 +132,7 @@ function HomePage() {
           {landing?.blogs && landing?.blogs.length > 0 && (
             <div className="row g-4">
               {landing.blogs.slice(0, 4).map((blog) => (
-                <div className="col-12 col-md-6 col-lg-4" key={blog.id}>
+                <div className="col-12 col-md-4 col-lg-3" key={blog.id}>
                   <BlogItem blog={blog} />
                 </div>
               ))}

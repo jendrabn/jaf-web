@@ -1,7 +1,7 @@
 import { type PropsWithChildren, useEffect } from "react";
 import Navbar from "../shared/Navbar";
 import Footer from "../shared/Footer";
-import { Accordion, Nav } from "react-bootstrap";
+import { Accordion, Card, Nav } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router";
 
 type AuthLayoutProps = PropsWithChildren & {
@@ -44,7 +44,7 @@ const NavAccount = () => {
   );
 };
 
-function AccountLayout({ children, title }: AuthLayoutProps) {
+const AccountLayout = ({ children, title }: AuthLayoutProps) => {
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -57,7 +57,7 @@ function AccountLayout({ children, title }: AuthLayoutProps) {
     <>
       <Navbar />
 
-      <main className="py-3 py-md-5">
+      <main className="main-content">
         <div className="container">
           <div className="row">
             <div className="col-lg-2 mb-3 ">
@@ -83,10 +83,10 @@ function AccountLayout({ children, title }: AuthLayoutProps) {
             </div>
 
             <div className="col-lg-10">
-              <div className="card border-0 shadow bg-text-white">
-                <h5 className="card-header">{title}</h5>
-                <div className="card-body p-md-5">{children}</div>
-              </div>
+              <Card className="" body border="primary">
+                <Card.Header>{title}</Card.Header>
+                <Card.Body>{children}</Card.Body>
+              </Card>
             </div>
           </div>
         </div>
@@ -95,6 +95,6 @@ function AccountLayout({ children, title }: AuthLayoutProps) {
       <Footer />
     </>
   );
-}
+};
 
 export default AccountLayout;

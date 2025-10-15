@@ -5,9 +5,10 @@ import Loading from "../../components/ui/Loading";
 import Pagination from "../../components/ui/Pagination";
 import Layout from "../../components/layout/Layout";
 import BlogFilters from "./BlogFilters";
+import BlogHeader from "./BlogHeader";
 import useFilters from "../../hooks/useFilters";
 import { type ChangeEvent, type FormEvent, useState } from "react";
-import { Button, Form, InputGroup, Offcanvas } from "react-bootstrap";
+import { Button, Form, InputGroup, Offcanvas, Dropdown } from "react-bootstrap";
 import NoData from "../../components/ui/NoData";
 import { Helmet } from "react-helmet-async";
 
@@ -32,7 +33,6 @@ function BlogPage() {
   const [searchTerm, setSearchTerm] = useState<string>(params.search || "");
   const { data: blogs, isLoading } = useFetchBlogs(queryString);
   const [showFilter, setShowFilter] = useState(false);
-  const [showSort, setShowSort] = useState(false);
 
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,44 +50,78 @@ function BlogPage() {
     });
   };
 
-  const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setFilter("sort_by", e.target.value);
-
-    clearFilters("page");
-  };
-
   return (
     <Layout>
       <Helmet>
         <title>Blog | {import.meta.env.VITE_APP_NAME}</title>
+        <meta
+          name="description"
+          content="Temukan artikel menarik seputar dunia parfum di blog kami. Baca tips, ulasan, dan berita terbaru tentang parfum."
+        />
       </Helmet>
 
       <div className="container">
-        <div className="row g-5">
-          <div className="col-lg-2 d-none d-lg-block ">
-            <BlogFilters />
-          </div>
-          <div className="col-lg-10">
-            <div className="d-flex align-items-center justify-content-between gap-2 mb-4">
-              {/* Desktop Only */}
-              <div className="d-none d-lg-block">
-                <span className="text-secondary-emphasis mb-0 me-2">
-                  Urutkan:
-                </span>
-                <Form.Select
-                  defaultValue=""
-                  onChange={handleSortChange}
-                  className="d-inline-block cursor-pointer w-auto"
-                >
-                  {SORT_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </Form.Select>
-              </div>
-              {/* End Desktop Only */}
+        <div className="row justify-content-center">
+          <div className="col-12 col-md-10">
+            <BlogHeader />
 
+            <div className="d-flex align-items-center justify-content-between gap-2 mb-4">
+              <div className="d-flex gap-2">
+                {/* Sort dropdown */}
+                <Dropdown>
+                  <Dropdown.Toggle
+                    as={Button}
+                    id="sort-btn"
+                    variant="outline-dark"
+                    className="no-caret"
+                    aria-label="Sort"
+                    title="Urutkan"
+                  >
+                    <i className="bi bi-arrow-down-up" aria-hidden="true" />
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    {SORT_OPTIONS.map((option) => (
+                      <Dropdown.Item
+                        key={option.value}
+                        active={params.sort_by === option.value}
+                        onClick={() => {
+                          setFilter("sort_by", option.value);
+                          clearFilters("page");
+                        }}
+                      >
+                        {option.label}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+
+                {/* Filter Offcanvas */}
+                <Button
+                  variant="outline-dark"
+                  title="Filter"
+                  onClick={() => setShowFilter(true)}
+                >
+                  <i className="bi bi-funnel"></i>
+                </Button>
+
+                <Offcanvas
+                  show={showFilter}
+                  onHide={() => setShowFilter(false)}
+                  placement="end"
+                >
+                  <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>
+                      <i className="bi bi-funnel-fill"></i> Filter
+                    </Offcanvas.Title>
+                  </Offcanvas.Header>
+                  <Offcanvas.Body>
+                    <BlogFilters />
+                  </Offcanvas.Body>
+                </Offcanvas>
+              </div>
+
+              {/* Search form */}
               <form
                 className="blog-search-form w-100"
                 onSubmit={handleSearchSubmit}
@@ -108,64 +142,10 @@ function BlogPage() {
                 </InputGroup>
               </form>
 
-              {/* Mobile Only */}
-              <div className="d-flex gap-2 d-lg-none">
-                <Button
-                  variant="outline-dark"
-                  onClick={() => setShowSort(true)}
-                >
-                  <i className="bi bi-arrow-down-up"></i>
-                </Button>
-
-                <Button
-                  variant="outline-dark"
-                  onClick={() => setShowFilter(true)}
-                >
-                  <i className="bi bi-funnel"></i>
-                </Button>
-
-                <Offcanvas
-                  show={showFilter}
-                  onHide={() => setShowFilter(false)}
-                  placement="end"
-                >
-                  <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>
-                      <i className="bi bi-funnel-fill"></i> Filter
-                    </Offcanvas.Title>
-                  </Offcanvas.Header>
-                  <Offcanvas.Body>
-                    <BlogFilters />
-                  </Offcanvas.Body>
-                </Offcanvas>
-
-                <Offcanvas
-                  show={showSort}
-                  onHide={() => setShowSort(false)}
-                  placement="end"
-                >
-                  <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>
-                      <i className="bi bi-arrow-down-up"></i> Sort
-                    </Offcanvas.Title>
-                  </Offcanvas.Header>
-
-                  <Offcanvas.Body>
-                    <Form.Select
-                      defaultValue=""
-                      onChange={handleSortChange}
-                      className="d-inline-block cursor-pointer w-100"
-                    >
-                      {SORT_OPTIONS.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </Offcanvas.Body>
-                </Offcanvas>
-              </div>
-              {/* End Mobile Only */}
+              <p className="text-secondary-emphasis mb-0 d-none d-lg-block">
+                {blogs?.page?.from || 0} - {blogs?.page?.to || 0} dari{" "}
+                {blogs?.page?.total || 0} artikel
+              </p>
             </div>
 
             {isLoading && <Loading className="py-5" />}

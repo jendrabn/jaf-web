@@ -57,7 +57,7 @@ function BlogDetailPage() {
                     {blog.title}
                   </h1>
 
-                  <div className="blog-meta d-flex align-items-center justify-content-between flex-wrap mb-3">
+                  <div className="blog-meta d-flex align-items-center justify-content-between flex-wrap mb-3 gap-3">
                     <div className="d-flex justify-content-start align-items-center gap-3">
                       <div>
                         <Image
@@ -88,7 +88,27 @@ function BlogDetailPage() {
 
                     <div className="d-flex gap-2">
                       <Button
-                        variant="light"
+                        variant="outline-light"
+                        className="rounded-0"
+                        title="Waktu baca"
+                      >
+                        <i className="bi bi-clock me-2"></i>
+                        {blog.min_read}
+                      </Button>
+
+                      <Button
+                        variant="outline-light"
+                        className="rounded-0"
+                        title="Jumlah dilihat"
+                      >
+                        <i className="bi bi-eye-fill me-2"></i>
+                        {blog.views_count}
+                      </Button>
+
+                      <Button
+                        variant="outline-light"
+                        className="rounded-0"
+                        title="Bagikan artikel"
                         onClick={() => setShowShareModal(true)}
                       >
                         <i className="bi bi-share-fill me-2"></i>
@@ -126,7 +146,7 @@ function BlogDetailPage() {
                     {blog.tags.map((tag) => (
                       <Badge
                         as={"a"}
-                        href={`/blog?tag=${tag}`}
+                        href={`/blog?tag_id=${tag.id}`}
                         key={tag.id}
                         bg="light"
                         text="dark"

@@ -13,11 +13,9 @@ interface AddRatingModalProps {
   order: OrderTypes;
 }
 
-export default function AddRatingModal({
-  show,
-  onClose,
-  order,
-}: AddRatingModalProps) {
+const AddRatingModal = (props: AddRatingModalProps) => {
+  const { show, onClose, order } = props;
+
   const [ratings, setRatings] = useState(
     order.items.map((item) => ({
       order_item_id: item.id,
@@ -82,12 +80,17 @@ export default function AddRatingModal({
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className="border-bottom-0">
         <Modal.Title>Nilai Produk</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {order.items.map((item, index) => (
-          <div key={item.id} className="mb-3 border-bottom pb-3">
+          <div
+            key={item.id}
+            className={`mb-3 pb-3 ${
+              index === order.items.length - 1 ? "" : "border-bottom"
+            }`}
+          >
             <div className="d-flex align-items-center">
               <ProductImage url={item.product.image} width={60} />
               <div className="ms-3">
@@ -138,8 +141,8 @@ export default function AddRatingModal({
           </div>
         ))}
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="light" onClick={onClose}>
+      <Modal.Footer className="border-top-0">
+        <Button variant="outline-secondary" onClick={onClose}>
           Batal
         </Button>
         <Button variant="primary" onClick={handleSubmit}>
@@ -150,4 +153,6 @@ export default function AddRatingModal({
       </Modal.Footer>
     </Modal>
   );
-}
+};
+
+export default AddRatingModal;

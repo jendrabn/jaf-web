@@ -53,7 +53,7 @@ const SortSelect = ({
   );
 };
 
-function OrderPage() {
+const OrderPage = () => {
   const { setFilter, clearFilters, queryString } = useFilters();
   const { data: orders, isLoading } = useFetchOrders(queryString);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
@@ -123,15 +123,11 @@ function OrderPage() {
         {/* Desktop */}
         <div className="d-none d-lg-flex align-items-center gap-2">
           <div>
-            <Form.Label className="text-secondary-emphasis mb-0 me-2">
-              Status:
-            </Form.Label>
+            <Form.Label className="text-muted mb-0 me-2">Status:</Form.Label>
             <StatusSelect onChange={handleStatusChange} className="w-auto" />
           </div>
           <div>
-            <Form.Label className="text-secondary mb-0 me-2">
-              Urutkan:
-            </Form.Label>
+            <Form.Label className="text-muted mb-0 me-2">Urutkan:</Form.Label>
             <SortSelect onChange={handleSortChange} className="w-auto" />
           </div>
         </div>
@@ -221,6 +217,6 @@ function OrderPage() {
       )}
     </AccountLayout>
   );
-}
+};
 
 export default OrderPage;

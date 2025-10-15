@@ -51,7 +51,7 @@ const SORT_OPTIONS: { label: string; value: string }[] = [
   },
 ];
 
-function ProductPage() {
+const ProductPage = () => {
   const { params, queryString, setFilter, clearFilters } =
     useFilters<ProductParamsTypes>();
 
@@ -74,7 +74,10 @@ function ProductPage() {
     <Layout>
       <Helmet>
         <title>Produk | {import.meta.env.VITE_APP_NAME}</title>
-        <meta name="description" content="Products" />
+        <meta
+          name="description"
+          content="Temukan parfum berkualitas dengan harga terjangkau. Jelajahi koleksi parfum kami yang lengkap dan nikmati penawaran menarik."
+        />
       </Helmet>
 
       <div className="container">
@@ -112,12 +115,10 @@ function ProductPage() {
                   ))}
                 </Form.Select>
               </div>
-              {/* End Desktop Only */}
 
               {/* Mobile Only */}
               <div className="d-flex align-items-center gap-2 d-lg-none">
                 <Button
-                  size="sm"
                   variant="outline-dark"
                   onClick={() => setShowSort(true)}
                 >
@@ -125,7 +126,6 @@ function ProductPage() {
                 </Button>
 
                 <Button
-                  size="sm"
                   variant="outline-dark"
                   onClick={() => setShowFilters(true)}
                 >
@@ -170,7 +170,11 @@ function ProductPage() {
                   </Offcanvas.Body>
                 </Offcanvas>
               </div>
-              {/* End Only Mobile */}
+
+              <p className="text-secondary-emphasis mb-0 d-none d-lg-block">
+                {products?.page?.from || 0} - {products?.page?.to || 0} dari{" "}
+                {products?.page?.total || 0} produk
+              </p>
             </div>
 
             {isLoading && <Loading className="py-5" />}
@@ -203,6 +207,6 @@ function ProductPage() {
       </div>
     </Layout>
   );
-}
+};
 
 export default ProductPage;

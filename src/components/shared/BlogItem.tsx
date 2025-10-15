@@ -26,7 +26,7 @@ const BlogItem = ({ blog }: Props) => (
           </Link>
 
           <Link
-            to={`/blog/category/${blog.category.slug}`}
+            to={`/blog?category_id=${blog.category.id}`}
             className="position-absolute top-0 start-0 m-2 z-1 text-decoration-none d-none d-md-inline-block"
           >
             <Badge bg="primary" className="fw-medium">

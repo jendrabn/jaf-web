@@ -30,10 +30,12 @@ $body-bg-dark: #212121;
   }
 }
 
-// col-lg-1of5 class for 5 equal columns layout
+// col-lg-1of5 class for 5 equal columns layout on large screens
 .col-lg-1of5 {
-  flex: 0 0 20%;
-  max-width: 20%;
+  @media (min-width: 992px) {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
 }
 
 // cursor-pointer class
@@ -128,4 +130,65 @@ $body-bg-dark: #212121;
   text-align: justify;
 }
 
+// min-dvh 100 class for minimum full viewport height on mobile devices
+.min-dvh-100 {
+  min-height: 100dvh !important;
+}
+
+.main-content {
+  flex: 1;
+
+  margin-top: 16px;
+  margin-bottom: 8px;
+
+  @media (min-width: 576px) {
+    margin-top: 20px;
+    margin-bottom: 12px;
+  }
+
+  @media (min-width: 768px) {
+    margin-top: 28px;
+    margin-bottom: 16px;
+  }
+
+  @media (min-width: 992px) {
+    margin-top: 36px;
+    margin-bottom: 20px;
+  }
+
+  @media (min-width: 1200px) {
+    margin-top: 44px;
+    margin-bottom: 24px;
+  }
+
+  @media (min-width: 1400px) {
+    margin-top: 52px;
+    margin-bottom: 28px;
+  }
+}
+
+// text extra small
+.text-xs {
+  font-size: 0.75rem !important;
+}
+
 @import "custom.scss";
+
+@import "theme.scss";
+
+/* Smooth transition for theme changes and image swaps */
+:root {
+  --theme-transition-duration: 200ms;
+}
+
+html[data-bs-theme="light"],
+html[data-bs-theme="dark"] {
+  transition: background-color var(--theme-transition-duration) ease,
+    color var(--theme-transition-duration) ease;
+}
+
+img,
+.img-fluid {
+  transition: opacity var(--theme-transition-duration) ease,
+    transform var(--theme-transition-duration) ease;
+}

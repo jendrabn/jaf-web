@@ -14,7 +14,7 @@ import { useLocation } from "react-router";
 import { Helmet } from "react-helmet-async";
 import AddRatingModal from "../../../components/shared/order/AddRatingModal";
 
-function OrderDetailPage() {
+const OrderDetailPage = () => {
   const { id } = useParams();
   const { data: order, isLoading } = useFetchOrder(Number(id));
   const location = useLocation();
@@ -455,6 +455,6 @@ function OrderDetailPage() {
       )}
     </AccountLayout>
   );
-}
+};
 
 export default OrderDetailPage;

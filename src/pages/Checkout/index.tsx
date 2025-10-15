@@ -218,20 +218,20 @@ function CheckoutPage() {
                 <Table responsive>
                   <tbody>
                     <tr>
-                      <td className="text-gray-700">
+                      <td className="text-secondary-emphasis">
                         Total Harga ({totalQuantity})
                       </td>
                       <td className="text-end">{formatPrice(subtotal)}</td>
                     </tr>
                     <tr>
-                      <td className="text-gray-700">
+                      <td className="text-secondary-emphasis">
                         Biaya Pengiriman ({totalWeightKg} kg)
                       </td>
                       <td className="text-end">{formatPrice(shippingCost)}</td>
                     </tr>
                     {hasDiscount && (
                       <tr>
-                        <td className="text-gray-700 text-success">
+                        <td className="text-secondary-emphasis text-success">
                           Diskon ({couponLabel})
                         </td>
                         <td className="text-end text-success">
@@ -240,7 +240,7 @@ function CheckoutPage() {
                       </tr>
                     )}
                     <tr>
-                      <td className="text-gray-700">
+                      <td className="text-secondary-emphasis">
                         <div>Pajak</div>
                         <div className="text-muted small">
                           {checkout?.taxes.map((tax) => (
@@ -253,7 +253,7 @@ function CheckoutPage() {
                       <td className="text-end">{formatPrice(totalTax)}</td>
                     </tr>
                     <tr>
-                      <td className="text-gray-700">Jumlah Total</td>
+                      <td className="text-secondary-emphasis">Jumlah Total</td>
                       <td className="text-end">{formatPrice(grandTotal)}</td>
                     </tr>
                   </tbody>

@@ -5,7 +5,7 @@ import Layout from "../../components/layout/Layout";
 import { Helmet } from "react-helmet-async";
 import StarRating from "../../components/ui/StarRating";
 
-function AboutPage() {
+const AboutPage = () => {
   const [activeReview, setActiveReview] = useState(0);
   const [fade, setFade] = useState(true);
 
@@ -21,11 +21,11 @@ function AboutPage() {
   return (
     <Layout>
       <Helmet>
+        <title>Tentang Kami | {import.meta.env.VITE_APP_NAME}</title>
         <meta
           name="description"
           content="Pelajari lebih lanjut tentang JAF Parfum's, layanan kami, dan komitmen kami terhadap kualitas dan kepuasan pelanggan."
         />
-        <title>Tentang Kami | {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
 
       <div className="container">
@@ -202,6 +202,6 @@ function AboutPage() {
       </div>
     </Layout>
   );
-}
+};
 
 export default AboutPage;

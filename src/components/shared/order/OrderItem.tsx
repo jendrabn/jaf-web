@@ -32,11 +32,8 @@ interface OrderItemProps {
   onConfirmOrderReceived: (orderId: number) => void;
 }
 
-function OrderItem({
-  order,
-  onConfirmPayment,
-  onConfirmOrderReceived,
-}: OrderItemProps) {
+const OrderItem = (props: OrderItemProps) => {
+  const { order, onConfirmPayment, onConfirmOrderReceived } = props;
   const { id, status, created_at, payment_due_date, items, total_amount } =
     order;
 
@@ -243,6 +240,6 @@ function OrderItem({
       </div>
     </div>
   );
-}
+};
 
 export default OrderItem;

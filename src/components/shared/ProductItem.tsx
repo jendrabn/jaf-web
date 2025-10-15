@@ -1,5 +1,5 @@
 import type { ProductItemTypes } from "../../types/product";
-import { Card } from "react-bootstrap";
+import { Card, Image } from "react-bootstrap";
 import { formatCurrency } from "../../utils/format";
 import { Link } from "react-router";
 
@@ -40,7 +40,7 @@ export default function ProductItem({
     <Card className="h-100 text-decoration-none border-0 hover-up">
       <Link to={`/products/${id}`} className="text-decoration-none">
         <div className="w-100 ratio ratio-1x1 bg-gray-300 overflow-hidden rounded-3 img-hover-zoom">
-          <img
+          <Image
             src={image}
             alt={name}
             loading="lazy"
@@ -50,7 +50,7 @@ export default function ProductItem({
       </Link>
 
       <Card.Body className="px-0">
-        <Card.Title className="fs-6 line-clamp-2">
+        <Card.Title className="fs-6 line-clamp-2" title={name}>
           <Link
             className="text-body-emphasis text-decoration-none hover-text-primary"
             to={`/products/${id}`}

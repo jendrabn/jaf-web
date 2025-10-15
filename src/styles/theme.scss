@@ -1,11 +1,11 @@
 /* Dark theme overrides (when data-bs-theme="dark") */
 :root[data-bs-theme="dark"] {
-  --bs-body-bg: #181818;
+  --bs-body-bg: #212121;
 
   .navbar,
   .bg-body-tertiary,
   .footer {
-    background-color: #212121 !important;
+    background-color: #181818 !important;
   }
 
   .navbar .nav-link,
@@ -17,4 +17,124 @@
   .navbar .nav-link:focus {
     color: #ffffff !important;
   }
+
+  /* Make outline-dark visible on dark theme */
+  .btn-outline-dark {
+    color: #e9e9e9 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    background-color: transparent !important;
+  }
+
+  .btn-outline-dark:hover,
+  .btn-outline-dark:focus {
+    color: #0d1321 !important; /* dark text on light hover */
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+  }
+
+  .btn-outline-dark.disabled,
+  .btn-outline-dark:disabled {
+    color: rgba(255, 255, 255, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+    background-color: transparent !important;
+  }
+
+  /* react-select dark theme adjustments */
+  /* Uses react-select "classNamePrefix" default: react-select */
+  .react-select__control {
+    background-color: var(--bs-body-bg, #1b1b1b) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: var(--bs-body-color, #f1f1f1) !important;
+    box-shadow: none !important;
+  }
+
+  .react-select__control--is-focused {
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.04) !important;
+  }
+
+  .react-select__value-container,
+  .react-select__single-value,
+  .react-select__input input {
+    color: var(--bs-body-color, #f8f9fa) !important;
+  }
+
+  .react-select__placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .react-select__menu {
+    background: var(--bs-body-bg, #111111) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+    z-index: 1200; /* ensure above modal/other elements */
+  }
+
+  .react-select__option {
+    background: transparent !important;
+    color: var(--bs-body-color, #f1f1f1) !important;
+  }
+
+  .react-select__option--is-focused {
+    background: rgba(255, 255, 255, 0.03) !important;
+    color: #ffffff !important;
+  }
+
+  .react-select__option--is-selected {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #ffffff !important;
+  }
+
+  .react-select__multi-value {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: var(--bs-body-color, #fff) !important;
+  }
+
+  .react-select__multi-value__label {
+    color: var(--bs-body-color, #f1f1f1) !important;
+  }
+
+  .react-select__multi-value__remove {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .react-select__indicator {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  /* Clear button hover (x) */
+  .react-select__clear-indicator:hover {
+    color: #fff !important;
+  }
+}
+
+/* Light theme overrides (when data-bs-theme="light") to make outline-light visible */
+:root[data-bs-theme="light"] {
+  /* Make outline-light visible on light theme (default Bootstrap makes it nearly invisible)
+     Use slightly darker text and visible border so the button reads on white backgrounds */
+  .btn-outline-light {
+    color: #212529 !important; /* body text color */
+    border-color: rgba(33, 37, 41, 0.12) !important;
+    background-color: transparent !important;
+  }
+
+  .btn-outline-light:hover,
+  .btn-outline-light:focus {
+    color: #212529 !important;
+    background-color: rgba(33, 37, 41, 0.04) !important;
+    border-color: rgba(33, 37, 41, 0.18) !important;
+  }
+
+  .btn-outline-light.disabled,
+  .btn-outline-light:disabled {
+    color: rgba(33, 37, 41, 0.5) !important;
+    border-color: rgba(33, 37, 41, 0.06) !important;
+    background-color: transparent !important;
+  }
+}
+
+/* Utility: hide Dropdown caret when using icon-only toggles */
+.no-caret .dropdown-toggle::after,
+.dropdown-toggle.no-caret::after {
+  display: none !important;
 }
