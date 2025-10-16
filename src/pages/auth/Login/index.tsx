@@ -1,6 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router";
-import AuthLayout from "../../../components/layout/AuthLayout";
+import AuthLayout from "../../../components/layouts/AuthLayout";
 import { useLogin } from "../../../hooks/api/auth";
 import type { LoginReqTypes } from "../../../types/auth";
 import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";

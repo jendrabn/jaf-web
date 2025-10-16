@@ -1,10 +1,10 @@
 import { Breadcrumb, Button, Tab, Tabs } from "react-bootstrap";
 import { useParams } from "react-router";
 import { getGenderLabel, formatPrice } from "../../utils/functions";
-import ProductItem from "../../components/shared/ProductItem";
+import ProductItem from "../../components/parts/ProductItem";
 import { useState } from "react";
 import { useCreateCart } from "../../hooks/api/cart";
-import Layout from "../../components/layout/Layout";
+import Layout from "../../components/layouts/Layout";
 import NotFoundPage from "../../pages/NotFound";
 import {
   useFetchProduct,

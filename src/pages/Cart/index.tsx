@@ -1,10 +1,10 @@
-import Layout from "../../components/layout/Layout";
+import Layout from "../../components/layouts/Layout";
 import { useNavigate } from "react-router";
 import { useCheckoutState } from "../../hooks/api/order";
 import { formatPrice } from "../../utils/functions";
 import { Button, Form } from "react-bootstrap";
 import { useDeleteCart } from "../../hooks/api/cart";
-import CartItem from "../../components/shared/CartItem";
+import CartItem from "../../components/parts/CartItem";
 import { useCartDispatch, useCartState } from "../../contexts/CartContext";
 import NoData from "../../components/ui/NoData";
 import { Helmet } from "react-helmet-async";

@@ -1,10 +1,10 @@
 import { useFetchLanding } from "../../hooks/api/landing";
-import ProductItem from "../../components/shared/ProductItem";
-import BlogItem from "../../components/shared/BlogItem";
+import ProductItem from "../../components/parts/ProductItem";
+import BlogItem from "../../components/parts/BlogItem";
 import type { ProductItemTypes } from "../../types/product";
 import Loading from "../../components/ui/Loading";
-import Layout from "../../components/layout/Layout";
-import OurServices from "../../components/shared/OurServices";
+import Layout from "../../components/layouts/Layout";
+import OurServices from "../../components/parts/OurServices";
 import { Helmet } from "react-helmet-async";
 
 function HomePage() {

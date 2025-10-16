@@ -1,5 +1,5 @@
 import { Button, Col, Form, Row } from "react-bootstrap";
-import AccountLayout from "../../../components/layout/AccountLayout";
+import AccountLayout from "../../../components/layouts/AccountLayout";
 import type { PasswordReqTypes } from "../../../types/user";
 import { useUpdatePassword } from "../../../hooks/api/user";
 import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";

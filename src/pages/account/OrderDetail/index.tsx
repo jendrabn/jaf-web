@@ -1,18 +1,18 @@
 import { useParams } from "react-router";
-import AccountLayout from "../../../components/layout/AccountLayout";
+import AccountLayout from "../../../components/layouts/AccountLayout";
 import { useFetchOrder } from "../../../hooks/api/order";
 import NotFoundPage from "../../../pages/NotFound";
 import Loading from "../../../components/ui/Loading";
 import { formatDateTime, formatPrice } from "../../../utils/functions";
 import { Alert, Button } from "react-bootstrap";
 import { ORDER_STATUS_COLORS, ORDER_STATUSES } from "../../../utils/constans";
-import ProductImage from "../../../components/shared/ProductImage";
+import ProductImage from "../../../components/parts/ProductImage";
 import { useState } from "react";
-import ConfirmPaymentModal from "../../../components/shared/order/ConfirmPaymentModal";
-import ConfirmOrderReceivedModal from "../../../components/shared/order/ConfirmOrderReceivedModal";
+import ConfirmPaymentModal from "../../../components/parts/order/ConfirmPaymentModal";
+import ConfirmOrderReceivedModal from "../../../components/parts/order/ConfirmOrderReceivedModal";
 import { useLocation } from "react-router";
 import { Helmet } from "react-helmet-async";
-import AddRatingModal from "../../../components/shared/order/AddRatingModal";
+import AddRatingModal from "../../../components/parts/order/AddRatingModal";
 
 const OrderDetailPage = () => {
   const { id } = useParams();

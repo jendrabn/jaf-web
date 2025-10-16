@@ -1,10 +1,10 @@
-import AccountLayout from "../../../components/layout/AccountLayout";
+import AccountLayout from "../../../components/layouts/AccountLayout";
 import {
   useWishlistDispatch,
   useWishlistState,
 } from "../../../contexts/WishlistContext";
 import { Button, Form } from "react-bootstrap";
-import WishlistItem from "../../../components/shared/WishlistItem";
+import WishlistItem from "../../../components/parts/WishlistItem";
 import { useDeleteWishlist } from "../../../hooks/api/wishlist";
 import NoData from "../../../components/ui/NoData";
 import { Helmet } from "react-helmet-async";

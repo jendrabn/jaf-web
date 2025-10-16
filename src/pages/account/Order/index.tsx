@@ -1,13 +1,13 @@
-import AccountLayout from "../../../components/layout/AccountLayout";
+import AccountLayout from "../../../components/layouts/AccountLayout";
 import { useFetchOrders } from "../../../hooks/api/order";
 import Pagination from "../../../components/ui/Pagination";
 import useFilters from "../../../hooks/useFilters";
 import { type ChangeEvent, useState } from "react";
-import OrderItem from "../../../components/shared/order/OrderItem";
+import OrderItem from "../../../components/parts/order/OrderItem";
 import Loading from "../../../components/ui/Loading";
 import { ORDER_STATUSES } from "../../../utils/constans";
-import ConfirmPaymentModal from "../../../components/shared/order/ConfirmPaymentModal";
-import ConfirmOrderReceivedModal from "../../../components/shared/order/ConfirmOrderReceivedModal";
+import ConfirmPaymentModal from "../../../components/parts/order/ConfirmPaymentModal";
+import ConfirmOrderReceivedModal from "../../../components/parts/order/ConfirmOrderReceivedModal";
 import { Button, Form, Offcanvas } from "react-bootstrap";
 import NoData from "../../../components/ui/NoData";
 import { Helmet } from "react-helmet-async";

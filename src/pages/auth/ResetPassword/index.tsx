@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router";
-import AuthLayout from "../../../components/layout/AuthLayout";
+import AuthLayout from "../../../components/layouts/AuthLayout";
 import type { ResetPasswordReqTypes } from "../../../types/auth";
 import { Button, Form, FormControl } from "react-bootstrap";
 import { useResetPassword } from "../../../hooks/api/auth";

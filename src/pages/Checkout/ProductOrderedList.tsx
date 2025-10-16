@@ -1,7 +1,7 @@
 import { Form, Table } from "react-bootstrap";
 import Select, { type SingleValue } from "react-select";
 import { formatPrice } from "../../utils/functions";
-import ProductImage from "../../components/shared/ProductImage";
+import ProductImage from "../../components/parts/ProductImage";
 import {
   useCheckoutDispatch,
   useCheckoutState,

@@ -2,47 +2,39 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { toast, ToastContainer } from "react-toastify";
-import ProtectedRoute from "./components/shared/ProtectedRoute.tsx";
+import ProtectedRoute from "./components/parts/ProtectedRoute";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AxiosError } from "axios";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 import { CartProvider } from "./contexts/CartContext.tsx";
 import { WishlistProvider } from "./contexts/WishlistContext.tsx";
 import { CheckoutProvider } from "./contexts/CheckoutContext.tsx";
-import Loading from "./components/ui/Loading.tsx";
+import Loading from "./components/ui/Loading";
 import "bootstrap";
 import "./styles/style.scss";
 
-const HomePage = lazy(() => import("./pages/Home/index.tsx"));
-const ProductDetailPage = lazy(() => import("./pages/ProductDetail/index.tsx"));
-const NotFoundPage = lazy(() => import("./pages/NotFound/index.tsx"));
-const ProductPage = lazy(() => import("./pages/Product/index.tsx"));
-const ForgotPasswordPage = lazy(
-  () => import("./pages/auth/ForgotPassword/index.tsx")
-);
-const LoginPage = lazy(() => import("./pages/auth/Login/index.tsx"));
-const RegisterPage = lazy(() => import("./pages/auth/Register/index.tsx"));
-const ResetPasswordPage = lazy(
-  () => import("./pages/auth/ResetPassword/index.tsx")
-);
-const CartPage = lazy(() => import("./pages/Cart/index.tsx"));
-const WishlistPage = lazy(() => import("./pages/account/Wishlist/index.tsx"));
-const ProfilePage = lazy(() => import("./pages/account/Profile/index.tsx"));
-const OrderPage = lazy(() => import("./pages/account/Order/index.tsx"));
-const ChangePassword = lazy(
-  () => import("./pages/account/ChangePassword/index.tsx")
-);
-const AddressPage = lazy(() => import("./pages/account/Address/index.tsx"));
-const BlogPage = lazy(() => import("./pages/Blog/index.tsx"));
-const BlogDetailPage = lazy(() => import("./pages/BlogDetail/index.tsx"));
-const CheckoutPage = lazy(() => import("./pages/Checkout/index.tsx"));
-const OrderDetailPage = lazy(
-  () => import("./pages/account/OrderDetail/index.tsx")
-);
-const ContactPage = lazy(() => import("./pages/Contact/index.tsx"));
-const AboutPage = lazy(() => import("./pages/About/index.tsx"));
-const FaqPage = lazy(() => import("./pages/Faq/index.tsx"));
-const HelpPage = lazy(() => import("./pages/Help/index.tsx"));
+const HomePage = lazy(() => import("./pages/Home"));
+const ProductDetailPage = lazy(() => import("./pages/ProductDetail"));
+const NotFoundPage = lazy(() => import("./pages/NotFound"));
+const ProductPage = lazy(() => import("./pages/Product"));
+const ForgotPasswordPage = lazy(() => import("./pages/Auth/ForgotPassword"));
+const LoginPage = lazy(() => import("./pages/Auth/Login"));
+const RegisterPage = lazy(() => import("./pages/Auth/Register"));
+const ResetPasswordPage = lazy(() => import("./pages/Auth/ResetPassword"));
+const CartPage = lazy(() => import("./pages/Cart"));
+const WishlistPage = lazy(() => import("./pages/Account/Wishlist"));
+const ProfilePage = lazy(() => import("./pages/Account/Profile"));
+const OrderPage = lazy(() => import("./pages/Account/Order"));
+const ChangePassword = lazy(() => import("./pages/Account/ChangePassword"));
+const AddressPage = lazy(() => import("./pages/Account/Address"));
+const BlogPage = lazy(() => import("./pages/Blog"));
+const BlogDetailPage = lazy(() => import("./pages/BlogDetail"));
+const CheckoutPage = lazy(() => import("./pages/Checkout"));
+const OrderDetailPage = lazy(() => import("./pages/Account/OrderDetail"));
+const ContactPage = lazy(() => import("./pages/Contact"));
+const AboutPage = lazy(() => import("./pages/About"));
+const FaqPage = lazy(() => import("./pages/Faq"));
+const HelpPage = lazy(() => import("./pages/Help"));
 
 const queryClient = new QueryClient({
   defaultOptions: {

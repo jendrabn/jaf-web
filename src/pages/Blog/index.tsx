@@ -1,9 +1,9 @@
 import { useFetchBlogs } from "../../hooks/api/blog";
 import type { BlogParamsTypes } from "../../types/blog";
-import BlogItem from "../../components/shared/BlogItem";
+import BlogItem from "../../components/parts/BlogItem";
 import Loading from "../../components/ui/Loading";
 import Pagination from "../../components/ui/Pagination";
-import Layout from "../../components/layout/Layout";
+import Layout from "../../components/layouts/Layout";
 import BlogFilters from "./BlogFilters";
 import BlogHeader from "./BlogHeader";
 import useFilters from "../../hooks/useFilters";

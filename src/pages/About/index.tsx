@@ -1,7 +1,7 @@
 import { useState } from "react";
-import OurServices from "../../components/shared/OurServices";
+import OurServices from "../../components/parts/OurServices";
 import googleReviews from "../../data/google-reviews.json";
-import Layout from "../../components/layout/Layout";
+import Layout from "../../components/layouts/Layout";
 import { Helmet } from "react-helmet-async";
 import StarRating from "../../components/ui/StarRating";
 

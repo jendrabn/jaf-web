@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Form } from "react-bootstrap";
-import Layout from "../../components/layout/Layout";
-import CSContact from "../../components/shared/CSContact";
+import Layout from "../../components/layouts/Layout";
+import CustomerServiceContact from "../../components/parts/CustomerServiceContact";
 
 function ContactPage() {
   return (
@@ -56,7 +56,7 @@ function ContactPage() {
                 </button>
               </Form>
               <div className="mt-4 border-top pt-4">
-                <CSContact />
+                <CustomerServiceContact />
               </div>
             </div>
           </div>

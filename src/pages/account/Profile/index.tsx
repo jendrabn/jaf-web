@@ -1,7 +1,7 @@
 import { Row, Col, Button, Form, Image } from "react-bootstrap";
 import { useAuthState } from "../../../contexts/AuthContext";
 import type { UserTypes } from "../../../types/user";
-import AccountLayout from "../../../components/layout/AccountLayout";
+import AccountLayout from "../../../components/layouts/AccountLayout";
 import { useUpdateUser } from "../../../hooks/api/user";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";

@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router";
 import { useFetchBlog } from "../../hooks/api/blog";
-import Layout from "../../components/layout/Layout";
+import Layout from "../../components/layouts/Layout";
 import NotFoundPage from "../../pages/NotFound";
 import Loading from "../../components/ui/Loading";
 import { Helmet } from "react-helmet-async";
