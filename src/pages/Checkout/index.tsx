@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router";
-import Layout from "../../components/layouts/Layout";
-import { useCreateOrder } from "../../hooks/api/order";
+import Layout from "@/components/layouts/Layout";
+import { useCreateOrder } from "@/hooks/api/order";
 import { useCallback, useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 import { Button, Form, Table } from "react-bootstrap";
-import { formatPrice, toNumber } from "../../utils/functions";
+import { formatCurrency, toNumber } from "@/utils/functions";
 import { toast } from "react-toastify";
 import DeliveryAddressModal from "./DeliveryAddressModal";
 import DeliveryAddress from "./DeliveryAddress";
@@ -15,11 +15,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   useCheckoutDispatch,
   useCheckoutState,
-} from "../../contexts/CheckoutContext";
-import { type OrderReqTypes } from "../../types/order";
-import { useCartDispatch } from "../../contexts/CartContext";
+} from "@/contexts/CheckoutContext";
+import { type OrderReqTypes } from "@/types/order";
+import { useCartDispatch } from "@/contexts/CartContext";
 import { Helmet } from "react-helmet-async";
-import { QUERY_KEYS } from "../../utils/constans";
+import { QUERY_KEYS } from "@/utils/constans";
 
 function CheckoutPage() {
   const queryClient = useQueryClient();
@@ -221,13 +221,15 @@ function CheckoutPage() {
                       <td className="text-secondary-emphasis">
                         Total Harga ({totalQuantity})
                       </td>
-                      <td className="text-end">{formatPrice(subtotal)}</td>
+                      <td className="text-end">{formatCurrency(subtotal)}</td>
                     </tr>
                     <tr>
                       <td className="text-secondary-emphasis">
                         Biaya Pengiriman ({totalWeightKg} kg)
                       </td>
-                      <td className="text-end">{formatPrice(shippingCost)}</td>
+                      <td className="text-end">
+                        {formatCurrency(shippingCost)}
+                      </td>
                     </tr>
                     {hasDiscount && (
                       <tr>
@@ -235,7 +237,7 @@ function CheckoutPage() {
                           Diskon ({couponLabel})
                         </td>
                         <td className="text-end text-success">
-                          -{formatPrice(discountAmount)}
+                          -{formatCurrency(discountAmount)}
                         </td>
                       </tr>
                     )}
@@ -250,11 +252,11 @@ function CheckoutPage() {
                           ))}
                         </div>
                       </td>
-                      <td className="text-end">{formatPrice(totalTax)}</td>
+                      <td className="text-end">{formatCurrency(totalTax)}</td>
                     </tr>
                     <tr>
                       <td className="text-secondary-emphasis">Jumlah Total</td>
-                      <td className="text-end">{formatPrice(grandTotal)}</td>
+                      <td className="text-end">{formatCurrency(grandTotal)}</td>
                     </tr>
                   </tbody>
                 </Table>

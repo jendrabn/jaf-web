@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { useTheme } from "../../../contexts/ThemeContext";
+import { useTheme } from "@/contexts/ThemeContext";
 
 interface ThemeToggleProps {
   className?: string;

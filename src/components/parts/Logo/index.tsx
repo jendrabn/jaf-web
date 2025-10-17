@@ -1,5 +1,5 @@
 import { Image } from "react-bootstrap";
-import { useTheme } from "../../../contexts/ThemeContext";
+import { useTheme } from "@/contexts/ThemeContext";
 
 type LogoProps = {
   alt?: string;

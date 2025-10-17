@@ -10,16 +10,16 @@ import {
   useFetchDistricts,
   useFetchProvinces,
   useFetchSubDistricts,
-} from "../../hooks/api/region";
+} from "@/hooks/api/region";
 import { Button, Form, Modal } from "react-bootstrap";
 import Select, { type SingleValue } from "react-select";
-import type { AddressTypes } from "../../types/checkout";
+import type { AddressTypes } from "@/types/checkout";
 import {
   useCheckoutDispatch,
   useCheckoutState,
-} from "../../contexts/CheckoutContext";
+} from "@/contexts/CheckoutContext";
 import { toast } from "react-toastify";
-import { useFetchShippingCosts } from "../../hooks/api/order";
+import { useFetchShippingCosts } from "@/hooks/api/order";
 
 interface DeliveryAddressModalProps {
   onClose: () => void;

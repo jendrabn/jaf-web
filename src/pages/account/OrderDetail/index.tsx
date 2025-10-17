@@ -3,16 +3,17 @@ import AccountLayout from "../../../components/layouts/AccountLayout";
 import { useFetchOrder } from "../../../hooks/api/order";
 import NotFoundPage from "../../../pages/NotFound";
 import Loading from "../../../components/ui/Loading";
-import { formatDateTime, formatPrice } from "../../../utils/functions";
+import { formatDateTime } from "../../../utils/functions";
 import { Alert, Button } from "react-bootstrap";
 import { ORDER_STATUS_COLORS, ORDER_STATUSES } from "../../../utils/constans";
 import ProductImage from "../../../components/parts/ProductImage";
 import { useState } from "react";
-import ConfirmPaymentModal from "../../../components/parts/order/ConfirmPaymentModal";
-import ConfirmOrderReceivedModal from "../../../components/parts/order/ConfirmOrderReceivedModal";
+import ConfirmPaymentModal from "../../../components/parts/Order/ConfirmPaymentModal";
+import ConfirmOrderReceivedModal from "../../../components/parts/Order/ConfirmOrderReceivedModal";
 import { useLocation } from "react-router";
 import { Helmet } from "react-helmet-async";
-import AddRatingModal from "../../../components/parts/order/AddRatingModal";
+import AddRatingModal from "../../../components/parts/Order/AddRatingModal";
+import { formatCurrency } from "@/utils/format";
 
 const OrderDetailPage = () => {
   const { id } = useParams();
@@ -102,7 +103,7 @@ const OrderDetailPage = () => {
                 <i className="bi bi-check-lg"></i>
               </div>
               <div>
-                Pesanan Dibayar <br /> ({formatPrice(order.total_amount)})
+                Pesanan Dibayar <br /> ({formatCurrency(order.total_amount)})
               </div>
               <div className="timestamp">
                 {formatDateTime(order.confirmed_at)}
@@ -190,7 +191,7 @@ const OrderDetailPage = () => {
                         <p>
                           <strong>Ongkos Kirim</strong>
                           <br />
-                          {formatPrice(order.shipping_cost)}
+                          {formatCurrency(order.shipping_cost)}
                         </p>
                       </div>
                       <div className="col-md-6">
@@ -307,11 +308,11 @@ const OrderDetailPage = () => {
                               {isDiscounted ? (
                                 <>
                                   <span className="text-danger">
-                                    {formatPrice(unitPrice)}
+                                    {formatCurrency(unitPrice)}
                                   </span>
                                   (
                                   <span className="text-decoration-line-through text-muted">
-                                    {formatPrice(originalPrice)}
+                                    {formatCurrency(originalPrice)}
                                   </span>
                                   {discountLabel && (
                                     <span className="ms-1">
@@ -321,7 +322,7 @@ const OrderDetailPage = () => {
                                   )
                                 </>
                               ) : (
-                                formatPrice(unitPrice)
+                                formatCurrency(unitPrice)
                               )}{" "}
                               ({(weight / 1000).toFixed(2)} Kg)
                             </small>
@@ -331,12 +332,12 @@ const OrderDetailPage = () => {
                           {isDiscounted ? (
                             <div className="d-flex flex-column align-items-end">
                               <span style={{ fontSize: "0.9rem" }}>
-                                {formatPrice(subtotal)}
+                                {formatCurrency(subtotal)}
                               </span>
                               <small className="text-gray-600">
                                 (
                                 <span className="text-decoration-line-through text-muted">
-                                  {formatPrice(originalSubtotal)}
+                                  {formatCurrency(originalSubtotal)}
                                 </span>
                                 {discountLabel && (
                                   <span className="ms-1">{discountLabel}</span>
@@ -346,7 +347,7 @@ const OrderDetailPage = () => {
                             </div>
                           ) : (
                             <span style={{ fontSize: "0.9rem" }}>
-                              {formatPrice(subtotal)}
+                              {formatCurrency(subtotal)}
                             </span>
                           )}
                         </div>
@@ -365,7 +366,7 @@ const OrderDetailPage = () => {
                     <span>Total Harga</span>
                   </div>
                   <div className="col-md-3 text-end">
-                    <span>{formatPrice(order.total_price)}</span>
+                    <span>{formatCurrency(order.total_price)}</span>
                   </div>
                 </div>
 
@@ -376,7 +377,7 @@ const OrderDetailPage = () => {
                     </div>
                     <div className="col-md-3 text-end">
                       <span className="text-success">
-                        -{formatPrice(order.discount)}
+                        -{formatCurrency(order.discount)}
                       </span>
                     </div>
                   </div>
@@ -387,7 +388,7 @@ const OrderDetailPage = () => {
                     <span>Ongkos Kirim</span>
                   </div>
                   <div className="col-md-3 text-end">
-                    <span>{formatPrice(order.shipping_cost)}</span>
+                    <span>{formatCurrency(order.shipping_cost)}</span>
                   </div>
                 </div>
 
@@ -396,7 +397,7 @@ const OrderDetailPage = () => {
                     <span>Pajak</span>
                   </div>
                   <div className="col-md-3 text-end">
-                    <span>{formatPrice(order.tax_amount)}</span>
+                    <span>{formatCurrency(order.tax_amount)}</span>
                   </div>
                 </div>
 
@@ -406,7 +407,7 @@ const OrderDetailPage = () => {
                   </div>
                   <div className="col-md-3 text-end">
                     <span className="fw-bold fs-5">
-                      {formatPrice(order.total_amount)}
+                      {formatCurrency(order.total_amount)}
                     </span>
                   </div>
                 </div>

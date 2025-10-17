@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "../../../utils/api";
-import type { ConfirmPaymentReqTypes } from "../../../types/order";
+import fetchApi from "@/utils/api";
+import type { ConfirmPaymentReqTypes } from "@/types/order";
 
 export const useConfirmPayment = () =>
   useMutation({
@@ -10,5 +10,5 @@ export const useConfirmPayment = () =>
     }: {
       orderId: number;
       data: ConfirmPaymentReqTypes;
-    }) => apiClient().post(`/orders/${orderId}/confirm_payment`, data),
+    }) => fetchApi().post(`/orders/${orderId}/confirm_payment`, data),
   });

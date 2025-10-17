@@ -1,16 +1,18 @@
 import { Link, NavLink } from "react-router";
 import SearchBar from "./SearchBar";
-import { useAuthState } from "../../../contexts/AuthContext";
+import { useAuthState } from "@/contexts/AuthContext";
 import {
   useFetchProductBrands,
   useFetchProductCategories,
-} from "../../../hooks/api/product";
-import { useLogout } from "../../../hooks/api/auth";
+} from "@/hooks/api/product";
+import { useLogout } from "@/hooks/api/auth";
 import type { MouseEvent } from "react";
-import { useCartState } from "../../../contexts/CartContext";
-import { removeAuthToken } from "../../../utils/functions";
-import ThemeToggle from "../ThemeToggle";
-import Logo from "../Logo";
+import { useCartState } from "@/contexts/CartContext";
+import { removeAuthToken } from "@/utils/functions";
+import ThemeToggle from "@/components/parts/ThemeToggle";
+import Logo from "@/components/parts/Logo";
+import { Image } from "react-bootstrap";
+import { env } from "@/utils/config";
 
 const Navbar = () => {
   const { isAuthenticated, user } = useAuthState();
@@ -37,26 +39,28 @@ const Navbar = () => {
     <header className="sticky-top bg-body-tertiary">
       <div className="d-none d-lg-block py-2 border-bottom">
         <div className="container">
-          <div className="d-flex justify-content-between align-items-center">
-            <div className="">
-              <NavLink className="me-3 link-body-emphasis" to="/about">
+          <div className="d-flex justify-content-between align-items-center small">
+            <div>
+              <NavLink className="me-3 text-muted" to="/about">
                 Tentang Kami
               </NavLink>
-              <NavLink className="me-3 link-body-emphasis" to="/contact">
+              <NavLink className="me-3 text-muted" to="/contact">
                 Kontak
               </NavLink>
-              <NavLink className="me-3 link-body-emphasis" to="/help">
+              <NavLink className="me-3 text-muted" to="/help">
                 Bantuan
               </NavLink>
-              <NavLink className="link-body-emphasis" to="/faq">
+              <NavLink className="text-muted" to="/faq">
                 FAQs
               </NavLink>
             </div>
-            <div className="">
-              <p className="mb-0">
-                Gratis ongkir untuk semua pesanan di atas 100k
-              </p>
-            </div>
+            {env.FREE_SHIPPING_100K && env.FREE_SHIPPING_100K === "true" && (
+              <div>
+                <p className="mb-0 text-muted">
+                  Gratis ongkir untuk semua pesanan di atas 100k
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -84,9 +88,9 @@ const Navbar = () => {
             className="collapse navbar-collapse align-items-center"
             id="navbarSupportedContent"
           >
-            <SearchBar className="me-2 d-none d-lg-block" />
+            <SearchBar className="mx-4 d-none d-lg-block" />
 
-            <ul className="navbar-nav mb-2 mb-lg-0">
+            <ul className="navbar-nav mb-2 mb-lg-0 gap-1">
               <li className="nav-item">
                 <NavLink
                   className={({ isActive }) =>
@@ -169,7 +173,11 @@ const Navbar = () => {
               {isAuthenticated ? (
                 <>
                   <li className="nav-item me-2">
-                    <NavLink className="nav-link" to={"/cart"}>
+                    <NavLink
+                      className="nav-link"
+                      to={"/cart"}
+                      title="Keranjang Belanja"
+                    >
                       <div className="position-relative">
                         <i className="bi bi-cart2 fs-5"></i>
                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
@@ -185,113 +193,80 @@ const Navbar = () => {
                       role="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
+                      title="Akun Saya"
                     >
-                      <i className="bi bi-person fs-5"></i>
+                      <Image
+                        src={user?.avatar}
+                        width={32}
+                        height={32}
+                        roundedCircle
+                        className="border border-primary border-2"
+                      />
                     </a>
 
                     <ul
-                      className="dropdown-menu dropdown-menu-end shadow p-3"
-                      style={{ minWidth: 300 }}
+                      className="dropdown-menu dropdown-menu-end p-2"
+                      style={{ minWidth: 225 }}
                     >
-                      <div className="d-flex align-items-center mb-3">
-                        <div
-                          className="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center"
-                          style={{ width: "40px", height: "40px" }}
+                      <li>
+                        <Link to={"/account/profile"} className="dropdown-item">
+                          <div className="d-flex align-items-center">
+                            <Image
+                              src={user?.avatar}
+                              width={35}
+                              height={35}
+                              roundedCircle
+                              className="border border-2 border-primary"
+                            />
+
+                            <span className="ms-2 fw-medium">{user?.name}</span>
+                          </div>
+                        </Link>
+                      </li>
+
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+
+                      <li>
+                        <Link
+                          className="dropdown-item text-muted fs-6 d-flex gap-3"
+                          to="/account/profile"
                         >
-                          Z
-                        </div>
-                        <div className="ms-2">
-                          <h6 className="mb-0">{user?.name}</h6>
-                          <small className="text-muted">
-                            Sejak 02 Jul 2025
-                          </small>
-                        </div>
-                      </div>
-                      <hr className="my-2" />
-
-                      <div className="d-flex justify-content-between text-center gap-3 mb-2">
-                        <div>
-                          <i className="bi bi-wallet2 fs-4"></i>
-                          <div className="text-xs text-muted">
-                            Belum Dibayar
-                          </div>
-                        </div>
-                        <div>
-                          <i className="bi bi-box-seam fs-4"></i>
-                          <div className="text-xs text-muted">Berlangsung</div>
-                        </div>
-                        <div>
-                          <i className="bi bi-geo-alt fs-4"></i>
-                          <div className="text-xs text-muted">
-                            Tiba di Tujuan
-                          </div>
-                        </div>
-                      </div>
-
-                      <a
-                        href="#"
-                        className="d-block text-center fw-semibold text-primary mb-2"
-                      >
-                        Lihat Semua Pesanan
-                      </a>
-
-                      <hr className="my-2" />
-
-                      <a
-                        href="#"
-                        className="dropdown-item d-flex align-items-center"
-                      >
-                        <i className="bi bi-headset me-2"></i> Chat Admin Toco
-                      </a>
-                      <a
-                        href="#"
-                        className="dropdown-item d-flex align-items-center"
-                      >
-                        <i className="bi bi-gear me-2"></i> Pengaturan Akun
-                      </a>
-                      <a
-                        href="#"
-                        onClick={handleLogout}
-                        className="dropdown-item d-flex align-items-center text-danger"
-                      >
-                        <i className="bi bi-box-arrow-right me-2"></i> Keluar
-                        Akun
-                      </a>
-                    </ul>
-
-                    {/* <ul className="dropdown-menu dropdown-menu-end">
-                      <li>
-                        <h6 className="dropdown-header">Hai, {user?.name}</h6>
-                      </li>
-                      <li>
-                        <Link className="dropdown-item" to="/account/profile">
-                          <i className="bi bi-person me-2"></i> Akun Saya
+                          <i className="bi bi-gear"></i>Pengaturan Akun
                         </Link>
                       </li>
                       <li>
-                        <Link className="dropdown-item" to="/account/orders">
-                          <i className="bi bi-box-seam me-2"></i> Pesanan Saya
+                        <Link
+                          className="dropdown-item text-muted fs-6 d-flex gap-3"
+                          to="/account/orders"
+                        >
+                          <i className="bi bi-box-seam"></i>Pesanan Saya
                         </Link>
                       </li>
                       <li>
-                        <Link className="dropdown-item" to="/account/wishlist">
-                          <i className="bi bi-heart me-2"></i> Wishlist Saya
-                        </Link>
+                        <a
+                          href={`https://wa.me/${env.STORE_WHATSAPP}?text=Hai,%20Admin%20JAF,%20Saya%20ingin%20bertanya%20tentang%20sesuatu%20bisakah%20kamu%20membantu?`}
+                          className="dropdown-item text-muted fs-6 d-flex gap-3"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <i className="bi bi-headset"></i>Chat Admin JAF
+                        </a>
                       </li>
                       <li>
                         <hr className="dropdown-divider" />
                       </li>
                       <li>
                         <Link
-                          className="dropdown-item text-danger"
+                          className="dropdown-item text-muted fs-6 d-flex gap-3"
                           onClick={handleLogout}
                           to="/"
                         >
-                          <i className="bi bi-box-arrow-right me-2"></i>
-                          Logout
+                          <i className="bi bi-box-arrow-right"></i>Keluar Akun
                         </Link>
                       </li>
-                    </ul> */}
+                    </ul>
                   </li>
                 </>
               ) : (
@@ -315,8 +290,10 @@ const Navbar = () => {
                 </>
               )}
             </ul>
+          </div>
 
-            <ThemeToggle className="ms-2" />
+          <div className="position-relative d-none d-lg-block">
+            <ThemeToggle className="position-absolute top-50 start-50 ms-5 translate-middle" />
           </div>
         </div>
       </nav>

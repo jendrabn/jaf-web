@@ -1,6 +1,6 @@
-import type { ProductItemTypes } from "../../../types/product";
+import type { ProductItemTypes } from "@/types/product";
 import { Card, Image } from "react-bootstrap";
-import { formatCurrency } from "../../../utils/format";
+import { formatCurrency } from "@/utils/format";
 import { Link } from "react-router";
 
 interface ProductItemProps {

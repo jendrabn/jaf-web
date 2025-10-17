@@ -1,14 +1,15 @@
 import { Row, Col, Button, Form, Image } from "react-bootstrap";
-import { useAuthState } from "../../../contexts/AuthContext";
-import type { UserTypes } from "../../../types/user";
-import AccountLayout from "../../../components/layouts/AccountLayout";
-import { useUpdateUser } from "../../../hooks/api/user";
+import { useAuthState } from "@/contexts/AuthContext";
+import type { UserTypes } from "@/types/user";
+import AccountLayout from "@/components/layouts/AccountLayout";
+import { useUpdateUser } from "@/hooks/api/user";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { type ChangeEvent, useRef } from "react";
-import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";
+import ErrorValidationAlert from "@/components/ui/ErrorValidationAlert";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
+import { env } from "@/utils/config";
 
 const ProfilePage = () => {
   const { user } = useAuthState();
@@ -87,7 +88,7 @@ const ProfilePage = () => {
   return (
     <AccountLayout title="Profil">
       <Helmet>
-        <title>Profil | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Profil | {env.APP_NAME}</title>
         <meta
           name="description"
           content="Kelola informasi profil akun Anda di sini."
@@ -95,6 +96,7 @@ const ProfilePage = () => {
       </Helmet>
 
       <ErrorValidationAlert error={error} onClose={reset} />
+
       <div className="row flex-row-reverse">
         <div className="col-lg-3">
           <div className="text-center mb-3 mb-lg-0">
@@ -189,7 +191,7 @@ const ProfilePage = () => {
                 <Form.Label column sm="3"></Form.Label>
                 <Col sm="9">
                   <Button variant="primary" type="submit">
-                    <i className="bi bi-check2-circle me-2"></i>Simpan
+                    Simpan
                   </Button>
                 </Col>
               </Form.Group>

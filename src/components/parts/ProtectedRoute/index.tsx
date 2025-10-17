@@ -1,6 +1,6 @@
-import { useAuthState } from "../../../contexts/AuthContext";
+import { useAuthState } from "@/contexts/AuthContext";
 import { Navigate, Outlet } from "react-router";
-import Loading from "../../ui/Loading";
+import Loading from "@/components/ui/Loading";
 
 function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useAuthState();

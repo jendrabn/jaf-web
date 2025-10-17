@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "../../../utils/api";
-import type { ProductItemTypes } from "../../../types/product";
-import type { BannerTypes } from "../../../types/banner";
-import type { BlogItemTypes } from "../../../types/blog";
-import { QUERY_KEYS } from "../../../utils/constans";
+import fetchApi from "@/utils/api";
+import type { ProductItemTypes } from "@/types/product";
+import type { BannerTypes } from "@/types/banner";
+import type { BlogItemTypes } from "@/types/blog";
+import { QUERY_KEYS } from "@/utils/constans";
 
 export const useFetchLanding = () =>
   useQuery<{
@@ -12,6 +12,6 @@ export const useFetchLanding = () =>
     blogs: BlogItemTypes[];
   }>({
     queryKey: [QUERY_KEYS.LANDING],
-    queryFn: () => apiClient().get("/landing"),
+    queryFn: () => fetchApi().get("/landing"),
     retry: 3,
   });

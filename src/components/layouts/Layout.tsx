@@ -1,6 +1,6 @@
 import { type PropsWithChildren, useEffect } from "react";
-import Navbar from "../parts/Navbar";
-import Footer from "../parts/Footer";
+import Navbar from "@/components/parts/Navbar";
+import Footer from "@/components/parts/Footer";
 
 function Layout({ children }: PropsWithChildren) {
   useEffect(() => {

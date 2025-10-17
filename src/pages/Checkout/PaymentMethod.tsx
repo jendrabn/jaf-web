@@ -2,11 +2,8 @@ import { Form } from "react-bootstrap";
 import {
   useCheckoutDispatch,
   useCheckoutState,
-} from "../../contexts/CheckoutContext";
-import {
-  PAYMENT_METHOD_BANK,
-  PAYMENT_METHOD_EWALLET,
-} from "../../utils/constans";
+} from "@/contexts/CheckoutContext";
+import { PAYMENT_METHOD_BANK, PAYMENT_METHOD_EWALLET } from "@/utils/constans";
 import type { ChangeEvent } from "react";
 
 interface PaymentMethodProps {

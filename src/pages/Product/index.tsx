@@ -1,14 +1,14 @@
-import { useFetchProducts } from "../../hooks/api/product";
-import type { ProductItemTypes, ProductParamsTypes } from "../../types/product";
-import ProductItem from "../../components/parts/ProductItem";
+import { useFetchProducts } from "@/hooks/api/product";
+import type { ProductItemTypes, ProductParamsTypes } from "@/types/product";
+import ProductItem from "@/components/parts/ProductItem";
 import ProductFilters from "./ProductFilters";
-import Loading from "../../components/ui/Loading";
-import Pagination from "../../components/ui/Pagination";
-import useFilters from "../../hooks/useFilters";
-import Layout from "../../components/layouts/Layout";
+import Loading from "@/components/ui/Loading";
+import Pagination from "@/components/ui/Pagination";
+import useFilters from "@/hooks/useFilters";
+import Layout from "@/components/layouts/Layout";
 import { Button, Form, Offcanvas } from "react-bootstrap";
 import { useState } from "react";
-import NoData from "../../components/ui/NoData";
+import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
 
 // filter options

@@ -1,12 +1,12 @@
 import { type FormEvent, useEffect, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { useApplyCoupon } from "../../hooks/api/order";
+import { useApplyCoupon } from "@/hooks/api/order";
 import {
   useCheckoutDispatch,
   useCheckoutState,
-} from "../../contexts/CheckoutContext";
-import { formatPrice, toNumber } from "../../utils/functions";
+} from "@/contexts/CheckoutContext";
+import { formatCurrency, toNumber } from "@/utils/functions";
 
 const APPLY_COUPON_ERROR_TOAST = "apply-coupon-error";
 const APPLY_COUPON_SUCCESS_TOAST = "apply-coupon-success";
@@ -148,7 +148,7 @@ const ApplyCouponForm: React.FC = () => {
           </InputGroup>
           {coupon && (
             <Form.Text className="text-success">
-              {couponLabel} aktif. Diskon {formatPrice(appliedDiscount)}.
+              {couponLabel} aktif. Diskon {formatCurrency(appliedDiscount)}.
             </Form.Text>
           )}
         </Form>

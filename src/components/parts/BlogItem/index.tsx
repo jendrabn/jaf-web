@@ -1,6 +1,6 @@
-import { type BlogItemTypes } from "../../../types/blog";
+import { type BlogItemTypes } from "@/types/blog";
 import { Badge, Card, Col, Image, Row } from "react-bootstrap";
-import { formatDiffForHumans } from "../../../utils/format";
+import { formatDiffForHumans } from "@/utils/format";
 import { Link } from "react-router";
 
 type Props = { blog: BlogItemTypes };

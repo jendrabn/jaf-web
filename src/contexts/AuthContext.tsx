@@ -1,8 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, type PropsWithChildren, useEffect } from "react";
-import type { UserTypes } from "../types/user";
-import { useFetchUser } from "../hooks/api/user";
-import { getAuthToken } from "../utils/functions";
+import type { UserTypes } from "@/types/user";
+import { useFetchUser } from "@/hooks/api/user";
+import { getAuthToken } from "@/utils/functions";
 import { useLocation } from "react-router";
 
 // Action type

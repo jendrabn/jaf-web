@@ -1,23 +1,20 @@
 import { Breadcrumb, Button, Tab, Tabs } from "react-bootstrap";
 import { useParams } from "react-router";
-import { getGenderLabel, formatPrice } from "../../utils/functions";
-import ProductItem from "../../components/parts/ProductItem";
+import { getGenderLabel, formatCurrency } from "@/utils/functions";
+import ProductItem from "@/components/parts/ProductItem";
 import { useState } from "react";
-import { useCreateCart } from "../../hooks/api/cart";
-import Layout from "../../components/layouts/Layout";
-import NotFoundPage from "../../pages/NotFound";
-import {
-  useFetchProduct,
-  useFetchRelatedProducts,
-} from "../../hooks/api/product";
-import { useCreateWishlist } from "../../hooks/api/wishlist";
-import Loading from "../../components/ui/Loading";
-import QuantityInput from "../../components/ui/QuantityInput";
+import { useCreateCart } from "@/hooks/api/cart";
+import Layout from "@/components/layouts/Layout";
+import NotFoundPage from "@/pages/NotFound";
+import { useFetchProduct, useFetchRelatedProducts } from "@/hooks/api/product";
+import { useCreateWishlist } from "@/hooks/api/wishlist";
+import Loading from "@/components/ui/Loading";
+import QuantityInput from "@/components/ui/QuantityInput";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import ProductImagesCarousel from "./ProductImagesCarousel";
-import StarRating from "../../components/ui/StarRating";
-import NoData from "../../components/ui/NoData";
+import StarRating from "@/components/ui/StarRating";
+import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
 
 export default function ProductDetailPage() {
@@ -109,6 +106,11 @@ export default function ProductDetailPage() {
                 <i className="bi bi-house-door-fill"></i>
               </Breadcrumb.Item>
               <Breadcrumb.Item href="/products">Produk</Breadcrumb.Item>
+              <Breadcrumb.Item
+                href={`/products?category_id=${product?.category?.id}`}
+              >
+                {product?.category?.name}
+              </Breadcrumb.Item>
               <Breadcrumb.Item active className="text-truncate">
                 {product?.name}
               </Breadcrumb.Item>
@@ -146,11 +148,11 @@ export default function ProductDetailPage() {
                     <div className="col-md-9 h4 mb-0">
                       {isDiscounted ? (
                         <div className="d-flex flex-column">
-                          <span>{formatPrice(discountedPrice)}</span>
+                          <span>{formatCurrency(discountedPrice)}</span>
                           <div className="fs-6 text-gray-600">
                             (
                             <span className="text-decoration-line-through text-muted">
-                              {formatPrice(originalPrice)}
+                              {formatCurrency(originalPrice)}
                             </span>
                             {hasDiscountLabel && (
                               <span className="ms-2">{discountLabel}</span>
@@ -159,7 +161,7 @@ export default function ProductDetailPage() {
                           </div>
                         </div>
                       ) : (
-                        formatPrice(product?.price)
+                        formatCurrency(product?.price)
                       )}
                     </div>
                   </div>

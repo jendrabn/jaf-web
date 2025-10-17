@@ -1,15 +1,15 @@
-import { useFetchBlogs } from "../../hooks/api/blog";
-import type { BlogParamsTypes } from "../../types/blog";
-import BlogItem from "../../components/parts/BlogItem";
-import Loading from "../../components/ui/Loading";
-import Pagination from "../../components/ui/Pagination";
-import Layout from "../../components/layouts/Layout";
+import { useFetchBlogs } from "@/hooks/api/blog";
+import type { BlogParamsTypes } from "@/types/blog";
+import BlogItem from "@/components/parts/BlogItem";
+import Loading from "@/components/ui/Loading";
+import Pagination from "@/components/ui/Pagination";
+import Layout from "@/components/layouts/Layout";
 import BlogFilters from "./BlogFilters";
 import BlogHeader from "./BlogHeader";
-import useFilters from "../../hooks/useFilters";
+import useFilters from "@/hooks/useFilters";
 import { type ChangeEvent, type FormEvent, useState } from "react";
 import { Button, Form, InputGroup, Offcanvas, Dropdown } from "react-bootstrap";
-import NoData from "../../components/ui/NoData";
+import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
 
 const SORT_OPTIONS: { label: string; value: string }[] = [

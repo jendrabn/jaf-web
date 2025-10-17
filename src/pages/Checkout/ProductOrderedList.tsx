@@ -1,11 +1,11 @@
 import { Form, Table } from "react-bootstrap";
 import Select, { type SingleValue } from "react-select";
-import { formatPrice } from "../../utils/functions";
-import ProductImage from "../../components/parts/ProductImage";
+import { formatCurrency } from "@/utils/format";
+import ProductImage from "@/components/parts/ProductImage";
 import {
   useCheckoutDispatch,
   useCheckoutState,
-} from "../../contexts/CheckoutContext";
+} from "@/contexts/CheckoutContext";
 
 interface ProductOrderedListProps {
   className?: string;
@@ -95,11 +95,11 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
                     <td className="text-center">
                       {isDiscounted ? (
                         <div className="d-flex flex-column align-items-center">
-                          <span>{formatPrice(unitPrice)}</span>
+                          <span>{formatCurrency(unitPrice)}</span>
                           <small className="text-secondary-emphasis">
                             (
                             <span className="text-decoration-line-through text-muted">
-                              {formatPrice(price)}
+                              {formatCurrency(price)}
                             </span>
                             {discountLabel && (
                               <span className="ms-1">{discountLabel}</span>
@@ -108,18 +108,18 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
                           </small>
                         </div>
                       ) : (
-                        formatPrice(unitPrice)
+                        formatCurrency(unitPrice)
                       )}
                     </td>
                     <td className="text-center">{quantity}</td>
                     <td className="text-end">
                       {isDiscounted ? (
                         <div className="d-flex flex-column align-items-end">
-                          <span>{formatPrice(subtotal)}</span>
+                          <span>{formatCurrency(subtotal)}</span>
                           <small className="text-secondary-emphasis">
                             (
                             <span className="text-decoration-line-through text-muted">
-                              {formatPrice(originalSubtotal)}
+                              {formatCurrency(originalSubtotal)}
                             </span>
                             {discountLabel && (
                               <span className="ms-1">{discountLabel}</span>
@@ -128,7 +128,7 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
                           </small>
                         </div>
                       ) : (
-                        formatPrice(subtotal)
+                        formatCurrency(subtotal)
                       )}
                     </td>
                   </tr>
@@ -138,7 +138,7 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
                 <td colSpan={3}></td>
                 <td>
                   <strong className="float-end">
-                    {formatPrice(
+                    {formatCurrency(
                       carts.reduce(
                         (acc, cart) => acc + cart.product.price * cart.quantity,
                         0
@@ -167,7 +167,7 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
               value: index,
               label: `${cost.courier_name} - ${
                 cost.service_name
-              } - ${formatPrice(cost.cost)}`,
+              } - ${formatCurrency(cost.cost)}`,
             }))}
             onChange={handleShippingChange}
             value={(() => {
@@ -184,7 +184,7 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
                     value: idx,
                     label: `${shippingCosts[idx].courier_name} - ${
                       shippingCosts[idx].service_name
-                    } - ${formatPrice(shippingCosts[idx].cost)}`,
+                    } - ${formatCurrency(shippingCosts[idx].cost)}`,
                   }
                 : null;
             })()}

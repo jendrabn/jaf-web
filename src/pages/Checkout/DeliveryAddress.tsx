@@ -1,6 +1,6 @@
 import { Button, Card } from "react-bootstrap";
-import { useCheckoutState } from "../../contexts/CheckoutContext";
-import NoData from "../../components/ui/NoData";
+import { useCheckoutState } from "@/contexts/CheckoutContext";
+import NoData from "@/components/ui/NoData";
 
 interface DeliveryAddressProps {
   className?: string;

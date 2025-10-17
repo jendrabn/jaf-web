@@ -1,5 +1,5 @@
 import { Modal } from "react-bootstrap";
-import type { BlogDetailTypes } from "../../types/blog";
+import type { BlogDetailTypes } from "@/types/blog";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
 
@@ -84,7 +84,7 @@ const urlReplace = (template: string, url: string, title: string) => {
 const ShareModal = ({ show, onHide, blog }: ShareModalProps) => {
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className="border-bottom-0">
         <Modal.Title>Bagikan Artikel</Modal.Title>
       </Modal.Header>
       <Modal.Body>

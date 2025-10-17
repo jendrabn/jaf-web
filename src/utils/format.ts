@@ -49,6 +49,18 @@ export const formatDate = (date: string | Date) => {
   });
 };
 
+export const formatSimpleDateTime = (date: string | Date) => {
+  const d = new Date(date);
+  return d.toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+};
+
 export const formatCurrency = (value: number) => {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",

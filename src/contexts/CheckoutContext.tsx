@@ -5,8 +5,8 @@ import type {
   CheckoutTypes,
   ShippingCostTypes,
   CouponTypes,
-} from "../types/checkout";
-import type { BankTypes, EwalletTypes } from "../types/payment-method";
+} from "@/types/checkout";
+import type { BankTypes, EwalletTypes } from "@/types/payment-method";
 import { useLocation } from "react-router";
 
 // Action type

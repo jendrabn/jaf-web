@@ -1,16 +1,16 @@
 import { Button, Form } from "react-bootstrap";
-import type { WishlistTypes } from "../../../types/wishlist";
-import { formatPrice } from "../../../utils/functions";
-import ProductImage from "../ProductImage";
+import type { WishlistTypes } from "@/types/wishlist";
+import { formatCurrency } from "@/utils/format";
+import ProductImage from "@/components/parts/ProductImage";
 import {
   useWishlistDispatch,
   useWishlistState,
-} from "../../../contexts/WishlistContext";
-import { useDeleteWishlist } from "../../../hooks/api/wishlist";
-import { useCreateCart } from "../../../hooks/api/cart";
+} from "@/contexts/WishlistContext";
+import { useDeleteWishlist } from "@/hooks/api/wishlist";
+import { useCreateCart } from "@/hooks/api/cart";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
-import { QUERY_KEYS } from "../../../utils/constans";
+import { QUERY_KEYS } from "@/utils/constans";
 
 interface WishlistItemProps {
   item: WishlistTypes;
@@ -103,12 +103,12 @@ const WishlistItem = (props: WishlistItemProps) => {
             {isDiscounted ? (
               <>
                 <span className="text-danger me-2">
-                  {formatPrice(currentPrice)}
+                  {formatCurrency(currentPrice)}
                 </span>
                 <small className="text-gray-600">
                   (
                   <span className="text-decoration-line-through text-muted">
-                    {formatPrice(price)}
+                    {formatCurrency(price)}
                   </span>
                   {discountLabel && (
                     <span className="ms-1">{discountLabel}</span>
@@ -117,7 +117,7 @@ const WishlistItem = (props: WishlistItemProps) => {
                 </small>
               </>
             ) : (
-              formatPrice(currentPrice)
+              formatCurrency(currentPrice)
             )}
           </p>
           <div className="d-flex g-2 align-items-center justify-content-end">
@@ -166,18 +166,18 @@ const WishlistItem = (props: WishlistItemProps) => {
         <div className="text-center" style={{ width: "20%" }}>
           {isDiscounted ? (
             <div className="d-flex flex-column align-items-center">
-              <span>{formatPrice(currentPrice)}</span>
+              <span>{formatCurrency(currentPrice)}</span>
               <small className="text-gray-600">
                 (
                 <span className="text-decoration-line-through text-muted">
-                  {formatPrice(price)}
+                  {formatCurrency(price)}
                 </span>
                 {discountLabel && <span className="ms-1">{discountLabel}</span>}
                 )
               </small>
             </div>
           ) : (
-            formatPrice(currentPrice)
+            formatCurrency(currentPrice)
           )}
         </div>
 

@@ -1,7 +1,7 @@
 import Cookie from "js-cookie";
 import { KEY_SELECTED_CART_IDS } from "./constans";
 
-export const formatPrice = (value: number = 0) => {
+export const formatCurrency = (value: number = 0) => {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",

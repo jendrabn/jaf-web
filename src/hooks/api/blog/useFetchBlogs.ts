@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "../../../utils/api";
-import type { BlogItemTypes } from "../../../types/blog";
-import type { PageTypes } from "../../../types";
-import { QUERY_KEYS } from "../../../utils/constans";
+import fetchApi from "@/utils/api";
+import type { BlogItemTypes } from "@/types/blog";
+import type { PageTypes } from "@/types";
+import { QUERY_KEYS } from "@/utils/constans";
 
 export const useFetchBlogs = (queryString?: string) =>
   useQuery<{
@@ -11,7 +11,7 @@ export const useFetchBlogs = (queryString?: string) =>
   }>({
     queryKey: [QUERY_KEYS.BLOGS, queryString],
     queryFn: () =>
-      apiClient().get(`/blogs${queryString ? `?${queryString}` : ""}`),
+      fetchApi().get(`/blogs${queryString ? `?${queryString}` : ""}`),
     staleTime: Infinity,
     retry: 3,
   });

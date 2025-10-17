@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Form } from "react-bootstrap";
-import Layout from "../../components/layouts/Layout";
-import CustomerServiceContact from "../../components/parts/CustomerServiceContact";
+import Layout from "@/components/layouts/Layout";
+import CustomerServiceContact from "@/components/parts/CustomerServiceContact";
 
 function ContactPage() {
   return (

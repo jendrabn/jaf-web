@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
-import Layout from "../../components/layouts/Layout";
-import CustomerServiceContact from "../../components/parts/CustomerServiceContact";
+import Layout from "@/components/layouts/Layout";
+import CustomerServiceContact from "@/components/parts/CustomerServiceContact";
 
 function HelpPage() {
   return (

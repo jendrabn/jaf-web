@@ -1,7 +1,7 @@
 import { Badge, Button } from "react-bootstrap";
-import { useFetchBlogCategories, useFetchBlogTags } from "../../hooks/api/blog";
-import useFilters from "../../hooks/useFilters";
-import type { BlogParamsTypes } from "../../types/blog";
+import { useFetchBlogCategories, useFetchBlogTags } from "@/hooks/api/blog";
+import useFilters from "@/hooks/useFilters";
+import type { BlogParamsTypes } from "@/types/blog";
 
 export default function BlogHeader() {
   const { params, setFilter, clearFilters } = useFilters<BlogParamsTypes>();

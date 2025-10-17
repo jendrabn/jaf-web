@@ -1,13 +1,14 @@
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router";
-import type { RegisterReqTypes } from "../../../types/auth";
-import { useRegister } from "../../../hooks/api/auth";
-import AuthLayout from "../../../components/layouts/AuthLayout";
-import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";
-import PasswordInput from "../../../components/ui/PasswordInput";
+import type { RegisterReqTypes } from "@/types/auth";
+import { useRegister } from "@/hooks/api/auth";
+import AuthLayout from "@/components/layouts/AuthLayout";
+import ErrorValidationAlert from "@/components/ui/ErrorValidationAlert";
+import PasswordInput from "@/components/ui/PasswordInput";
 import { Helmet } from "react-helmet-async";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { env } from "@/utils/config";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -27,9 +28,9 @@ function RegisterPage() {
   };
 
   return (
-    <AuthLayout title="Sign Up">
+    <AuthLayout title="Daftar">
       <Helmet>
-        <title>Daftar | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Daftar | {env.APP_NAME}</title>
       </Helmet>
 
       <ErrorValidationAlert error={error} onClose={reset} />
@@ -58,7 +59,7 @@ function RegisterPage() {
 
           <div className="d-grid mb-3">
             <Button variant="primary" type="submit">
-              Sign Up
+              Daftar
             </Button>
           </div>
 

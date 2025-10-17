@@ -1,11 +1,12 @@
-import axios, { type AxiosInstance } from "axios";
+import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 import { getAuthToken, removeAuthToken } from "./functions";
+import { env } from "./config";
 
-const apiClient = (): AxiosInstance => {
+const fetchApi = (): AxiosInstance => {
   const token = getAuthToken();
 
   const client = axios.create({
-    baseURL: import.meta.env.VITE_BASE_API_URL,
+    baseURL: env.BASE_API_URL,
     headers: {
       ...(token && { Authorization: `Bearer ${token}` }),
     },
@@ -28,4 +29,18 @@ const apiClient = (): AxiosInstance => {
   return client;
 };
 
-export default apiClient;
+export default fetchApi;
+
+export const fetchApi2 = async (url: string, options?: AxiosRequestConfig) => {
+  const response = await axios({
+    ...options,
+    url: `${env.BASE_API_URL}${url}`,
+    method: options?.method || "GET",
+    headers: {
+      ...(getAuthToken() && { Authorization: `Bearer ${getAuthToken()}` }),
+      ...options?.headers,
+    },
+  });
+
+  return response.data;
+};

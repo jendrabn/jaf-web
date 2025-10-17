@@ -1,11 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import type {
-  ShippingCostReqTypes,
-  ShippingCostTypes,
-} from "../../../types/checkout";
-import apiClient from "../../../utils/api";
+import type { ShippingCostReqTypes, ShippingCostTypes } from "@/types/checkout";
+import fetchApi from "@/utils/api";
 
 export const useFetchShippingCosts = () =>
   useMutation<ShippingCostTypes[], Error, ShippingCostReqTypes>({
-    mutationFn: (data) => apiClient().post("/shipping_costs", data),
+    mutationFn: (data) => fetchApi().post("/shipping_costs", data),
   });

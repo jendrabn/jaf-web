@@ -1,9 +1,9 @@
 import { useState } from "react";
-import OurServices from "../../components/parts/OurServices";
-import googleReviews from "../../data/google-reviews.json";
-import Layout from "../../components/layouts/Layout";
+import OurServices from "@/components/parts/OurServices";
+import googleReviews from "@/data/google-reviews.json";
+import Layout from "@/components/layouts/Layout";
 import { Helmet } from "react-helmet-async";
-import StarRating from "../../components/ui/StarRating";
+import StarRating from "@/components/ui/StarRating";
 
 const AboutPage = () => {
   const [activeReview, setActiveReview] = useState(0);
@@ -17,6 +17,8 @@ const AboutPage = () => {
       setFade(true);
     }, 200); // durasi fade out
   };
+
+  console.log(import.meta.env.VITE_APP_NAME);
 
   return (
     <Layout>

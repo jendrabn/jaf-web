@@ -1,11 +1,11 @@
 import { useNavigate, useSearchParams } from "react-router";
-import AuthLayout from "../../../components/layouts/AuthLayout";
-import type { ResetPasswordReqTypes } from "../../../types/auth";
+import AuthLayout from "@/components/layouts/AuthLayout";
+import type { ResetPasswordReqTypes } from "@/types/auth";
 import { Button, Form, FormControl } from "react-bootstrap";
-import { useResetPassword } from "../../../hooks/api/auth";
+import { useResetPassword } from "@/hooks/api/auth";
 import { toast } from "react-toastify";
-import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";
-import PasswordInput from "../../../components/ui/PasswordInput";
+import ErrorValidationAlert from "@/components/ui/ErrorValidationAlert";
+import PasswordInput from "@/components/ui/PasswordInput";
 import { Helmet } from "react-helmet-async";
 import { useForm, type SubmitHandler } from "react-hook-form";
 

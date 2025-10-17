@@ -1,15 +1,15 @@
-import AccountLayout from "../../../components/layouts/AccountLayout";
-import { useFetchOrders } from "../../../hooks/api/order";
-import Pagination from "../../../components/ui/Pagination";
-import useFilters from "../../../hooks/useFilters";
+import AccountLayout from "@/components/layouts/AccountLayout";
+import { useFetchOrders } from "@/hooks/api/order";
+import Pagination from "@/components/ui/Pagination";
+import useFilters from "@/hooks/useFilters";
 import { type ChangeEvent, useState } from "react";
-import OrderItem from "../../../components/parts/order/OrderItem";
-import Loading from "../../../components/ui/Loading";
-import { ORDER_STATUSES } from "../../../utils/constans";
-import ConfirmPaymentModal from "../../../components/parts/order/ConfirmPaymentModal";
-import ConfirmOrderReceivedModal from "../../../components/parts/order/ConfirmOrderReceivedModal";
-import { Button, Form, Offcanvas } from "react-bootstrap";
-import NoData from "../../../components/ui/NoData";
+import OrderItem from "@/components/parts/Order/OrderItem";
+import Loading from "@/components/ui/Loading";
+import { ORDER_STATUSES } from "@/utils/constans";
+import ConfirmPaymentModal from "@/components/parts/Order/ConfirmPaymentModal";
+import ConfirmOrderReceivedModal from "@/components/parts/Order/ConfirmOrderReceivedModal";
+import { Alert, Button, Form, Offcanvas } from "react-bootstrap";
+import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
 
 const StatusSelect = ({
@@ -187,6 +187,21 @@ const OrderPage = () => {
           </Offcanvas>
         </div>
       </div>
+
+      <Alert variant="primary" className="mb-3">
+        <p className="mb-0">
+          Jika Anda ingin membatalkan pesanan atau melakukan pengembalian dana,
+          silakan hubungi kami melalui{" "}
+          <a
+            href="https://wa.me/628123456789?text=Hallo%20JAF%20Parfum,%20saya%20ingin%20membatalkan%20pesanan%20atau%20pengembalian%20dana."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp
+          </a>
+          .
+        </p>
+      </Alert>
 
       {isLoading && <Loading className="py-5" />}
 

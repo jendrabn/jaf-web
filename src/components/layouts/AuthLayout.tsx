@@ -1,9 +1,11 @@
-import { Link, Navigate } from "react-router";
-import { useAuthState } from "../../contexts/AuthContext";
-import Logo from "../parts/Logo";
+import { Navigate } from "react-router";
+import { useAuthState } from "@/contexts/AuthContext";
 import { useLocation } from "react-router";
 import { type PropsWithChildren } from "react";
-import Loading from "../ui/Loading";
+import Loading from "@/components/ui/Loading";
+import Navbar from "../parts/Navbar";
+import Footer from "../parts/Footer";
+import { Card } from "react-bootstrap";
 
 function AuthLayout({
   children,
@@ -21,26 +23,22 @@ function AuthLayout({
   }
 
   return (
-    <main className="d-flex align-items-center min-vh-100 py-5">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-12 col-md-6 col-lg-4">
-            <Link to="/" className="mb-4 d-block text-center">
-              <figure style={{ maxWidth: 200 }} className="mx-auto">
-                <Logo className="img-fluid w-100" />
-              </figure>
-            </Link>
-
-            <div className="card bg-body shadow">
-              <div className="card-body px-4 py-5">
-                <h4 className="card-title mb-4 text-center">{title}</h4>
+    <>
+      <Navbar />
+      <main className="main-content">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-6 col-lg-4">
+              <Card body className="border-0 shadow p-3">
+                <h1 className="h3 mb-5 text-center">{title}</h1>
                 {children}
-              </div>
+              </Card>
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }
 

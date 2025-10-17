@@ -1,6 +1,6 @@
 import { type PropsWithChildren, useEffect } from "react";
-import Navbar from "../parts/Navbar";
-import Footer from "../parts/Footer";
+import Navbar from "@/components/parts/Navbar";
+import Footer from "@/components/parts/Footer";
 import { Accordion, Card, Nav } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router";
 
@@ -84,7 +84,11 @@ const AccountLayout = ({ children, title }: AuthLayoutProps) => {
 
             <div className="col-lg-10">
               <Card className="" body border="primary">
-                <Card.Header>{title}</Card.Header>
+                <Card.Header>
+                  <h5 className="fw-bold" style={{ letterSpacing: 1.125 }}>
+                    {title}
+                  </h5>
+                </Card.Header>
                 <Card.Body>{children}</Card.Body>
               </Card>
             </div>

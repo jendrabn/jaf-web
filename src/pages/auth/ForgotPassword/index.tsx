@@ -1,11 +1,12 @@
 import { Button, Form } from "react-bootstrap";
-import AuthLayout from "../../../components/layouts/AuthLayout";
-import { useForgotPassword } from "../../../hooks/api/auth";
-import type { ForgotPasswordReqTypes } from "../../../types/auth";
+import AuthLayout from "@/components/layouts/AuthLayout";
+import { useForgotPassword } from "@/hooks/api/auth";
+import type { ForgotPasswordReqTypes } from "@/types/auth";
 import { toast } from "react-toastify";
-import ErrorValidationAlert from "../../../components/ui/ErrorValidationAlert";
+import ErrorValidationAlert from "@/components/ui/ErrorValidationAlert";
 import { Helmet } from "react-helmet-async";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { env } from "@/utils/config";
 
 function ForgotPasswordPage() {
   const { mutate, isPending, error, reset } = useForgotPassword();
@@ -29,7 +30,7 @@ function ForgotPasswordPage() {
   return (
     <AuthLayout title="Lupa Password">
       <Helmet>
-        <title>Lupa Password | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Lupa Password | {env.APP_NAME}</title>
       </Helmet>
 
       <ErrorValidationAlert error={error} onClose={reset} />

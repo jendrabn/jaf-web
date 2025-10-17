@@ -1,11 +1,11 @@
 import { Link, useParams } from "react-router";
-import { useFetchBlog } from "../../hooks/api/blog";
-import Layout from "../../components/layouts/Layout";
-import NotFoundPage from "../../pages/NotFound";
-import Loading from "../../components/ui/Loading";
+import { useFetchBlog } from "@/hooks/api/blog";
+import Layout from "@/components/layouts/Layout";
+import NotFoundPage from "@/pages/NotFound";
+import Loading from "@/components/ui/Loading";
 import { Helmet } from "react-helmet-async";
 import { Badge, Breadcrumb, Button, Image } from "react-bootstrap";
-import { formatDateTime } from "../../utils/format";
+import { formatDateTime } from "@/utils/format";
 import { useState } from "react";
 import ShareModal from "./ShareModal";
 

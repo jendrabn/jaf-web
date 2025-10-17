@@ -1,10 +1,10 @@
 import { Button, Form } from "react-bootstrap";
-import type { CartItemTypes } from "../../../types/cart";
-import { formatPrice } from "../../../utils/functions";
-import ProductImage from "../ProductImage";
-import QuantityInput from "../../ui/QuantityInput";
-import { useUpdateCart, useDeleteCart } from "../../../hooks/api/cart";
-import { useCartDispatch, useCartState } from "../../../contexts/CartContext";
+import type { CartItemTypes } from "@/types/cart";
+import { formatCurrency } from "@/utils/format";
+import ProductImage from "@/components/parts/ProductImage";
+import QuantityInput from "@/components/ui/QuantityInput";
+import { useUpdateCart, useDeleteCart } from "@/hooks/api/cart";
+import { useCartDispatch, useCartState } from "@/contexts/CartContext";
 
 interface CartItemProps {
   cart: CartItemTypes;
@@ -90,18 +90,18 @@ function CartItem({ cart }: CartItemProps) {
         <div style={{ width: "15%" }} className="text-center my-auto">
           {isDiscounted ? (
             <div className="d-flex flex-column align-items-center">
-              <span>{formatPrice(unitPrice)}</span>
+              <span>{formatCurrency(unitPrice)}</span>
               <small className="text-gray-600">
                 (
                 <span className="text-decoration-line-through text-muted">
-                  {formatPrice(price)}
+                  {formatCurrency(price)}
                 </span>
                 {discountLabel && <span className="ms-1">{discountLabel}</span>}
                 )
               </small>
             </div>
           ) : (
-            formatPrice(price)
+            formatCurrency(price)
           )}
         </div>
 
@@ -118,18 +118,18 @@ function CartItem({ cart }: CartItemProps) {
         <div style={{ width: "15%" }} className="text-center my-auto">
           {isDiscounted ? (
             <div className="d-flex flex-column align-items-center">
-              <span>{formatPrice(subtotal)}</span>
+              <span>{formatCurrency(subtotal)}</span>
               <small className="text-gray-600">
                 (
                 <span className="text-decoration-line-through text-muted">
-                  {formatPrice(originalSubtotal)}
+                  {formatCurrency(originalSubtotal)}
                 </span>
                 {discountLabel && <span className="ms-1">{discountLabel}</span>}
                 )
               </small>
             </div>
           ) : (
-            formatPrice(subtotal)
+            formatCurrency(subtotal)
           )}
         </div>
 
@@ -167,12 +167,12 @@ function CartItem({ cart }: CartItemProps) {
             {isDiscounted ? (
               <>
                 <span className="text-danger me-2">
-                  {formatPrice(unitPrice)}
+                  {formatCurrency(unitPrice)}
                 </span>
                 <small className="text-gray-600">
                   (
                   <span className="text-decoration-line-through text-muted">
-                    {formatPrice(price)}
+                    {formatCurrency(price)}
                   </span>
                   {discountLabel && (
                     <span className="ms-1">{discountLabel}</span>
@@ -181,7 +181,7 @@ function CartItem({ cart }: CartItemProps) {
                 </small>
               </>
             ) : (
-              formatPrice(price)
+              formatCurrency(price)
             )}
           </p>
           <div className="d-flex justify-content-between mb-2">
@@ -203,11 +203,11 @@ function CartItem({ cart }: CartItemProps) {
           <p className="mb-0 text-end fw-bold">
             {isDiscounted ? (
               <>
-                <span>{formatPrice(subtotal)}</span>
+                <span>{formatCurrency(subtotal)}</span>
                 <small className="text-gray-600 ms-2">
                   (
                   <span className="text-decoration-line-through text-muted">
-                    {formatPrice(originalSubtotal)}
+                    {formatCurrency(originalSubtotal)}
                   </span>
                   {discountLabel && (
                     <span className="ms-1">{discountLabel}</span>
@@ -216,7 +216,7 @@ function CartItem({ cart }: CartItemProps) {
                 </small>
               </>
             ) : (
-              formatPrice(subtotal)
+              formatCurrency(subtotal)
             )}
           </p>
         </div>

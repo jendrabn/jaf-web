@@ -3,10 +3,10 @@ import { Accordion, Button } from "react-bootstrap";
 import {
   useFetchProductBrands,
   useFetchProductCategories,
-} from "../../hooks/api/product";
-import type { ProductParamsTypes } from "../../types/product";
-import useFilters from "../../hooks/useFilters";
-import { SEXS } from "../../utils/constans";
+} from "@/hooks/api/product";
+import type { ProductParamsTypes } from "@/types/product";
+import useFilters from "@/hooks/useFilters";
+import { SEXS } from "@/utils/constans";
 
 function ProductFilters() {
   const { params, setFilter, clearFilters } = useFilters<ProductParamsTypes>();

@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import AccountLayout from "../../../components/layouts/AccountLayout";
+import AccountLayout from "@/components/layouts/AccountLayout";
 
 const AddressPage = () => {
   return (

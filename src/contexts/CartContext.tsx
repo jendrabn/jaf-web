@@ -6,9 +6,9 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import { useFetchCarts } from "../hooks/api/cart";
-import { type CartItemTypes } from "../types/cart";
-import { getSelectedCartIds, setSelectedCartIds } from "../utils/functions";
+import { useFetchCarts } from "@/hooks/api/cart";
+import { type CartItemTypes } from "@/types/cart";
+import { getSelectedCartIds, setSelectedCartIds } from "@/utils/functions";
 import { useLocation } from "react-router";
 
 // Action type

@@ -1,12 +1,12 @@
-import Layout from "../../components/layouts/Layout";
+import Layout from "@/components/layouts/Layout";
 import { useNavigate } from "react-router";
-import { useCheckoutState } from "../../hooks/api/order";
-import { formatPrice } from "../../utils/functions";
+import { useCheckoutState } from "@/hooks/api/order";
+import { formatCurrency } from "@/utils/format";
 import { Button, Form } from "react-bootstrap";
-import { useDeleteCart } from "../../hooks/api/cart";
-import CartItem from "../../components/parts/CartItem";
-import { useCartDispatch, useCartState } from "../../contexts/CartContext";
-import NoData from "../../components/ui/NoData";
+import { useDeleteCart } from "@/hooks/api/cart";
+import CartItem from "@/components/parts/CartItem";
+import { useCartDispatch, useCartState } from "@/contexts/CartContext";
+import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
 
 function CartPage() {
@@ -107,7 +107,7 @@ function CartPage() {
                 <p className="mb-0 me-3">
                   Total ({totalItem} item):{" "}
                   <span className="fw-bold fs-4">
-                    {formatPrice(totalPrice)}
+                    {formatCurrency(totalPrice as number)}
                   </span>
                 </p>
                 <Button
@@ -151,7 +151,9 @@ function CartPage() {
 
               <div className="d-flex align-items-center justify-content-between mb-1">
                 <p className="fw-bold">Total ({totalItem} produk)</p>
-                <p className="fw-bold fs-6">{formatPrice(totalPrice)}</p>
+                <p className="fw-bold fs-6">
+                  {formatCurrency(totalPrice as number)}
+                </p>
               </div>
 
               <div className="d-grid">
