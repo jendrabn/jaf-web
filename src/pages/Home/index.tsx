@@ -5,6 +5,7 @@ import type { ProductItemTypes } from "@/types/product";
 import Loading from "@/components/ui/Loading";
 import Layout from "@/components/layouts/Layout";
 import OurServices from "@/components/parts/OurServices";
+import OurMarketplace from "@/components/parts/OurMarketplace";
 import { Helmet } from "react-helmet-async";
 import { env } from "@/utils/config";
 
@@ -82,7 +83,7 @@ function HomePage() {
 
       <section className="mt-4 mt-lg-5">
         <div className="container">
-          <h2 className="section-title">New Arrivals</h2>
+          <h2 className="section-title h3">New Arrivals</h2>
 
           {isLoading && <Loading className="py-5" />}
 
@@ -114,14 +115,14 @@ function HomePage() {
 
       <section className="mt-4 mt-lg-5">
         <div className="container">
-          <h2 className="section-title">Our Services</h2>
+          <h2 className="section-title h3">Our Services</h2>
           <OurServices />
         </div>
       </section>
 
       <section className="mt-4 mt-lg-5 mb-4 mb-lg-5">
         <div className="container">
-          <h2 className="section-title">New Blogs</h2>
+          <h2 className="section-title h3">New Blogs</h2>
 
           {isLoading && <Loading className="py-5" />}
 
@@ -138,6 +139,13 @@ function HomePage() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      <section className="mt-4 mt-lg-5 mb-5 our-marketplace">
+        <div className="container">
+          <h2 className="section-title h3">Marketplace Kami</h2>
+          <OurMarketplace />
         </div>
       </section>
     </Layout>

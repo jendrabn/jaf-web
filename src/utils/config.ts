@@ -30,12 +30,11 @@ export const env = {
   LINKEDIN_URL:
     getEnv("LINKEDIN_URL") || "https://www.linkedin.com/company/jafparfums",
 
-  SHOPEE_URL: getEnv("SHOPEE_URL") || "https://shopee.co.id/jafparfums",
-  TOKOPEDIA_URL: getEnv("TOKOPEDIA_URL") || "https://tokopedia.com/jafparfums",
-  LAZADA_URL: getEnv("LAZADA_URL") || "https://www.lazada.co.id/jafparfums",
-  BUKALAPAK_URL:
-    getEnv("BUKALAPAK_URL") || "https://www.bukalapak.com/jafparfums",
-  BLIBLI_URL: getEnv("BLIBLI_URL") || "https://www.blibli.com/jafparfums",
+  SHOPEE_URL: getEnv("SHOPEE_URL"),
+  TOKOPEDIA_URL: getEnv("TOKOPEDIA_URL"),
+  LAZADA_URL: getEnv("LAZADA_URL"),
+  BUKALAPAK_URL: getEnv("BUKALAPAK_URL"),
+  BLIBLI_URL: getEnv("BLIBLI_URL"),
 
   FREE_SHIPPING_100K: getEnv("FREE_SHIPPING_100K") || false,
 
