@@ -1,3 +1,4 @@
+import { env } from "@/utils/config";
 import { Card } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router";
@@ -6,7 +7,7 @@ const NotFoundPage = () => {
   return (
     <>
       <Helmet>
-        <title>Halaman Tidak Ditemukan | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Halaman Tidak Ditemukan | {env.APP_NAME}</title>
         <meta
           name="description"
           content="Halaman yang Anda cari tidak tersedia."

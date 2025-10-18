@@ -16,6 +16,7 @@ import ProductImagesCarousel from "./ProductImagesCarousel";
 import StarRating from "@/components/ui/StarRating";
 import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
+import { env } from "@/utils/config";
 
 export default function ProductDetailPage() {
   const { productId } = useParams();
@@ -96,7 +97,7 @@ export default function ProductDetailPage() {
         <>
           <Helmet>
             <title>
-              {product?.name} | {import.meta.env.VITE_APP_NAME}
+              {product?.name} | {env.APP_NAME}
             </title>
           </Helmet>
 

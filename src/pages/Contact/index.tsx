@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Form } from "react-bootstrap";
 import Layout from "@/components/layouts/Layout";
 import CustomerServiceContact from "@/components/parts/CustomerServiceContact";
+import { env } from "@/utils/config";
 
 function ContactPage() {
   return (
@@ -11,7 +12,7 @@ function ContactPage() {
           name="description"
           content="Hubungi JAF Parfum's untuk pertanyaan, bantuan, atau kerjasama. Kami siap membantu Anda!"
         />
-        <title>Kontak Kami | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Kontak Kami | {env.APP_NAME}</title>
       </Helmet>
 
       <div className="container">

@@ -8,6 +8,7 @@ import { Badge, Breadcrumb, Button, Image } from "react-bootstrap";
 import { formatDateTime } from "@/utils/format";
 import { useState } from "react";
 import ShareModal from "./ShareModal";
+import { env } from "@/utils/config";
 
 function BlogDetailPage() {
   const { slug } = useParams();
@@ -25,7 +26,7 @@ function BlogDetailPage() {
         <>
           <Helmet>
             <title>
-              {blog.title} | {import.meta.env.VITE_APP_NAME}
+              {blog.title} | {env.APP_NAME}
             </title>
           </Helmet>
 

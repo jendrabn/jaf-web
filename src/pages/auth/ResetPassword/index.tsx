@@ -8,6 +8,7 @@ import ErrorValidationAlert from "@/components/ui/ErrorValidationAlert";
 import PasswordInput from "@/components/ui/PasswordInput";
 import { Helmet } from "react-helmet-async";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { env } from "@/utils/config";
 
 function ResetPasswordPage() {
   const [searchParams] = useSearchParams();
@@ -38,7 +39,7 @@ function ResetPasswordPage() {
   return (
     <AuthLayout title="Reset Password">
       <Helmet>
-        <title>Reset Password | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Reset Password | {env.APP_NAME}</title>
       </Helmet>
 
       <ErrorValidationAlert error={error} onClose={reset} />

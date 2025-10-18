@@ -14,6 +14,7 @@ import { useLocation } from "react-router";
 import { Helmet } from "react-helmet-async";
 import AddRatingModal from "../../../components/parts/Order/AddRatingModal";
 import { formatCurrency } from "@/utils/format";
+import { env } from "@/utils/config";
 
 const OrderDetailPage = () => {
   const { id } = useParams();
@@ -59,7 +60,7 @@ const OrderDetailPage = () => {
   return (
     <AccountLayout title="Detail Pesanan">
       <Helmet>
-        <title>Detail Pesanan | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Detail Pesanan | {env.APP_NAME}</title>
       </Helmet>
       {/* <OrderSuccessModal /> */}
 

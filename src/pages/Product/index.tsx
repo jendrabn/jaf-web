@@ -10,6 +10,7 @@ import { Button, Form, Offcanvas } from "react-bootstrap";
 import { useState } from "react";
 import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
+import { env } from "@/utils/config";
 
 // filter options
 const FILTER_OPTIONS: { label: string; value: string }[] = [
@@ -73,7 +74,7 @@ const ProductPage = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Produk | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Produk | {env.APP_NAME}</title>
         <meta
           name="description"
           content="Temukan parfum berkualitas dengan harga terjangkau. Jelajahi koleksi parfum kami yang lengkap dan nikmati penawaran menarik."

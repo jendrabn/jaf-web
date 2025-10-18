@@ -18,7 +18,11 @@ const GoogleLoginButton = () => {
           token: codeResponse.access_token,
         })
         .then((data) => {
-          setAuthToken(data.auth_token);
+          const token = (data as { auth_token?: string }).auth_token;
+          if (!token) {
+            return;
+          }
+          setAuthToken(token);
 
           setSelectedCartIds([]);
 

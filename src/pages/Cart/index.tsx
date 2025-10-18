@@ -8,6 +8,7 @@ import CartItem from "@/components/parts/CartItem";
 import { useCartDispatch, useCartState } from "@/contexts/CartContext";
 import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
+import { env } from "@/utils/config";
 
 function CartPage() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ function CartPage() {
   return (
     <Layout>
       <Helmet>
-        <title>Keranjang Belanja | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Keranjang Belanja | {env.APP_NAME}</title>
       </Helmet>
 
       <div className="container">

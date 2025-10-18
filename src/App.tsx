@@ -21,6 +21,7 @@ const ForgotPasswordPage = lazy(() => import("@/pages/Auth/ForgotPassword"));
 const LoginPage = lazy(() => import("@/pages/Auth/Login"));
 const RegisterPage = lazy(() => import("@/pages/Auth/Register"));
 const ResetPasswordPage = lazy(() => import("@/pages/Auth/ResetPassword"));
+const VerifyLoginPage = lazy(() => import("@/pages/Auth/VerifyLogin"));
 const CartPage = lazy(() => import("@/pages/Cart"));
 const WishlistPage = lazy(() => import("@/pages/Account/Wishlist"));
 const ProfilePage = lazy(() => import("@/pages/Account/Profile"));
@@ -121,6 +122,10 @@ function App() {
 
                       {/* Auth */}
                       <Route path="auth/login" element={<LoginPage />} />
+                      <Route
+                        path="auth/verify-login"
+                        element={<VerifyLoginPage />}
+                      />
                       <Route path="auth/register" element={<RegisterPage />} />
                       <Route
                         path="auth/reset-password"

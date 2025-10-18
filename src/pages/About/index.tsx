@@ -4,6 +4,7 @@ import googleReviews from "@/data/google-reviews.json";
 import Layout from "@/components/layouts/Layout";
 import { Helmet } from "react-helmet-async";
 import StarRating from "@/components/ui/StarRating";
+import { env } from "@/utils/config";
 
 const AboutPage = () => {
   const [activeReview, setActiveReview] = useState(0);
@@ -18,12 +19,10 @@ const AboutPage = () => {
     }, 200); // durasi fade out
   };
 
-  console.log(import.meta.env.VITE_APP_NAME);
-
   return (
     <Layout>
       <Helmet>
-        <title>Tentang Kami | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Tentang Kami | {env.APP_NAME}</title>
         <meta
           name="description"
           content="Pelajari lebih lanjut tentang JAF Parfum's, layanan kami, dan komitmen kami terhadap kualitas dan kepuasan pelanggan."

@@ -1,11 +1,12 @@
 import { Helmet } from "react-helmet-async";
 import AccountLayout from "@/components/layouts/AccountLayout";
+import { env } from "@/utils/config";
 
 const AddressPage = () => {
   return (
     <AccountLayout title="Alamat">
       <Helmet>
-        <title>Alamat | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Alamat | {env.APP_NAME}</title>
         <meta
           name="description"
           content="Kelola dan perbarui alamat pengiriman Anda untuk pengalaman belanja yang lebih mudah."

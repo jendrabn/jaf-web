@@ -6,6 +6,7 @@ import Loading from "@/components/ui/Loading";
 import Layout from "@/components/layouts/Layout";
 import OurServices from "@/components/parts/OurServices";
 import { Helmet } from "react-helmet-async";
+import { env } from "@/utils/config";
 
 function HomePage() {
   const { data: landing, isLoading } = useFetchLanding();
@@ -14,8 +15,7 @@ function HomePage() {
     <Layout>
       <Helmet>
         <title>
-          {import.meta.env.VITE_APP_NAME} | Situs Belanja Parfum Online
-          Terlengkap & Terpercaya
+          {env.APP_NAME} | Situs Belanja Parfum Online Terlengkap & Terpercaya
         </title>
       </Helmet>
 

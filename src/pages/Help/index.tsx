@@ -1,13 +1,14 @@
 import { Helmet } from "react-helmet-async";
 import Layout from "@/components/layouts/Layout";
 import CustomerServiceContact from "@/components/parts/CustomerServiceContact";
+import { env } from "@/utils/config";
 
 function HelpPage() {
   return (
     <Layout>
       <Helmet>
         <meta name="description" content="Pusat Bantuan JAF Parfums" />
-        <title>Pusat Bantuan | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Pusat Bantuan | {env.APP_NAME}</title>
       </Helmet>
 
       <div className="container">

@@ -2,13 +2,14 @@ import data from "@/data/faq.json";
 import Accordion from "react-bootstrap/Accordion";
 import Layout from "@/components/layouts/Layout";
 import { Helmet } from "react-helmet-async";
+import { env } from "@/utils/config";
 
 function FaqPage() {
   return (
     <Layout>
       <Helmet>
         <meta name="description" content="Frequently Asked Questions" />
-        <title>Pertanyaan Umum | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Pertanyaan Umum | {env.APP_NAME}</title>
       </Helmet>
 
       <div className="container">

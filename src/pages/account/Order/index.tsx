@@ -11,6 +11,7 @@ import ConfirmOrderReceivedModal from "@/components/parts/Order/ConfirmOrderRece
 import { Alert, Button, Form, Offcanvas } from "react-bootstrap";
 import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
+import { env } from "@/utils/config";
 
 const StatusSelect = ({
   onChange,
@@ -104,7 +105,7 @@ const OrderPage = () => {
   return (
     <AccountLayout title="Pesanan">
       <Helmet>
-        <title>Pesanan | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Pesanan | {env.APP_NAME}</title>
       </Helmet>
 
       <ConfirmPaymentModal

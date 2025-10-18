@@ -20,6 +20,7 @@ import { type OrderReqTypes } from "@/types/order";
 import { useCartDispatch } from "@/contexts/CartContext";
 import { Helmet } from "react-helmet-async";
 import { QUERY_KEYS } from "@/utils/constans";
+import { env } from "@/utils/config";
 
 function CheckoutPage() {
   const queryClient = useQueryClient();
@@ -186,7 +187,7 @@ function CheckoutPage() {
   return (
     <Layout>
       <Helmet>
-        <title>Checkout & Pembayaran | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Checkout & Pembayaran | {env.APP_NAME}</title>
       </Helmet>
 
       <DeliveryAddressModal

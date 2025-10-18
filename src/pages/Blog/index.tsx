@@ -11,6 +11,7 @@ import { type ChangeEvent, type FormEvent, useState } from "react";
 import { Button, Form, InputGroup, Offcanvas, Dropdown } from "react-bootstrap";
 import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
+import { env } from "@/utils/config";
 
 const SORT_OPTIONS: { label: string; value: string }[] = [
   {
@@ -53,7 +54,7 @@ function BlogPage() {
   return (
     <Layout>
       <Helmet>
-        <title>Blog | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Blog | {env.APP_NAME}</title>
         <meta
           name="description"
           content="Temukan artikel menarik seputar dunia parfum di blog kami. Baca tips, ulasan, dan berita terbaru tentang parfum."

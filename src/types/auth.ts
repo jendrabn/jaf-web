@@ -1,7 +1,14 @@
 import type { UserTypes } from "./user";
 
 export interface LoginTypes {
-  auth_token: string;
+  // When OTP is not required (legacy flow), backend may return an auth token directly
+  auth_token?: string;
+  // OTP-first flow fields
+  otp_required?: boolean;
+  otp_expires_at?: string; // ISO timestamp when OTP expires
+  otp_sent_to?: string; // destination email
+  // Optional email context
+  email?: string;
 }
 
 export type RegisterTypes = UserTypes;

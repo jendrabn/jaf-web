@@ -231,6 +231,21 @@ footer {
     height: 10px !important;
     border-radius: 50%;
     margin: 0 5px;
+    // ensure visible dot styling when using slick dots
+    background-color: $gray-500;
+    opacity: 0.5;
+  }
+
+  // active dot state (slick sets .slick-active on li)
+  .carousel-indicators .slick-active button {
+    background-color: $primary;
+    opacity: 1;
+  }
+
+  // hide slick-theme pseudo-element so our button styling applies
+  .carousel-indicators button::before {
+    content: "";
+    display: none;
   }
 
   @media (max-width: 575.98px) {

@@ -8,6 +8,7 @@ import WishlistItem from "@/components/parts/WishlistItem";
 import { useDeleteWishlist } from "@/hooks/api/wishlist";
 import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet-async";
+import { env } from "@/utils/config";
 
 const WishlistPage = () => {
   const deleteWishlistMutation = useDeleteWishlist();
@@ -32,7 +33,7 @@ const WishlistPage = () => {
   return (
     <AccountLayout title="Wishlist">
       <Helmet>
-        <title>Daftar Keinginan | {import.meta.env.VITE_APP_NAME}</title>
+        <title>Daftar Keinginan | {env.APP_NAME}</title>
         <meta
           name="description"
           content="Lihat dan kelola daftar keinginan produk favorit Anda di sini."

@@ -23,9 +23,38 @@ function LoginPage() {
 
   const onSubmit: SubmitHandler<LoginReqTypes> = (data) => {
     mutate(data, {
-      onSuccess({ auth_token }) {
-        setAuthToken(auth_token);
+      onSuccess: (resp) => {
+        // OTP required: server returns otp_required, otp_expires_at, otp_sent_to
+        if ((resp as { otp_required?: boolean }).otp_required) {
+          if (data.email) {
+            sessionStorage.setItem("pendingLoginEmail", data.email);
+          }
 
+          const { otp_expires_at, otp_sent_to } = resp as {
+            otp_expires_at?: string;
+            otp_sent_to?: string;
+          };
+
+          if (otp_expires_at) {
+            sessionStorage.setItem("otpExpiresAt", otp_expires_at);
+          }
+          if (otp_sent_to) {
+            sessionStorage.setItem("otpSentTo", otp_sent_to);
+          }
+
+          navigate("/auth/verify-login", {
+            replace: true,
+            state: { email: data.email, from: location.state?.from },
+          });
+          return;
+        }
+
+        const token = (resp as { auth_token?: string }).auth_token;
+        if (!token) {
+          return;
+        }
+
+        setAuthToken(token);
         setSelectedCartIds([]);
 
         navigate(location.state?.from || "/", { replace: true });
