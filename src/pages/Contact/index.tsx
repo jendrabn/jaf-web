@@ -1,10 +1,81 @@
 import { Helmet } from "react-helmet-async";
-import { Form } from "react-bootstrap";
+import { Form, Alert } from "react-bootstrap";
 import Layout from "@/components/layouts/Layout";
 import CustomerServiceContact from "@/components/parts/CustomerServiceContact";
 import { env } from "@/utils/config";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import fetchApi from "@/utils/api";
+import { useForm } from "react-hook-form";
+import type { AxiosError } from "axios";
 
 function ContactPage() {
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  type ContactFormInputs = {
+    name: string;
+    email: string;
+    phone?: string;
+    message: string;
+  };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormInputs>({
+    defaultValues: { name: "", email: "", phone: "", message: "" },
+  });
+
+  // Tipe request/response sesuai spesifikasi API (tanpa wrapper "request")
+  type ContactPayload = {
+    name: string;
+    email: string;
+    phone?: string;
+    message: string;
+  };
+  type ContactResponse = {
+    id: number;
+    status: string;
+    message: string;
+  };
+  type ApiError = { message?: string };
+
+  const contactMutation = useMutation<
+    ContactResponse,
+    AxiosError<ApiError>,
+    ContactPayload
+  >({
+    mutationFn: (payload) => fetchApi().post("/contact", payload),
+    onSuccess: (res) => {
+      const msg = res?.message || "Terima kasih, pesan Anda sudah kami terima.";
+      setSuccessMessage(msg);
+      setErrorMessage(null);
+      reset();
+    },
+    onError: (err) => {
+      const msg =
+        err.response?.data?.message ||
+        err.message ||
+        "Gagal mengirim pesan. Silakan coba lagi.";
+      setErrorMessage(msg);
+      setSuccessMessage(null);
+    },
+  });
+
+  const onSubmit = (data: ContactFormInputs) => {
+    setErrorMessage(null);
+    setSuccessMessage(null);
+    contactMutation.mutate({
+      name: data.name,
+      email: data.email,
+      phone: data.phone || undefined,
+      message: data.message,
+    });
+  };
+
   return (
     <Layout>
       <Helmet>
@@ -26,22 +97,67 @@ function ContactPage() {
                 form di bawah ini. Tim kami akan membalas dalam 1x24 jam pada
                 hari kerja.
               </p>
-              <Form>
+              {/* Status sukses / error */}
+              {successMessage && (
+                <Alert variant="success" className="mb-3">
+                  {successMessage}
+                </Alert>
+              )}
+              {errorMessage && (
+                <Alert variant="danger" className="mb-3">
+                  {errorMessage}
+                </Alert>
+              )}
+
+              <Form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Form.Group className="mb-3" controlId="contactName">
                   <Form.Label>Nama Lengkap</Form.Label>
-                  <Form.Control type="text" placeholder="Nama Anda" required />
+                  <Form.Control
+                    type="text"
+                    placeholder="Nama Anda"
+                    {...register("name", { required: "Nama wajib diisi" })}
+                    isInvalid={!!errors.name}
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.name?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="contactEmail">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="email@domain.com"
+                    {...register("email", {
+                      required: "Email wajib diisi",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Format email tidak valid",
+                      },
+                    })}
+                    isInvalid={!!errors.email}
                     required
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.email?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="contactPhone">
                   <Form.Label>No. Telepon (Opsional)</Form.Label>
-                  <Form.Control type="tel" placeholder="08xxxxxxxxxx" />
+                  <Form.Control
+                    type="tel"
+                    placeholder="08xxxxxxxxxx"
+                    {...register("phone", {
+                      pattern: {
+                        value: /^0\d{8,14}$/,
+                        message: "Format no. telepon tidak valid",
+                      },
+                    })}
+                    isInvalid={!!errors.phone}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.phone?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="contactMessage">
                   <Form.Label>Pesan</Form.Label>
@@ -49,11 +165,29 @@ function ContactPage() {
                     as="textarea"
                     rows={4}
                     placeholder="Tulis pesan Anda di sini..."
+                    {...register("message", {
+                      required: "Pesan wajib diisi",
+                      minLength: {
+                        value: 10,
+                        message: "Pesan minimal 10 karakter",
+                      },
+                    })}
+                    isInvalid={!!errors.message}
                     required
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.message?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
-                <button className="btn btn-primary" type="submit">
-                  <i className="bi bi-send me-2"></i>Kirim Pesan
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  disabled={contactMutation.isPending || isSubmitting}
+                >
+                  <i className="bi bi-send me-2"></i>
+                  {contactMutation.isPending || isSubmitting
+                    ? "Mengirim..."
+                    : "Kirim Pesan"}
                 </button>
               </Form>
               <div className="mt-4 border-top pt-4">
