@@ -19,7 +19,7 @@ import {
 import { type OrderReqTypes } from "@/types/order";
 import { useCartDispatch } from "@/contexts/CartContext";
 import { Helmet } from "react-helmet-async";
-import { QUERY_KEYS } from "@/utils/constans";
+import { QUERY_KEYS, PAYMENT_METHOD_GATEWAY } from "@/utils/constans";
 import { env } from "@/utils/config";
 
 function CheckoutPage() {
@@ -51,6 +51,7 @@ function CheckoutPage() {
     grandTotal,
     totalQuantity,
     totalWeightKg,
+    gatewayFee,
   } = useMemo(() => {
     const checkoutSubtotal = checkout?.total_price ?? 0;
     const checkoutTaxes = checkout?.total_tax ?? 0;
@@ -66,6 +67,12 @@ function CheckoutPage() {
     const label = coupon?.code || coupon?.name || "Kupon";
     const weightKg = Math.round(totalWeightValue / 1000);
 
+    // Payment Gateway flat fee (e.g., Midtrans) from checkout state
+    const gatewayPaymentFee =
+      paymentMethod === PAYMENT_METHOD_GATEWAY
+        ? checkout?.payment_methods?.gateway?.fee ?? 0
+        : 0;
+
     return {
       subtotal: checkoutSubtotal,
       totalTax: checkoutTaxes,
@@ -75,11 +82,13 @@ function CheckoutPage() {
       grandTotal:
         Math.max(checkoutSubtotal - sanitizedDiscount, 0) +
         checkoutShipping +
-        checkoutTaxes,
+        checkoutTaxes +
+        gatewayPaymentFee,
       totalQuantity: totalQuantityValue,
       totalWeightKg: weightKg,
+      gatewayFee: gatewayPaymentFee,
     };
-  }, [checkout, shipping, coupon]);
+  }, [checkout, shipping, coupon, paymentMethod]);
 
   const hasDiscount = discountAmount > 0;
   const isSubmitting = createMutation.isPending;
@@ -159,18 +168,27 @@ function CheckoutPage() {
     const payload = buildOrderPayload();
 
     createMutation.mutate(payload, {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         toast.success("Pesanan berhasil dibuat.");
 
+        // Reset state keranjang & checkout
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CARTS] });
         cartDispatch({ type: "SET_SELECTED_IDS", payload: [] });
         dispatch({ type: "RESET" });
 
+        // Jika Payment Gateway (Midtrans), alihkan ke halaman detail pesanan
+        if (data?.payment_method === PAYMENT_METHOD_GATEWAY) {
+          navigate(`/account/orders/${data.id}`, {
+            replace: true,
+            state: { new_order_created: true },
+          });
+          return;
+        }
+
+        // Default: navigasi ke detail pesanan (bank/ewallet atau selain gateway)
         navigate(`/account/orders/${data.id}`, {
           replace: true,
-          state: {
-            new_order_created: true,
-          },
+          state: { new_order_created: true },
         });
       },
     });
@@ -239,6 +257,16 @@ function CheckoutPage() {
                         </td>
                         <td className="text-end text-success">
                           -{formatCurrency(discountAmount)}
+                        </td>
+                      </tr>
+                    )}
+                    {gatewayFee > 0 && (
+                      <tr>
+                        <td className="text-secondary-emphasis">
+                          Biaya Payment Gateway
+                        </td>
+                        <td className="text-end">
+                          {formatCurrency(gatewayFee)}
                         </td>
                       </tr>
                     )}

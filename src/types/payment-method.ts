@@ -15,3 +15,9 @@ export interface EwalletTypes {
   phone: string;
   logo: string;
 }
+
+export interface PaymentGatewayTypes {
+  provider: string;
+  client_key: string;
+  fee: number; // flat fee in currency unit
+}

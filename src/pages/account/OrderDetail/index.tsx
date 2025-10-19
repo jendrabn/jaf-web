@@ -5,21 +5,101 @@ import NotFoundPage from "../../../pages/NotFound";
 import Loading from "../../../components/ui/Loading";
 import { formatDateTime } from "../../../utils/functions";
 import { Alert, Button } from "react-bootstrap";
-import { ORDER_STATUS_COLORS, ORDER_STATUSES } from "../../../utils/constans";
+import {
+  ORDER_STATUS_COLORS,
+  ORDER_STATUSES,
+  PAYMENT_METHOD_GATEWAY,
+} from "../../../utils/constans";
 import ProductImage from "../../../components/parts/ProductImage";
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import ConfirmPaymentModal from "../../../components/parts/Order/ConfirmPaymentModal";
 import ConfirmOrderReceivedModal from "../../../components/parts/Order/ConfirmOrderReceivedModal";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import AddRatingModal from "../../../components/parts/Order/AddRatingModal";
 import { formatCurrency } from "@/utils/format";
 import { env } from "@/utils/config";
+import { loadSnapScript, payWithSnap } from "@/lib/midtrans";
+import { toast } from "react-toastify";
+import type { PaymentInfoTypes } from "@/types/order";
+import PayNowButton from "../../../components/parts/Order/PayNowButton";
 
 const OrderDetailPage = () => {
   const { id } = useParams();
-  const { data: order, isLoading } = useFetchOrder(Number(id));
+  const { data: order, isLoading, refetch } = useFetchOrder(Number(id));
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const hasAutoOpenedRef = useRef(false);
+
+  const isGateway = order?.payment?.method === PAYMENT_METHOD_GATEWAY;
+  const isUnpaid = order
+    ? ["pending", "pending_payment"].includes(order.status)
+    : false;
+  const canOpenSnap = !!(isGateway && isUnpaid);
+
+  const openSnap = useCallback(async () => {
+    const info: PaymentInfoTypes | undefined = order?.payment?.info;
+    const clientKey: string | undefined = info?.client_key;
+    const snapToken: string | undefined = info?.snap_token;
+    const redirectUrl: string | undefined = info?.redirect_url;
+
+    if (clientKey && snapToken) {
+      try {
+        await loadSnapScript({
+          env: (env.MIDTRANS_ENV as "sandbox" | "production") || "sandbox",
+          clientKey,
+        });
+        payWithSnap(snapToken, {
+          onSuccess: async () => {
+            await refetch();
+          },
+          onPending: async () => {
+            await refetch();
+          },
+          onError: () => {
+            toast.error(
+              "Pembayaran gagal. Silakan coba lagi atau pilih metode lain."
+            );
+          },
+          onClose: () => {},
+        });
+      } catch {
+        toast.error("Gagal memuat Midtrans Snap.");
+      }
+    } else if (redirectUrl) {
+      window.location.assign(redirectUrl);
+    } else {
+      toast.error("Informasi pembayaran Midtrans tidak tersedia.");
+    }
+  }, [order, refetch]);
+
+  useEffect(() => {
+    const state = location.state;
+    const newOrderCreated = !!(
+      state &&
+      typeof state === "object" &&
+      "new_order_created" in state &&
+      (state as { new_order_created?: boolean }).new_order_created
+    );
+
+    const key = `snap_auto_opened_${id}`;
+    const alreadyOpened = sessionStorage.getItem(key) === "1";
+
+    if (
+      newOrderCreated &&
+      canOpenSnap &&
+      !hasAutoOpenedRef.current &&
+      !alreadyOpened
+    ) {
+      hasAutoOpenedRef.current = true;
+      sessionStorage.setItem(key, "1");
+      openSnap();
+
+      // Hapus state history agar refresh tidak memicu auto-open lagi
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.state, canOpenSnap, openSnap, id, navigate, location.pathname]);
 
   const [showConfirmPaymentModal, setShowConfirmPaymentModal] = useState(
     !!location.state?.new_order_created
@@ -66,11 +146,13 @@ const OrderDetailPage = () => {
 
       {order && (
         <>
-          <ConfirmPaymentModal
-            show={showConfirmPaymentModal}
-            onClose={handleCloseConfirmPaymentModal}
-            orderId={order.id}
-          />
+          {order.payment.method !== PAYMENT_METHOD_GATEWAY && (
+            <ConfirmPaymentModal
+              show={showConfirmPaymentModal}
+              onClose={handleCloseConfirmPaymentModal}
+              orderId={order.id}
+            />
+          )}
           <ConfirmOrderReceivedModal
             orderId={order.id}
             show={showConfirmOrderReceivedModal}
@@ -402,6 +484,19 @@ const OrderDetailPage = () => {
                   </div>
                 </div>
 
+                {isGateway && (order.gateway_fee ?? 0) > 0 && (
+                  <div className="row mb-2">
+                    <div className="col-md-9 text-end">
+                      <span>
+                        {order.gateway_fee_name || "Biaya Payment Gateway"}
+                      </span>
+                    </div>
+                    <div className="col-md-3 text-end">
+                      <span>{formatCurrency(order.gateway_fee || 0)}</span>
+                    </div>
+                  </div>
+                )}
+
                 <div className="row">
                   <div className="col-md-9 text-end">
                     <span>Total Bayar</span>
@@ -442,7 +537,8 @@ const OrderDetailPage = () => {
                     Pesanan Diterima
                   </Button>
                 )}
-                {order.status === "pending_payment" && (
+                {isGateway && isUnpaid && <PayNowButton order={order} />}
+                {!isGateway && order.status === "pending_payment" && (
                   <Button
                     variant="primary"
                     onClick={handleShowConfirmPaymentModal}

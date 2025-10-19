@@ -1,5 +1,9 @@
 import type { CartItemTypes } from "./cart";
-import type { BankTypes, EwalletTypes } from "./payment-method";
+import type {
+  BankTypes,
+  EwalletTypes,
+  PaymentGatewayTypes,
+} from "./payment-method";
 import type {
   CityTypes,
   DistrictTypes,
@@ -14,6 +18,7 @@ export interface CheckoutTypes {
   payment_methods: {
     bank: Array<BankTypes>;
     ewallet: Array<EwalletTypes>;
+    gateway?: PaymentGatewayTypes | null;
   };
   taxes: Array<TaxTypes>;
   total_quantity: number;

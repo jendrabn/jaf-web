@@ -36,6 +36,10 @@ export const env = {
   BUKALAPAK_URL: getEnv("BUKALAPAK_URL"),
   BLIBLI_URL: getEnv("BLIBLI_URL"),
 
+  API_BASE_URL:
+    getEnv("API_BASE_URL") || getEnv("BASE_API_URL") || "http://jaf.test/api",
+  MIDTRANS_ENV: getEnv("MIDTRANS_ENV") || "sandbox",
+
   FREE_SHIPPING_100K: getEnv("FREE_SHIPPING_100K") || false,
 
   GOOGLE_CLIENT_ID: getEnv("GOOGLE_CLIENT_ID") || "",

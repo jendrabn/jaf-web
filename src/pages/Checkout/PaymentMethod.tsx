@@ -3,8 +3,13 @@ import {
   useCheckoutDispatch,
   useCheckoutState,
 } from "@/contexts/CheckoutContext";
-import { PAYMENT_METHOD_BANK, PAYMENT_METHOD_EWALLET } from "@/utils/constans";
+import {
+  PAYMENT_METHOD_BANK,
+  PAYMENT_METHOD_EWALLET,
+  PAYMENT_METHOD_GATEWAY,
+} from "@/utils/constans";
 import type { ChangeEvent } from "react";
+import { formatCurrency } from "@/utils/functions";
 
 interface PaymentMethodProps {
   className?: string;
@@ -16,9 +21,21 @@ function PaymentMethod({ className }: PaymentMethodProps) {
 
   const banks = checkout?.payment_methods?.bank;
   const ewallets = checkout?.payment_methods?.ewallet;
+  const gateway = checkout?.payment_methods?.gateway;
 
   const handlePaymentMethodChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "SET_PAYMENT_METHOD", payload: e.target.value });
+    const value = e.target.value;
+    dispatch({ type: "SET_PAYMENT_METHOD", payload: value });
+
+    // Reset selections to avoid unintended states and fees
+    if (value === PAYMENT_METHOD_GATEWAY) {
+      if (bank) dispatch({ type: "SET_BANK", payload: null });
+      if (ewallet) dispatch({ type: "SET_EWALLET", payload: null });
+    } else if (value === PAYMENT_METHOD_BANK) {
+      if (ewallet) dispatch({ type: "SET_EWALLET", payload: null });
+    } else if (value === PAYMENT_METHOD_EWALLET) {
+      if (bank) dispatch({ type: "SET_BANK", payload: null });
+    }
   };
 
   const handlePaymentBankChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -69,6 +86,18 @@ function PaymentMethod({ className }: PaymentMethodProps) {
                 onChange={handlePaymentMethodChange}
               />
 
+              {gateway && (
+                <Form.Check
+                  inline
+                  type="radio"
+                  label={`Payment Gateway (${gateway.provider})`}
+                  name="payment_method"
+                  value={PAYMENT_METHOD_GATEWAY}
+                  checked={paymentMethod === PAYMENT_METHOD_GATEWAY}
+                  onChange={handlePaymentMethodChange}
+                />
+              )}
+              {/* 
               <Form.Check
                 inline
                 type="radio"
@@ -76,9 +105,16 @@ function PaymentMethod({ className }: PaymentMethodProps) {
                 name="payment_method"
                 value="cod"
                 disabled
-              />
+              /> */}
             </div>
           </Form.Group>
+
+          {paymentMethod === PAYMENT_METHOD_GATEWAY && gateway && (
+            <div className="alert alert-info small">
+              <div>Provider: {gateway.provider}</div>
+              <div>Biaya Payment Gateway: {formatCurrency(gateway.fee)}</div>
+            </div>
+          )}
 
           {paymentMethod === PAYMENT_METHOD_BANK && (
             <Form.Group className="mb-3" controlId="bank">

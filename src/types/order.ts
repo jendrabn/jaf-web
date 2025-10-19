@@ -20,6 +20,12 @@ export interface OrderTypes {
   total_amount: number;
   payment_due_date: string;
   created_at: string;
+  // Tambahan untuk identifikasi metode pembayaran pada list pesanan
+  payment?: {
+    method: string;
+    info?: PaymentInfoTypes;
+    status?: string;
+  };
 }
 
 export interface OrderReqTypes {
@@ -99,6 +105,11 @@ export interface OrderDetailTypes {
   total_price: number;
   tax_amount: number;
   tax_name: string;
+
+  // Tambahan untuk biaya payment gateway (opsional)
+  gateway_fee?: number;
+  gateway_fee_name?: string;
+
   discount: number;
   discount_name: string;
   shipping_cost: number;
@@ -133,6 +144,9 @@ export interface PaymentInfoTypes {
   account_number?: string;
   account_username?: string;
   phone?: string;
+  client_key?: string;
+  snap_token?: string;
+  redirect_url?: string;
 }
 
 export interface ConfirmPaymentReqTypes {

@@ -24,6 +24,7 @@ export const SEXS: Record<number, string> = {
 
 export const PAYMENT_METHOD_BANK = "bank";
 export const PAYMENT_METHOD_EWALLET = "ewallet";
+export const PAYMENT_METHOD_GATEWAY = "gateway";
 
 export const KEY_SELECTED_CART_IDS = "SELECTED_CART_IDS";
 
