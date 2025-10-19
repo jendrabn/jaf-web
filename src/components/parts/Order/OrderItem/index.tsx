@@ -1,29 +1,21 @@
 import { Link } from "react-router";
 import { type OrderTypes } from "@/types/order";
-import {
-  ORDER_STATUS_COLORS,
-  ORDER_STATUSES,
-  PAYMENT_METHOD_GATEWAY,
-} from "@/utils/constans";
+import { ORDER_STATUS_COLORS, ORDER_STATUSES } from "@/utils/constans";
 import { formatCurrency, formatSimpleDateTime } from "@/utils/format";
 import { Alert, Badge, Button } from "react-bootstrap";
 import ProductImage from "@/components/parts/ProductImage";
 import AddRatingModal from "@/components/parts/Order/AddRatingModal";
 import { useState } from "react";
-import PayNowButton from "@/components/parts/Order/PayNowButton";
 
 interface OrderItemProps {
   order: OrderTypes;
-  onConfirmPayment: (orderId: number) => void;
   onConfirmOrderReceived: (orderId: number) => void;
 }
 
 const OrderItem = (props: OrderItemProps) => {
-  const { order, onConfirmPayment, onConfirmOrderReceived } = props;
+  const { order, onConfirmOrderReceived } = props;
   const { id, status, created_at, payment_due_date, items, total_amount } =
     order;
-
-  const isGateway = order?.payment?.method === PAYMENT_METHOD_GATEWAY;
 
   const [showRatingModal, setShowRatingModal] = useState(false);
 
@@ -203,21 +195,6 @@ const OrderItem = (props: OrderItemProps) => {
                     : "Beri Penilaian"}
                 </Button>
               </>
-            )}
-
-            {isGateway &&
-              (status === "pending" || status === "pending_payment") && (
-                <PayNowButton size="sm" orderId={id} />
-              )}
-
-            {!isGateway && status === "pending_payment" && (
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => onConfirmPayment(id)}
-              >
-                Konfirmasi Pembayaran
-              </Button>
             )}
 
             {status === "on_delivery" && (

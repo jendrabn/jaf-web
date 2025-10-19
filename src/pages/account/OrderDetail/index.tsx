@@ -22,13 +22,17 @@ import { env } from "@/utils/config";
 import { loadSnapScript, payWithSnap } from "@/lib/midtrans";
 import { toast } from "react-toastify";
 import type { PaymentInfoTypes } from "@/types/order";
+import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/utils/constans";
 import PayNowButton from "../../../components/parts/Order/PayNowButton";
+import TrackingModal from "../../../components/parts/Order/TrackingModal";
 
 const OrderDetailPage = () => {
   const { id } = useParams();
   const { data: order, isLoading, refetch } = useFetchOrder(Number(id));
   const location = useLocation();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const hasAutoOpenedRef = useRef(false);
 
@@ -43,6 +47,7 @@ const OrderDetailPage = () => {
     const clientKey: string | undefined = info?.client_key;
     const snapToken: string | undefined = info?.snap_token;
     const redirectUrl: string | undefined = info?.redirect_url;
+    const resolvedOrderId: number | undefined = order?.id ?? Number(id);
 
     if (clientKey && snapToken) {
       try {
@@ -53,9 +58,21 @@ const OrderDetailPage = () => {
         payWithSnap(snapToken, {
           onSuccess: async () => {
             await refetch();
+            if (resolvedOrderId) {
+              queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.ORDER, resolvedOrderId],
+              });
+            }
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ORDERS] });
           },
           onPending: async () => {
             await refetch();
+            if (resolvedOrderId) {
+              queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.ORDER, resolvedOrderId],
+              });
+            }
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ORDERS] });
           },
           onError: () => {
             toast.error(
@@ -72,7 +89,7 @@ const OrderDetailPage = () => {
     } else {
       toast.error("Informasi pembayaran Midtrans tidak tersedia.");
     }
-  }, [order, refetch]);
+  }, [order, refetch, id, queryClient]);
 
   useEffect(() => {
     const state = location.state;
@@ -107,6 +124,7 @@ const OrderDetailPage = () => {
   const [showConfirmOrderReceivedModal, setShowConfirmOrderReceivedModal] =
     useState(false);
 
+  const [showTrackingModal, setShowTrackingModal] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
 
   const handleShowConfirmPaymentModal = () => {
@@ -157,6 +175,11 @@ const OrderDetailPage = () => {
             orderId={order.id}
             show={showConfirmOrderReceivedModal}
             onClose={handleCloseConfirmOrderDeliveredModal}
+          />
+          <TrackingModal
+            orderId={order.id}
+            show={showTrackingModal}
+            onClose={() => setShowTrackingModal(false)}
           />
         </>
       )}
@@ -530,13 +553,25 @@ const OrderDetailPage = () => {
                 )}
 
                 {order.status === "on_delivery" && (
+                  <>
+                    <Button
+                      variant="success"
+                      onClick={handleShowConfirmOrderReceivedModal}
+                    >
+                      Pesanan Diterima
+                    </Button>
+                  </>
+                )}
+                {(order.status === "on_delivery" ||
+                  order.status === "completed") && (
                   <Button
-                    variant="success"
-                    onClick={handleShowConfirmOrderReceivedModal}
+                    variant="primary"
+                    onClick={() => setShowTrackingModal(true)}
                   >
-                    Pesanan Diterima
+                    Lacak Pesanan
                   </Button>
                 )}
+
                 {isGateway && isUnpaid && <PayNowButton order={order} />}
                 {!isGateway && order.status === "pending_payment" && (
                   <Button

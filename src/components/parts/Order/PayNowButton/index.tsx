@@ -5,6 +5,8 @@ import { env } from "@/utils/config";
 import { toast } from "react-toastify";
 import { useFetchOrder } from "@/hooks/api/order";
 import type { OrderDetailTypes, PaymentInfoTypes } from "@/types/order";
+import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/utils/constans";
 
 interface PayNowButtonProps {
   orderId?: number;
@@ -28,6 +30,7 @@ const PayNowButton: React.FC<PayNowButtonProps> = ({
   const { data: fetchedOrder, refetch } = useFetchOrder(orderId);
   const order = providedOrder ?? fetchedOrder;
   const [processing, setProcessing] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleClick = useCallback(async () => {
     setProcessing(true);
@@ -47,6 +50,7 @@ const PayNowButton: React.FC<PayNowButtonProps> = ({
     const clientKey: string | undefined = info?.client_key;
     const snapToken: string | undefined = info?.snap_token;
     const redirectUrl: string | undefined = info?.redirect_url;
+    const resolvedOrderId: number | undefined = current?.id ?? orderId;
 
     if (clientKey && snapToken) {
       try {
@@ -56,11 +60,23 @@ const PayNowButton: React.FC<PayNowButtonProps> = ({
         });
         payWithSnap(snapToken, {
           onSuccess: async () => {
-            await refetch();
+            if (resolvedOrderId) {
+              await refetch();
+              queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.ORDER, resolvedOrderId],
+              });
+            }
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ORDERS] });
             setProcessing(false);
           },
           onPending: async () => {
-            await refetch();
+            if (resolvedOrderId) {
+              await refetch();
+              queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.ORDER, resolvedOrderId],
+              });
+            }
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ORDERS] });
             setProcessing(false);
           },
           onError: () => {
