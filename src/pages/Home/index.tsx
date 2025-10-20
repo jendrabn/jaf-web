@@ -109,7 +109,11 @@ function HomePage() {
 
       <section className="mt-4 mt-lg-5">
         <div className="container">
-          <img src="/img/outlets.jpg" alt="Our Outlets" className="img-fluid" />
+          <img
+            src="/images/outlets.jpg"
+            alt="Our Outlets"
+            className="img-fluid"
+          />
         </div>
       </section>
 

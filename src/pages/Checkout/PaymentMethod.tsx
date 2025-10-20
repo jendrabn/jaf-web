@@ -67,10 +67,22 @@ function PaymentMethod({ className }: PaymentMethodProps) {
           <Form.Group className="mb-3" controlId="payment">
             <Form.Label className="fw-bold">Metode Pembayaran</Form.Label>
             <div>
+              {gateway && (
+                <Form.Check
+                  inline
+                  type="radio"
+                  label="Midtrans (Otomatis)"
+                  name="payment_method"
+                  value={PAYMENT_METHOD_GATEWAY}
+                  checked={paymentMethod === PAYMENT_METHOD_GATEWAY}
+                  onChange={handlePaymentMethodChange}
+                />
+              )}
+
               <Form.Check
                 inline
                 type="radio"
-                label="Transfer Bank"
+                label="Bank (Manual)"
                 name="payment_method"
                 value={PAYMENT_METHOD_BANK}
                 checked={paymentMethod === PAYMENT_METHOD_BANK}
@@ -79,33 +91,12 @@ function PaymentMethod({ className }: PaymentMethodProps) {
               <Form.Check
                 inline
                 type="radio"
-                label="E-Wallet"
+                label="E-Wallet (Manual)"
                 name="payment_method"
                 value={PAYMENT_METHOD_EWALLET}
                 checked={paymentMethod === PAYMENT_METHOD_EWALLET}
                 onChange={handlePaymentMethodChange}
               />
-
-              {gateway && (
-                <Form.Check
-                  inline
-                  type="radio"
-                  label={`Payment Gateway (${gateway.provider})`}
-                  name="payment_method"
-                  value={PAYMENT_METHOD_GATEWAY}
-                  checked={paymentMethod === PAYMENT_METHOD_GATEWAY}
-                  onChange={handlePaymentMethodChange}
-                />
-              )}
-              {/* 
-              <Form.Check
-                inline
-                type="radio"
-                label="Cash On Delivery (COD)"
-                name="payment_method"
-                value="cod"
-                disabled
-              /> */}
             </div>
           </Form.Group>
 

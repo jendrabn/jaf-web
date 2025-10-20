@@ -130,7 +130,7 @@ const AboutPage = () => {
             <div className="mb-3 text-center">
               <div className="mb-3">
                 <img
-                  src="/img/google-business.webp"
+                  src="/images/google-business.webp"
                   alt="Google My Business logo"
                   style={{ height: 40, width: "auto" }}
                 />

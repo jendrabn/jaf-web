@@ -12,8 +12,8 @@ const Logo = (props: LogoProps) => {
   const {
     alt = "Logo",
     className = "",
-    darkSrc = "/img/logo-dark.png",
-    lightSrc = "/img/logo-light.png",
+    darkSrc = "/images/logo-dark.png",
+    lightSrc = "/images/logo-light.png",
   } = props;
 
   const { theme } = useTheme();

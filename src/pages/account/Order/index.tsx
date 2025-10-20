@@ -6,7 +6,6 @@ import { type ChangeEvent, useState } from "react";
 import OrderItem from "@/components/parts/Order/OrderItem";
 import Loading from "@/components/ui/Loading";
 import { ORDER_STATUSES } from "@/utils/constans";
-import ConfirmPaymentModal from "@/components/parts/Order/ConfirmPaymentModal";
 import ConfirmOrderReceivedModal from "@/components/parts/Order/ConfirmOrderReceivedModal";
 import { Alert, Button, Form, Offcanvas } from "react-bootstrap";
 import NoData from "@/components/ui/NoData";
@@ -58,20 +57,8 @@ const OrderPage = () => {
   const { setFilter, clearFilters, queryString } = useFilters();
   const { data: orders, isLoading } = useFetchOrders(queryString);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
-  const [showConfirmPaymentModal, setShowConfirmPaymentModal] = useState(false);
   const [showConfirmOrderReceivedModal, setShowConfirmOrderReceivedModal] =
     useState(false);
-
-  const handleShowConfirmPaymentModal = (orderId: number) => {
-    setSelectedOrderId(orderId);
-    setShowConfirmPaymentModal(true);
-  };
-
-  const handleCloseConfirmPaymentModal = () => {
-    setShowConfirmPaymentModal(false);
-
-    setTimeout(() => setSelectedOrderId(null), 100);
-  };
 
   const handleShowConfirmOrderReceivedModal = (orderId: number) => {
     setSelectedOrderId(orderId);
@@ -107,12 +94,6 @@ const OrderPage = () => {
       <Helmet>
         <title>Pesanan | {env.APP_NAME}</title>
       </Helmet>
-
-      <ConfirmPaymentModal
-        show={showConfirmPaymentModal}
-        onClose={handleCloseConfirmPaymentModal}
-        orderId={selectedOrderId}
-      />
 
       <ConfirmOrderReceivedModal
         orderId={selectedOrderId}
@@ -216,7 +197,6 @@ const OrderPage = () => {
                 onConfirmOrderReceived={handleShowConfirmOrderReceivedModal}
                 key={`order-${order.id}`}
                 order={order}
-                onConfirmPayment={handleShowConfirmPaymentModal}
               />
             ))}
           </div>
