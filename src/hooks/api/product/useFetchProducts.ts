@@ -9,5 +9,4 @@ export const useFetchProducts = (queryString?: string) =>
     queryKey: [QUERY_KEYS.PRODUCTS, queryString],
     queryFn: () =>
       fetchApi().get(`/products${queryString ? `?${queryString}` : ""}`),
-    retry: 3,
   });

@@ -8,5 +8,4 @@ export const useFetchProductBrands = () =>
     queryKey: [QUERY_KEYS.PRODUCT_BRANDS],
     queryFn: () => fetchApi().get("/brands"),
     staleTime: Infinity,
-    retry: 3,
   });

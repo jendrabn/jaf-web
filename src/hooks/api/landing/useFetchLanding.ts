@@ -13,5 +13,4 @@ export const useFetchLanding = () =>
   }>({
     queryKey: [QUERY_KEYS.LANDING],
     queryFn: () => fetchApi().get("/landing"),
-    retry: 3,
   });

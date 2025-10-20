@@ -9,5 +9,4 @@ export const useFetchOrder = (orderId?: number) =>
     queryKey: [QUERY_KEYS.ORDER, orderId],
     queryFn: () => fetchApi().get(`/orders/${orderId}`),
     enabled: !!getAuthToken() && !!orderId,
-    retry: 3,
   });

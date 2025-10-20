@@ -13,7 +13,7 @@ const ProductItem = (props: ProductItemProps) => {
   const { product, showSoldCount = true, showRating = true } = props;
 
   const {
-    id,
+    slug,
     name,
     image,
     price,
@@ -36,7 +36,7 @@ const ProductItem = (props: ProductItemProps) => {
 
   return (
     <Card className="h-100 text-decoration-none border-0 hover-up">
-      <Link to={`/products/${id}`} className="text-decoration-none">
+      <Link to={`/products/${slug}`} className="text-decoration-none">
         <div className="w-100 ratio ratio-1x1 bg-gray-300 overflow-hidden rounded-3 img-hover-zoom">
           <Image
             src={image}
@@ -51,7 +51,7 @@ const ProductItem = (props: ProductItemProps) => {
         <Card.Title className="fs-6 line-clamp-2" title={name}>
           <Link
             className="text-body-emphasis text-decoration-none hover-text-primary"
-            to={`/products/${id}`}
+            to={`/products/${slug}`}
           >
             {name}
           </Link>

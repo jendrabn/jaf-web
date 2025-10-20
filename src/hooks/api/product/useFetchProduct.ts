@@ -3,10 +3,9 @@ import fetchApi from "@/utils/api";
 import type { ProductDetailTypes } from "@/types/product";
 import { QUERY_KEYS } from "@/utils/constans";
 
-export const useFetchProduct = (productId?: string) =>
+export const useFetchProduct = (slug?: string) =>
   useQuery<ProductDetailTypes>({
-    queryKey: [QUERY_KEYS.PRODUCT, productId],
-    queryFn: () => fetchApi().get(`/products/${productId}`),
-    enabled: !!productId,
-    retry: 3,
+    queryKey: [QUERY_KEYS.PRODUCT, slug],
+    queryFn: () => fetchApi().get(`/products/${slug}`),
+    enabled: !!slug,
   });

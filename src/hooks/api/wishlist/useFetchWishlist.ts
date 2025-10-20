@@ -7,5 +7,4 @@ export const useFetchWishlist = () =>
   useQuery<WishlistTypes[]>({
     queryKey: [QUERY_KEYS.WISHLISTS],
     queryFn: () => fetchApi().get("/wishlist"),
-    retry: 3,
   });

@@ -36,8 +36,8 @@ const Navbar = () => {
   };
 
   return (
-    <header className="sticky-top bg-body-tertiary">
-      <div className="d-none d-lg-block py-2 border-bottom">
+    <header className="sticky-top">
+      <div className="d-none d-lg-block py-2 border-bottom topbar">
         <div className="container">
           <div className="d-flex justify-content-between align-items-center small">
             <div>
@@ -65,7 +65,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <nav className="navbar navbar-expand-lg">
+      <nav className="navbar navbar-expand-lg border-bottom">
         <div className="container">
           <NavLink className="navbar-brand d-none d-md-block" to="/">
             <Logo className="img-fluid" />
@@ -178,7 +178,7 @@ const Navbar = () => {
                       to={"/cart"}
                       title="Keranjang Belanja"
                     >
-                      <div className="position-relative">
+                      <div className="position-relative d-inline-block">
                         <i className="bi bi-cart2 fs-5"></i>
                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                           {carts?.length}
@@ -271,21 +271,20 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <li className="nav-item">
-                    <NavLink
-                      className="btn btn-primary text-white me-2"
+                  <li className="nav-item d-flex flex-column flex-lg-row gap-2">
+                    <Link
+                      className="btn btn-outline-primary px-lg-3 py-lg-1 rounded-pill"
                       to="/auth/login"
                     >
                       Masuk
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink
-                      className="btn btn-outline-primary"
+                    </Link>
+
+                    <Link
+                      className="btn btn-primary text-white px-lg-3 py-lg-1 rounded-pill"
                       to="/auth/register"
                     >
                       Daftar
-                    </NavLink>
+                    </Link>
                   </li>
                 </>
               )}

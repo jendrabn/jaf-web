@@ -9,5 +9,4 @@ export const useFetchBlog = (slug?: string) =>
     queryFn: () => fetchApi().get(`/blogs/${slug}`),
     staleTime: Infinity,
     enabled: !!slug,
-    retry: 3,
   });

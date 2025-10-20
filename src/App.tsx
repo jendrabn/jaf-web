@@ -83,7 +83,7 @@ function App() {
                       <Route index element={<HomePage />} />
                       <Route path="products" element={<ProductPage />} />
                       <Route
-                        path="products/:productId"
+                        path="products/:slug"
                         element={<ProductDetailPage />}
                       />
                       <Route path="blog" element={<BlogPage />} />

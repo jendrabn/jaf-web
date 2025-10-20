@@ -8,5 +8,4 @@ export const useFetchBlogCategories = () =>
     queryKey: [QUERY_KEYS.BLOG_CATEGORIES],
     queryFn: () => fetchApi().get("/blogs/categories"),
     staleTime: Infinity,
-    retry: 3,
   });

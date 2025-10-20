@@ -9,5 +9,4 @@ export const useFetchDistricts = (cityId?: number | null) =>
     queryFn: () => fetchApi().get(`/region/districts/${cityId}`),
     staleTime: Infinity,
     enabled: !!cityId,
-    retry: 3,
   });

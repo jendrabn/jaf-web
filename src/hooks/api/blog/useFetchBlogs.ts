@@ -13,5 +13,4 @@ export const useFetchBlogs = (queryString?: string) =>
     queryFn: () =>
       fetchApi().get(`/blogs${queryString ? `?${queryString}` : ""}`),
     staleTime: Infinity,
-    retry: 3,
   });

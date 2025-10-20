@@ -9,5 +9,4 @@ export const useFetchCities = (provinceId?: number | null) =>
     queryFn: () => fetchApi().get(`/region/cities/${provinceId}`),
     staleTime: Infinity,
     enabled: !!provinceId,
-    retry: 3,
   });

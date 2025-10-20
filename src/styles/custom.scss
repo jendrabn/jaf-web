@@ -145,7 +145,13 @@ a {
 }
 
 // Header
+.topbar {
+  background-color: $gray-100;
+}
+
 .navbar {
+  background-color: $gray-100;
+
   .navbar-brand {
     max-width: 125px;
   }
@@ -307,7 +313,7 @@ footer {
 
   // add max width on lg+ screens
   @media (min-width: 992px) {
-    max-width: 500px !important;
+    max-width: 450px !important;
     width: 100%;
   }
 }
@@ -534,3 +540,10 @@ footer {
   }
 }
 // End Product Image Carousel
+
+.breadcrumb-item + .breadcrumb-item::before {
+  float: left;
+  padding-right: var(--bs-breadcrumb-item-padding-x);
+  color: var(--bs-breadcrumb-divider-color);
+  content: "\276F";
+}

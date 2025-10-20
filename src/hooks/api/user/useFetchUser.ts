@@ -7,6 +7,6 @@ export const useFetchUser = () => {
   return useQuery<UserTypes>({
     queryKey: [QUERY_KEYS.USER],
     queryFn: () => fetchApi().get("/user"),
-    // retry: 3,
+    //
   });
 };

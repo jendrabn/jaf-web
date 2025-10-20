@@ -19,12 +19,13 @@ import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 
 export default function ProductDetailPage() {
-  const { productId } = useParams();
+  const { slug } = useParams();
+
   const [quantity, setQuantity] = useState<number>(1);
   const queryClient = useQueryClient();
 
-  const { data: product, isLoading } = useFetchProduct(productId);
-  const { data: relatedProducts } = useFetchRelatedProducts(productId);
+  const { data: product, isLoading } = useFetchProduct(slug);
+  const { data: relatedProducts } = useFetchRelatedProducts(slug);
 
   const cartMutation = useCreateCart();
   const createWishlistMutation = useCreateWishlist();

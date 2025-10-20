@@ -8,5 +8,4 @@ export const useFetchProductCategories = () =>
     queryKey: [QUERY_KEYS.PRODUCT_CATEGORIES],
     queryFn: () => fetchApi().get("/categories"),
     staleTime: Infinity,
-    retry: 3,
   });

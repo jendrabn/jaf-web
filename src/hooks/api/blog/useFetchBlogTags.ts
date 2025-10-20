@@ -8,5 +8,4 @@ export const useFetchBlogTags = () =>
     queryKey: [QUERY_KEYS.BLOG_TAGS],
     queryFn: () => fetchApi().get("/blogs/tags"),
     staleTime: Infinity,
-    retry: 3,
   });

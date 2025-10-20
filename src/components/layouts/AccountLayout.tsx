@@ -1,7 +1,7 @@
 import { type PropsWithChildren, useEffect } from "react";
 import Navbar from "@/components/parts/Navbar";
 import Footer from "@/components/parts/Footer";
-import { Accordion, Card, Nav } from "react-bootstrap";
+import { Card, Nav } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router";
 
 type AuthLayoutProps = PropsWithChildren & {
@@ -61,22 +61,8 @@ const AccountLayout = ({ children, title }: AuthLayoutProps) => {
         <div className="container">
           <div className="row">
             <div className="col-lg-2 mb-3 ">
-              {/* Mobile Only */}
-              <Accordion
-                defaultActiveKey="0"
-                className="mb-3 d-lg-none accordion-menu-account"
-              >
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header>Menu Saya</Accordion.Header>
-                  <Accordion.Body>
-                    <NavAccount />
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-              {/* End Mobile Only */}
-
               {/* Desktop Only */}
-              <div className="d-none d-lg-block">
+              <div className="">
                 <NavAccount />
               </div>
               {/* End Desktop Only */}

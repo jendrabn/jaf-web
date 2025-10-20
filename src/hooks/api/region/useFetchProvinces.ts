@@ -8,5 +8,4 @@ export const useFetchProvinces = () =>
     queryKey: [QUERY_KEYS.PROVINCES],
     queryFn: () => fetchApi().get("/region/provinces"),
     staleTime: Infinity,
-    retry: 3,
   });

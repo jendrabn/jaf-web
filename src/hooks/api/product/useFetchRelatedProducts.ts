@@ -8,5 +8,4 @@ export const useFetchRelatedProducts = (productId?: string) =>
     queryKey: [QUERY_KEYS.RELATED_PRODUCTS, productId],
     queryFn: () => fetchApi().get(`/products/${productId}/similars`),
     enabled: !!productId,
-    retry: 3,
   });

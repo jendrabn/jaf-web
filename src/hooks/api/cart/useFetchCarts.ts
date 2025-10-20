@@ -9,5 +9,4 @@ export const useFetchCarts = () =>
     queryKey: [QUERY_KEYS.CARTS],
     queryFn: () => fetchApi().get("/carts"),
     enabled: !!getAuthToken(),
-    retry: 3,
   });

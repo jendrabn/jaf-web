@@ -9,5 +9,4 @@ export const useFetchOrders = (queryString?: string) =>
     queryKey: [QUERY_KEYS.ORDERS, queryString],
     queryFn: () =>
       fetchApi().get(`/orders${queryString ? `?${queryString}` : ""}`),
-    retry: 3,
   });
