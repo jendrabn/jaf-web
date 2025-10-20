@@ -1,7 +1,7 @@
 import AuthLayout from "@/components/layouts/AuthLayout";
 import { Button, Form } from "react-bootstrap";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { useLocation, useNavigate } from "react-router";
 import ErrorValidationAlert from "@/components/ui/ErrorValidationAlert";
 import { env } from "@/utils/config";

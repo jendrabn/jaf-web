@@ -1,7 +1,7 @@
 import data from "@/data/faq.json";
 import Accordion from "react-bootstrap/Accordion";
 import Layout from "@/components/layouts/Layout";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 
 function FaqPage() {

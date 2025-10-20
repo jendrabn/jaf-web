@@ -6,7 +6,7 @@ import { useRegister } from "@/hooks/api/auth";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import ErrorValidationAlert from "@/components/ui/ErrorValidationAlert";
 import PasswordInput from "@/components/ui/PasswordInput";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { env } from "@/utils/config";
 

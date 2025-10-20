@@ -2,7 +2,7 @@ import { useState } from "react";
 import OurServices from "@/components/parts/OurServices";
 import googleReviews from "@/data/google-reviews.json";
 import Layout from "@/components/layouts/Layout";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import StarRating from "@/components/ui/StarRating";
 import { env } from "@/utils/config";
 

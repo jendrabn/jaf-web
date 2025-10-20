@@ -4,7 +4,7 @@ import type { PasswordReqTypes } from "@/types/user";
 import { useUpdatePassword } from "@/hooks/api/user";
 import ErrorValidationAlert from "@/components/ui/ErrorValidationAlert";
 import PasswordInput from "@/components/ui/PasswordInput";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { env } from "@/utils/config";

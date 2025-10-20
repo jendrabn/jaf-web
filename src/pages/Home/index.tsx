@@ -6,7 +6,7 @@ import Loading from "@/components/ui/Loading";
 import Layout from "@/components/layouts/Layout";
 import OurServices from "@/components/parts/OurServices";
 import OurMarketplace from "@/components/parts/OurMarketplace";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 
 function HomePage() {

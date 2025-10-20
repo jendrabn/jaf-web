@@ -15,7 +15,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import ConfirmPaymentModal from "../../../components/parts/Order/ConfirmPaymentModal";
 import ConfirmOrderReceivedModal from "../../../components/parts/Order/ConfirmOrderReceivedModal";
 import { useLocation, useNavigate } from "react-router";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import AddRatingModal from "../../../components/parts/Order/AddRatingModal";
 import { formatCurrency } from "@/utils/format";
 import { env } from "@/utils/config";

@@ -10,7 +10,7 @@ import useFilters from "@/hooks/useFilters";
 import { type ChangeEvent, type FormEvent, useState } from "react";
 import { Button, Form, InputGroup, Offcanvas, Dropdown } from "react-bootstrap";
 import NoData from "@/components/ui/NoData";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 
 const SORT_OPTIONS: { label: string; value: string }[] = [

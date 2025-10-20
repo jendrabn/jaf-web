@@ -7,7 +7,7 @@ import { Button, Form } from "react-bootstrap";
 import WishlistItem from "@/components/parts/WishlistItem";
 import { useDeleteWishlist } from "@/hooks/api/wishlist";
 import NoData from "@/components/ui/NoData";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 
 const WishlistPage = () => {

@@ -15,7 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import ProductImagesCarousel from "./ProductImagesCarousel";
 import StarRating from "@/components/ui/StarRating";
 import NoData from "@/components/ui/NoData";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 
 export default function ProductDetailPage() {

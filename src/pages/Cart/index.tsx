@@ -7,7 +7,7 @@ import { useDeleteCart } from "@/hooks/api/cart";
 import CartItem from "@/components/parts/CartItem";
 import { useCartDispatch, useCartState } from "@/contexts/CartContext";
 import NoData from "@/components/ui/NoData";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 
 function CartPage() {

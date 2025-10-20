@@ -7,7 +7,7 @@ import ErrorValidationAlert from "@/components/ui/ErrorValidationAlert";
 import { useLocation } from "react-router";
 import { setAuthToken, setSelectedCartIds } from "@/utils/functions";
 import PasswordInput from "@/components/ui/PasswordInput";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { env } from "@/utils/config";
 import GoogleLoginButton from "@/components/parts/GoogleLoginButton";

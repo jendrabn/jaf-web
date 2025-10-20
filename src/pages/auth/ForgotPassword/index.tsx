@@ -4,7 +4,7 @@ import { useForgotPassword } from "@/hooks/api/auth";
 import type { ForgotPasswordReqTypes } from "@/types/auth";
 import { toast } from "react-toastify";
 import ErrorValidationAlert from "@/components/ui/ErrorValidationAlert";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { env } from "@/utils/config";
 

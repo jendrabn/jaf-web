@@ -9,7 +9,7 @@ import Layout from "@/components/layouts/Layout";
 import { Button, Form, Offcanvas } from "react-bootstrap";
 import { useState } from "react";
 import NoData from "@/components/ui/NoData";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 
 // filter options

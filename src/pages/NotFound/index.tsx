@@ -1,6 +1,6 @@
 import { env } from "@/utils/config";
 import { Card } from "react-bootstrap";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router";
 
 const NotFoundPage = () => {

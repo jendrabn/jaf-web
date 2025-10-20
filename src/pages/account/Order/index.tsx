@@ -9,7 +9,7 @@ import { ORDER_STATUSES } from "@/utils/constans";
 import ConfirmOrderReceivedModal from "@/components/parts/Order/ConfirmOrderReceivedModal";
 import { Alert, Button, Form, Offcanvas } from "react-bootstrap";
 import NoData from "@/components/ui/NoData";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 
 const StatusSelect = ({
