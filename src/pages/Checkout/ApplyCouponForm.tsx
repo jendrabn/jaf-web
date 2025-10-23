@@ -99,12 +99,12 @@ const ApplyCouponForm: React.FC = () => {
             toastId: APPLY_COUPON_SUCCESS_TOAST,
           });
         },
-        onError: (error: unknown) => {
-          const message =
-            (error as { response?: { data?: { message?: string } } })?.response
-              ?.data?.message ?? "Kupon tidak valid";
-          toast.error(message, { toastId: APPLY_COUPON_ERROR_TOAST });
-        },
+        // onError: (error: unknown) => {
+        //   const message =
+        //     (error as { response?: { data?: { message?: string } } })?.response
+        //       ?.data?.message ?? "Kupon tidak valid";
+        //   toast.error(message, { toastId: APPLY_COUPON_ERROR_TOAST });
+        // },
       }
     );
   };

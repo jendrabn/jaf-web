@@ -79,7 +79,9 @@ const OurMarketplace = () => {
                     />
                   </div>
                   <div className="flex-grow-1">
-                    <h6 className="mb-1 fw-bold text-dark">{m.name}</h6>
+                    <h6 className="mb-1 fw-bold text-body-emphasis">
+                      {m.name}
+                    </h6>
                     <span className="text-muted text-xs">
                       Belanja di {m.name}
                     </span>

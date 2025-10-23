@@ -1,5 +1,6 @@
-import { Modal, Button, Table, Alert } from "react-bootstrap";
+import { Modal, Button, Alert, Card } from "react-bootstrap";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 import fetchApi from "@/utils/api";
 import Loading from "@/components/ui/Loading";
 import { QUERY_KEYS } from "@/utils/constans";
@@ -72,7 +73,7 @@ interface WaybillApiResponse {
 }
 
 const TrackingModal = ({ orderId, show, onClose }: TrackingModalProps) => {
-  const { data, isPending, isError, error, refetch, isFetching } = useQuery<
+  const { data, isPending, isError, error, isFetching } = useQuery<
     WaybillApiResponse | WaybillData,
     AxiosError<{ message?: string }>
   >({
@@ -90,10 +91,30 @@ const TrackingModal = ({ orderId, show, onClose }: TrackingModalProps) => {
   const apiResp = isApiResponse(data)
     ? (data as WaybillApiResponse)
     : undefined;
-  const meta: WaybillMeta | undefined = apiResp?.meta;
   const payload: WaybillData | undefined = isApiResponse(data)
     ? apiResp?.data
     : (data as WaybillData | undefined);
+
+  // Timeline state & derived list
+  const [showAll, setShowAll] = useState(false);
+  const manifestsSorted = useMemo(() => {
+    const arr = Array.isArray(payload?.manifest)
+      ? [...(payload?.manifest || [])]
+      : [];
+    arr.sort((a, b) => {
+      const ta = new Date(
+        `${a.manifest_date ?? ""} ${a.manifest_time ?? ""}`
+      ).getTime();
+      const tb = new Date(
+        `${b.manifest_date ?? ""} ${b.manifest_time ?? ""}`
+      ).getTime();
+      return tb - ta; // newest first
+    });
+    return arr;
+  }, [payload?.manifest]);
+  const visibleManifests = showAll
+    ? manifestsSorted
+    : manifestsSorted.slice(0, 5);
 
   return (
     <Modal show={show} onHide={onClose} centered backdrop="static" size="lg">
@@ -112,218 +133,77 @@ const TrackingModal = ({ orderId, show, onClose }: TrackingModalProps) => {
 
         {!isPending && !isFetching && !isError && payload && (
           <>
-            {meta?.message && (
-              <Alert variant="info" className="mb-3">
-                {meta.message}
-              </Alert>
-            )}
-
-            {payload.summary && (
-              <>
-                <h6 className="fw-bold mb-2">Ringkasan</h6>
-                <Table size="sm" borderless className="mb-3">
-                  <tbody>
-                    <tr>
-                      <td>Kurir</td>
-                      <td className="text-end">
-                        {payload.summary.courier_name} (
-                        {payload.summary.courier_code})
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>No. Resi</td>
-                      <td className="text-end">
-                        {payload.summary.waybill_number}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Layanan</td>
-                      <td className="text-end">
-                        {payload.summary.service_code}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Tanggal Resi</td>
-                      <td className="text-end">
-                        {payload.summary.waybill_date}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Pengirim</td>
-                      <td className="text-end">
-                        {payload.summary.shipper_name}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Penerima</td>
-                      <td className="text-end">
-                        {payload.summary.receiver_name}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Asal</td>
-                      <td className="text-end">{payload.summary.origin}</td>
-                    </tr>
-                    <tr>
-                      <td>Tujuan</td>
-                      <td className="text-end">
-                        {payload.summary.destination}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Status</td>
-                      <td className="text-end">{payload.summary.status}</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </>
-            )}
-
-            {payload.details && (
-              <>
-                <h6 className="fw-bold mb-2">Detail</h6>
-                <Table size="sm" borderless className="mb-3">
-                  <tbody>
-                    <tr>
-                      <td>No. Resi</td>
-                      <td className="text-end">
-                        {payload.details.waybill_number}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Tanggal</td>
-                      <td className="text-end">
-                        {payload.details.waybill_date}{" "}
-                        {payload.details.waybill_time}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Berat</td>
-                      <td className="text-end">{payload.details.weight}</td>
-                    </tr>
-                    <tr>
-                      <td>Asal</td>
-                      <td className="text-end">{payload.details.origin}</td>
-                    </tr>
-                    <tr>
-                      <td>Tujuan</td>
-                      <td className="text-end">
-                        {payload.details.destination}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Pengirim</td>
-                      <td className="text-end">
-                        {payload.details.shipper_name}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Alamat Pengirim</td>
-                      <td className="text-end">
-                        {[
-                          payload.details.shipper_address1,
-                          payload.details.shipper_address2,
-                          payload.details.shipper_address3,
-                          payload.details.shipper_city,
-                        ]
-                          .filter(Boolean)
-                          .join(", ")}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Penerima</td>
-                      <td className="text-end">
-                        {payload.details.receiver_name}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Alamat Penerima</td>
-                      <td className="text-end">
-                        {[
-                          payload.details.receiver_address1,
-                          payload.details.receiver_address2,
-                          payload.details.receiver_address3,
-                          payload.details.receiver_city,
-                        ]
-                          .filter(Boolean)
-                          .join(", ")}
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </>
-            )}
-
-            {payload.delivery_status && (
-              <>
-                <h6 className="fw-bold mb-2">Status Pengantaran</h6>
-                <Table size="sm" borderless className="mb-3">
-                  <tbody>
-                    <tr>
-                      <td>Status</td>
-                      <td className="text-end">
-                        {payload.delivery_status.status}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Penerima (POD)</td>
-                      <td className="text-end">
-                        {payload.delivery_status.pod_receiver}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Tanggal POD</td>
-                      <td className="text-end">
-                        {payload.delivery_status.pod_date}{" "}
-                        {payload.delivery_status.pod_time}
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </>
-            )}
-
             {Array.isArray(payload.manifest) && payload.manifest.length > 0 && (
-              <>
-                <h6 className="fw-bold mb-2">Riwayat Manifest</h6>
-                {(() => {
-                  const manifests = [...payload.manifest].sort((a, b) => {
-                    const ta = new Date(
-                      `${a.manifest_date ?? ""} ${a.manifest_time ?? ""}`
-                    ).getTime();
-                    const tb = new Date(
-                      `${b.manifest_date ?? ""} ${b.manifest_time ?? ""}`
-                    ).getTime();
-                    return tb - ta; // terbaru di atas
-                  });
-                  return (
-                    <Table size="sm" responsive hover>
-                      <thead>
-                        <tr>
-                          <th>Deskripsi</th>
-                          <th>Kode</th>
-                          <th>Tanggal & Waktu</th>
-                          <th>Kota</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {manifests.map((m, idx) => (
-                          <tr key={`manifest-${idx}`}>
-                            <td style={{ minWidth: 220 }}>
-                              {m.manifest_description}
-                            </td>
-                            <td className="text-muted">{m.manifest_code}</td>
-                            <td>{`${m.manifest_date ?? ""} ${
-                              m.manifest_time ?? ""
-                            }`}</td>
-                            <td>{m.city_name}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </Table>
-                  );
-                })()}
-              </>
+              <Card className="mt-3">
+                <Card.Header className="fw-semibold">
+                  Riwayat Manifest
+                </Card.Header>
+                <Card.Body>
+                  {visibleManifests.map((m, idx) => {
+                    const isFirst = idx === 0;
+                    const isSecond = idx === 1;
+                    const isLast = idx === visibleManifests.length - 1;
+                    const markerClass = isFirst
+                      ? "bg-success text-white"
+                      : isSecond
+                      ? "bg-secondary text-white"
+                      : "bg-light text-muted";
+                    const markerIcon = isFirst
+                      ? "bi bi-check-lg"
+                      : isSecond
+                      ? "bi bi-truck"
+                      : "bi bi-dot";
+                    const timeLabel = `${m.manifest_date ?? ""} ${
+                      m.manifest_time ?? ""
+                    }`.trim();
+
+                    return (
+                      <div key={`manifest-${idx}`} className="d-flex">
+                        <div className="d-flex flex-column align-items-center me-3">
+                          <div
+                            className={`rounded-circle d-flex align-items-center justify-content-center ${markerClass}`}
+                            style={{ width: "1.25rem", height: "1.25rem" }}
+                          >
+                            <i className={markerIcon}></i>
+                          </div>
+                          {!isLast && (
+                            <div
+                              className="border-start border-2 flex-grow-1 mt-1"
+                              style={{ minHeight: "1.5rem" }}
+                            ></div>
+                          )}
+                        </div>
+                        <div className="flex-grow-1 pb-3">
+                          <div
+                            className={
+                              isFirst
+                                ? "fw-semibold text-success"
+                                : "fw-semibold"
+                            }
+                          >
+                            {m.manifest_description}
+                          </div>
+                          <div className="small text-secondary">
+                            {m.city_name || "-"}
+                          </div>
+                          <div className="small text-muted">{timeLabel}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {manifestsSorted.length > visibleManifests.length && (
+                    <div className="mt-1">
+                      <Button
+                        variant="link"
+                        className="p-0"
+                        onClick={() => setShowAll(true)}
+                      >
+                        Lihat Lainnya
+                      </Button>
+                    </div>
+                  )}
+                </Card.Body>
+              </Card>
             )}
           </>
         )}
@@ -331,13 +211,6 @@ const TrackingModal = ({ orderId, show, onClose }: TrackingModalProps) => {
       <Modal.Footer className="border-top-0">
         <Button variant="outline-secondary" onClick={onClose}>
           Tutup
-        </Button>
-        <Button
-          variant="primary"
-          onClick={() => refetch()}
-          disabled={isPending || isFetching}
-        >
-          Muat Ulang
         </Button>
       </Modal.Footer>
     </Modal>
