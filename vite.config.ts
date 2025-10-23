@@ -108,7 +108,4 @@ export default defineConfig({
   resolve: {
     alias: { "@": "/src" },
   },
-
-  // Jika deploy di subfolder, set base: "/subpath/"
-  // base: "/",
 });

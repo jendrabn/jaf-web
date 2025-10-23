@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import AccountLayout from "../../../components/layouts/AccountLayout";
 import { useFetchOrder } from "../../../hooks/api/order";
-import NotFoundPage from "../../../pages/NotFound";
+import NotFoundPage from "../../NotFound";
 import Loading from "../../../components/ui/Loading";
 import { formatDateTime } from "../../../utils/functions";
 import { Alert, Button } from "react-bootstrap";
