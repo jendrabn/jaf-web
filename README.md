@@ -1,180 +1,219 @@
-# JAF Parfum's — Frontend E‑Commerce
+# JAF Web — Toko Parfum Online
 
-Aplikasi web e‑commerce untuk JAF Parfum's. Tujuan utama aplikasi ini adalah menampilkan katalog parfum, detail produk, keranjang, checkout, manajemen pesanan, wishlist, blog, FAQ, serta halaman informasi toko. Aplikasi berjalan cepat karena menggunakan arsitektur SPA (Single Page Application).
+Aplikasi web e-commerce untuk JAF Parfum's yang memungkinkan pelanggan menjelajah katalog, mengelola keranjang, melakukan checkout, dan melacak pesanan. Dibangun dengan React + Vite (TypeScript) dengan caching PWA untuk performa dan offline support terbatas.
 
-Nama aplikasi dan konfigurasi dapat disesuaikan melalui variabel lingkungan (ENV).
+Tech stack ringkas:
+- React 18, TypeScript, Vite 6
+- React Router v7
+- TanStack Query v5 (caching & data fetching)
+- Axios untuk HTTP
+- Bootstrap 5 + SCSS
+- React Hook Form, React-Toastify, React-Select, React-Slick
+- PWA via vite-plugin-pwa
+- ESLint + TypeScript ESLint
 
-## Fitur Utama
+Struktur dan skrip utama:
+- Repo: https://github.com/jendrabn/jaf-web
+- Skrip npm: dev, build, preview, lint di [package.json](package.json)
+- Konfigurasi Vite & PWA: [vite.config.ts](vite.config.ts)
+- Contoh variabel lingkungan: [.env.example](.env.example)
 
-- Katalog produk dengan pencarian dan filter.
-- Detail produk dengan galeri gambar.
-- Keranjang belanja dan pengaturan kuantitas.
-- Wishlist untuk menyimpan produk favorit.
-- Checkout multi‑tahap (alamat pengiriman, metode pembayaran, ringkasan pesanan, kupon).
-- Manajemen pesanan: daftar/riwayat, detail pesanan, konfirmasi penerimaan dan pembayaran, penilaian/rating.
-- Autentikasi: login, registrasi, verifikasi OTP, lupa/reset password, dan login via Google OAuth.
-- Blog (artikel, kategori/tag) dan halaman informasi (About, Contact, Help, FAQ).
-- Notifikasi instan untuk sukses/gagal aksi.
-- Dukungan tema gelap/terang.
 
-## Halaman (sekilas)
+## Daftar Halaman
 
-Total sekitar 23 halaman, meliputi:
+- Home: Beranda dengan banner, highlight produk/layanan, CTA, newsletter, dan tautan marketplace.
+- Product: Katalog dengan pencarian serta filter kategori, brand, dan harga.
+- Product Detail: Detail produk dengan carousel gambar, ulasan/penilaian, tambah ke keranjang atau wishlist.
+- Cart: Daftar item keranjang, ubah kuantitas, hapus item, ringkasan biaya, menuju checkout.
+- Checkout:
+  - Alamat pengiriman dan kurir/ongkir.
+  - Metode pembayaran: manual (transfer) dan otomatis (payment gateway).
+  - Kupon dan ringkasan pesanan.
+- Blog: Daftar artikel dengan filter dan header.
+- Blog Detail: Detail artikel dan fitur berbagi.
+- About: Profil singkat perusahaan.
+- Contact: Informasi kontak (alamat, telepon, WhatsApp, email).
+- FAQ: Pertanyaan yang sering diajukan.
+- Help: Pusat bantuan dan panduan cepat.
+- Auth: Login, Register, Lupa Password, Reset Password, Verifikasi OTP Login.
+- Akun: Profil, Alamat, Pesanan, Detail Pesanan (pelacakan/konfirmasi/beri rating), Wishlist, Ubah Password.
+- 404 Not Found.
 
-- Beranda
-- Katalog Produk
-- Detail Produk
-- Blog & Detail Blog
-- Kontak, Tentang, Bantuan, FAQ
-- Keranjang, Checkout
-- Akun: Profil, Pesanan, Detail Pesanan, Wishlist, Alamat, Ubah Password
-- Autentikasi: Login, Verifikasi Login, Registrasi, Reset Password, Lupa Password
-- Not Found
+## Instalasi & Menjalankan di Lokal
 
-## Persyaratan
+Prasyarat:
+- Node.js LTS (≥ 18)
+- Git
 
-- Node.js 18 atau lebih baru
-- NPM (atau Yarn/PNPM sesuai preferensi)
+1) Clone repo
 
-## Menjalankan Secara Lokal
-
-1) Instal dependensi: jalankan perintah instal paket (contoh: npm install).
-2) Siapkan file ENV (lihat bagian “Konfigurasi Lingkungan”).
-3) Jalankan pengembangan: jalankan perintah dev server (contoh: npm run dev).
-4) Build produksi: jalankan perintah build (contoh: npm run build).
-5) Preview build: jalankan perintah preview (contoh: npm run preview).
-
-## Konfigurasi Lingkungan (ENV)
-
-Buat file ENV (misalnya .env atau .env.local) dan isi sesuai kebutuhan. Berikut kelompok variabel yang tersedia:
-
-- App:
-  - VITE_APP_NAME: Nama aplikasi (mis. “JAF Parfum's”).
-  - VITE_APP_URL: URL aplikasi (mis. <https://contoh.com>).
-- API:
-  - VITE_BASE_API_URL: URL dasar API backend (mis. <https://api.contoh.com>).
-- Informasi Toko:
-  - VITE_STORE_ADDRESS, VITE_STORE_PHONE, VITE_STORE_WHATSAPP, VITE_STORE_EMAIL
-  - VITE_STORE_LATITUDE, VITE_STORE_LONGITUDE, VITE_STORE_OPEN_HOURS
-- Sosial Media:
-  - VITE_FACEBOOK_URL, VITE_INSTAGRAM_URL, VITE_TWITTER_URL, VITE_TIKTOK_URL
-  - VITE_TELEGRAM_URL, VITE_YOUTUBE_URL, VITE_LINKEDIN_URL
-- E‑commerce Marketplace:
-  - VITE_SHOPEE_URL, VITE_TOKOPEDIA_URL, VITE_LAZADA_URL, VITE_BUKALAPAK_URL, VITE_BLIBLI_URL
-- Fitur:
-  - VITE_FREE_SHIPPING_100K: aktifkan pengiriman gratis (true/false).
-- Google OAuth:
-  - GOOGLE_CLIENT_ID: Client ID dari Google Cloud Console untuk login Google.
-
-## Deployment
-
-Anda dapat melakukan deployment ke berbagai platform. Gunakan langkah umum berikut:
-
-### Opsi 1 — Vercel
-
-- Import repository ke Vercel.
-- Set environment variables (lihat bagian “Konfigurasi Lingkungan (ENV)”).
-- Build Command: npm run build
-- Output/Publish Directory: dist
-- Jalankan deploy; Vercel akan menyajikan aplikasi SPA secara otomatis.
-
-### Opsi 2 — Netlify
-
-- Hubungkan repository ke Netlify.
-- Set environment variables.
-- Build Command: npm run build
-- Publish Directory: dist
-- Deploy dan aktifkan pengaturan redirect SPA default jika diperlukan.
-
-### Opsi 3 — Hosting Static (Nginx/Apache/Cloud Storage)
-
-- Lakukan build produksi secara lokal atau melalui CI (npm run build).
-- Upload seluruh isi folder “dist” ke server/hosting static.
-- Untuk SPA, pastikan konfigurasi redirect (fallback ke index.html) telah disetel agar routing sisi klien berfungsi.
-
-### Opsi 4 — Container/CI (opsional)
-
-- Jalankan pipeline CI Anda untuk build.
-- Publikasikan artefak build (folder dist) ke target hosting.
-
-## Deployment di VPS Ubuntu Server + Nginx
-
-Langkah umum untuk menyajikan hasil build (folder dist) sebagai situs statis dengan dukungan SPA:
-
-1) Persiapan server
-
-- Update paket, pasang Nginx, dan buka firewall HTTP/HTTPS.
-
-```
-sudo apt update
-sudo apt install -y nginx
-sudo ufw allow 'Nginx Full'
+```bash
+git clone https://github.com/jendrabn/jaf-web.git
+cd jaf-web
 ```
 
-2) Upload artefak build
+2) Salin environment dan sesuaikan
 
-- Lakukan build di mesin lokal atau di server (npm run build).
-- Salin isi folder dist ke direktori web, misalnya /var/www/jaf/dist.
-- Atur kepemilikan agar Nginx dapat mengakses.
-
+```bash
+cp .env.example .env
+# Wajib diisi:
+# - VITE_GOOGLE_CLIENT_ID   (sangat penting untuk login Google)
+# - VITE_APP_NAME, VITE_APP_URL
+# - VITE_BASE_API_URL       (endpoint API backend)
+# - Variabel sosial/marketplace sesuai kebutuhan
 ```
+
+3) Instal dependensi
+
+```bash
+npm ci
+# atau
+npm install
+```
+
+4) Jalankan mode pengembangan
+
+```bash
+npm run dev
+```
+
+Akses: http://localhost:5173
+
+5) Build dan preview produksi (opsional)
+
+```bash
+npm run build
+npm run preview
+```
+
+
+## Deployment ke Vercel
+
+1) Import proyek dari GitHub (https://github.com/jendrabn/jaf-web) ke Vercel.
+2) Framework Preset: Vite.
+3) Environment Variables: tambahkan semua variabel VITE_* dari [.env.example](.env.example) ke Project Settings → Environment Variables.
+4) Install Command: `npm ci` (atau biarkan default).
+5) Build Command: `npm run build`
+6) Output Directory: `dist`
+7) Deploy.
+
+Catatan:
+- Jika memakai custom domain, tambahkan domain di Vercel dan arahkan DNS.
+- Pastikan VITE_BASE_API_URL mengizinkan CORS dari domain produksi.
+
+
+## Deployment ke Ubuntu VPS + Nginx
+
+Prasyarat:
+- Domain: jaf.co.id sudah mengarah ke IP server.
+- Akses SSH dengan sudo.
+
+1) Update paket dan instal dependensi
+
+```bash
+sudo apt-get update
+sudo apt-get install -y git nginx
+# Node.js LTS
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
+# Certbot (untuk SSL)
+sudo apt-get install -y certbot python3-certbot-nginx
+```
+
+2) Clone aplikasi ke /var/www/jaf
+
+```bash
 sudo mkdir -p /var/www/jaf
-sudo cp -r dist /var/www/jaf/
-sudo chown -R www-data:www-data /var/www/jaf
+sudo chown -R $USER:$USER /var/www/jaf
+git clone https://github.com/jendrabn/jaf-web.git /var/www/jaf
+cd /var/www/jaf
 ```
 
-3) Konfigurasi Nginx (server block)
+3) Setup environment
 
-- Buat server block untuk domain Anda dan arahkan root ke folder dist.
-- Pastikan SPA fallback aktif melalui try_files ke /index.html.
-
+```bash
+cp .env.example .env
+nano .env
+# Penting:
+# - VITE_GOOGLE_CLIENT_ID (wajib diisi)
+# - VITE_APP_URL (isi dengan https://jaf.co.id)
+# - VITE_BASE_API_URL (endpoint API produksi)
 ```
+
+4) Install dan build
+
+```bash
+npm ci
+npm run build
+```
+
+5) Konfigurasi Nginx (reverse proxy + static)
+
+Buat file konfigurasi domain:
+
+```bash
+sudo nano /etc/nginx/sites-available/jaf.co.id
+```
+
+Isi dengan:
+
+```nginx
 server {
   listen 80;
-  server_name contoh.com www.contoh.com;
+  listen [::]:80;
+  server_name jaf.co.id www.jaf.co.id;
 
   root /var/www/jaf/dist;
   index index.html;
 
+  # React Router history fallback
   location / {
-    try_files $uri $uri/ /index.html;
+    try_files $uri /index.html;
   }
 
-  location ~* \.(?:css|js|jpg|jpeg|gif|png|svg|ico|webp|woff2?)$ {
+  # Static assets caching
+  location ~* \.(?:js|css|png|jpg|jpeg|svg|webp|ico|woff2)$ {
     expires 7d;
-    access_log off;
     add_header Cache-Control "public, max-age=604800, immutable";
-    try_files $uri =404;
   }
-
-  location ~* \.(?:json|txt|xml|webmanifest)$ {
-    expires 1h;
-    access_log off;
-    add_header Cache-Control "public, max-age=3600";
-    try_files $uri =404;
-  }
-
-  # Opsional: tingkatkan keamanan header dasar
-  add_header X-Content-Type-Options "nosniff" always;
-  add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 }
 ```
 
-Aktifkan konfigurasi dan muat ulang Nginx:
+Aktifkan site dan cek konfigurasi:
 
-```
-# Simpan sebagai /etc/nginx/sites-available/jaf.conf
-# Lalu aktifkan:
-sudo ln -s /etc/nginx/sites-available/jaf.conf /etc/nginx/sites-enabled/jaf.conf
+```bash
+sudo ln -s /etc/nginx/sites-available/jaf.co.id /etc/nginx/sites-enabled/jaf.co.id
 sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-4) HTTPS (opsional, disarankan)
+6) Amankan dengan SSL (Certbot)
 
-- Pasang Certbot dan minta sertifikat SSL.
+```bash
+sudo certbot --nginx -d jaf.co.id -d www.jaf.co.id --agree-tos -m admin@jaf.co.id --redirect
+```
 
+Certbot akan:
+- Membuat sertifikat SSL Let’s Encrypt
+- Mengupdate blok server untuk listen 443 dan redirect HTTP → HTTPS
+- Mengatur auto-renew (systemd timer)
+
+7) Uji dan maintenance
+
+- Buka https://jaf.co.id dan pastikan UI dan asset termuat.
+- Untuk update rilis:
+
+```bash
+cd /var/www/jaf
+git pull
+npm ci
+npm run build
+sudo systemctl reload nginx
 ```
-sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d contoh.com -d www.contoh.com
-```
+
+
+## Catatan Tambahan
+
+- PWA aktif: build produksi menghasilkan service worker dan manifest dari [vite.config.ts](vite.config.ts).
+- Variabel env dibaca via helper [src/utils/config.ts](src/utils/config.ts); pastikan semua VITE_* terdefinisi di .env produksi.
+- Jika API berada di domain berbeda, pastikan CORS di server API mengizinkan origin https://jaf.co.id.
