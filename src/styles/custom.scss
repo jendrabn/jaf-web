@@ -270,6 +270,60 @@ footer {
       padding: 0 !important;
     }
   }
+  // React Slick overrides
+  .slick-slider {
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .slick-list {
+    border-radius: 20px;
+  }
+
+  .slick-dots {
+    bottom: 12px;
+  }
+
+  .slick-dots li {
+    margin: 0 4px;
+  }
+
+  .slick-dots li button {
+    padding: 0;
+  }
+
+  .slick-dots li button:before {
+    content: "";
+    display: none;
+  }
+
+  .slick-prev:before,
+  .slick-next:before {
+    display: none;
+  }
+
+  .slick-prev,
+  .slick-next {
+    width: 44px;
+    height: 44px;
+    z-index: 3;
+  }
+
+  .slick-prev {
+    left: 24px;
+  }
+
+  .slick-next {
+    right: 24px;
+  }
+
+  @media (max-width: 575.98px) {
+    .slick-prev,
+    .slick-next {
+      display: none !important;
+    }
+  }
 }
 // End Banner Carousel
 
@@ -648,5 +702,79 @@ footer {
     .newsletter-input-group {
       width: 100%;
     }
+  }
+}
+
+// React Slick: show arrows only on hover + dot styling
+.banner-carousel-wrapper {
+  // Hide arrows by default
+  .slick-prev,
+  .slick-next {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  // Reveal arrows when hovering the banner wrapper
+  &:hover {
+    .slick-prev,
+    .slick-next {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  // Dot styling to match design
+  .slick-dots {
+    bottom: 16px;
+  }
+
+  .slick-dots li {
+    margin: 0 6px;
+  }
+
+  .slick-dots li button {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+  }
+
+  // Remove default pseudo dot so our background applies
+  .slick-dots li button::before {
+    content: "";
+    display: none;
+  }
+
+  .slick-dots li.slick-active button {
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
+
+// Fix: Slick sets font-size: 0 on arrows; Bootstrap Icons rely on font size -> results in 0x0.
+// Override arrow font-size so <i class="bi ..."> renders correctly.
+.banner-carousel-wrapper {
+  .slick-prev,
+  .slick-next {
+    font-size: 16px !important;
+    line-height: 1 !important;
+  }
+
+  // Ensure inner circle centers the icon properly
+  .slick-prev span,
+  .slick-next span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // Size the Bootstrap Icon glyph inside arrows
+  .slick-prev .bi,
+  .slick-next .bi {
+    font-size: 20px; // adjust as needed to match design
+    line-height: 1;
+    width: 1em;
+    height: 1em;
   }
 }

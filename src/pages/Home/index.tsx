@@ -101,9 +101,8 @@ function HomePage() {
           </div>
         </section>
 
-        <section className="mt-4 mt-lg-5 mb-5 our-marketplace">
+        <section className="mt-4 mt-lg-5 mb-5">
           <div className="container">
-            <h2 className="section-title h3">Marketplace Kami</h2>
             <OurMarketplace />
           </div>
         </section>
