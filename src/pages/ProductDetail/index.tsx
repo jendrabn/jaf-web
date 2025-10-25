@@ -12,14 +12,16 @@ import Loading from "@/components/ui/Loading";
 import QuantityInput from "@/components/ui/QuantityInput";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
-import ProductImagesCarousel from "./ProductImagesCarousel";
 import StarRating from "@/components/ui/StarRating";
-import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
+import ProductImageSlider from "./ProductImageSlider";
+import ShareModal from "@/components/parts/ShareModal";
 
 export default function ProductDetailPage() {
   const { slug } = useParams();
+
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const [quantity, setQuantity] = useState<number>(1);
   const queryClient = useQueryClient();
@@ -98,36 +100,40 @@ export default function ProductDetailPage() {
         <>
           <Helmet>
             <title>
-              {product?.name} | {env.APP_NAME}
+              {product.name} | {env.APP_NAME}
             </title>
           </Helmet>
 
           <div className="container">
-            <Breadcrumb className="mb-5">
+            {/* Breadcrumb */}
+            <Breadcrumb>
               <Breadcrumb.Item href="/">
                 <i className="bi bi-house-door-fill"></i>
               </Breadcrumb.Item>
               <Breadcrumb.Item href="/products">Produk</Breadcrumb.Item>
               <Breadcrumb.Item
-                href={`/products?category_id=${product?.category?.id}`}
+                href={`/products?category_id=${product.category.id}`}
               >
-                {product?.category?.name}
+                {product.category.name}
               </Breadcrumb.Item>
               <Breadcrumb.Item active className="text-truncate">
-                {product?.name}
+                {product.name}
               </Breadcrumb.Item>
             </Breadcrumb>
 
-            <div className="row gx-5">
+            {/* Product info */}
+            <section className="row mt-5 gx-lg-5">
               <div className="col-lg-6">
-                <ProductImagesCarousel images={product?.images || []} />
+                <ProductImageSlider images={product.images} />
               </div>
-              <div className="col-lg-6">
-                <h1 className="lh-sm mb-3">{product?.name}</h1>
+              <div className="col-lg-6 mt-3 mt-lg-0">
+                {/* Product Name */}
+                <h1 className="lh-sm h2">{product?.name}</h1>
 
-                <div className="d-flex align-items-center fs-6 mb-3">
+                {/* Product Meta */}
+                <div className="d-flex align-items-center fs-6 mt-3">
                   <div className="px-3 ps-0 border-end border-2">
-                    <span className="me-2 text-underline">
+                    <span className="me-2 text-decoration-underline">
                       {product?.rating_avg}
                     </span>
                     <span>
@@ -135,84 +141,137 @@ export default function ProductDetailPage() {
                     </span>
                   </div>
                   <div className="px-3 border-end border-2">
-                    <span className="me-2">{product?.ratings.length}</span>
-                    <span className="text-gray-600">Penilaian</span>
+                    <span className="me-2 text-decoration-underline">
+                      {product?.ratings.length}
+                    </span>
+                    <span className="text-muted small">Penilaian</span>
                   </div>
                   <div className="px-3">
-                    <span className="me-2">{product?.sold_count}</span>
-                    <span className="text-gray-600">Terjual</span>
+                    <span className="me-2 text-decoration-underline">
+                      {product?.sold_count}
+                    </span>
+                    <span className="text-muted small">Terjual</span>
+                  </div>
+                  <div className="px-3">
+                    <Button
+                      variant="link"
+                      className="p-0 link-body-emphasis"
+                      onClick={() => setShowShareModal(true)}
+                    >
+                      <i className="bi bi-share"></i>
+                    </Button>
+                    <ShareModal
+                      show={showShareModal}
+                      onHide={() => setShowShareModal(false)}
+                      data={{
+                        title: product?.name,
+                        url: window.location.href,
+                      }}
+                    />
                   </div>
                 </div>
 
-                <div className="product-info">
-                  <div className="row py-2">
-                    <div className="col-md-3 fw-bold">Harga</div>
-                    <div className="col-md-9 h4 mb-0">
-                      {isDiscounted ? (
-                        <div className="d-flex flex-column">
-                          <span>{formatCurrency(discountedPrice)}</span>
-                          <div className="fs-6 text-gray-600">
-                            (
-                            <span className="text-decoration-line-through text-muted">
-                              {formatCurrency(originalPrice)}
-                            </span>
-                            {hasDiscountLabel && (
-                              <span className="ms-2">{discountLabel}</span>
-                            )}
-                            )
-                          </div>
-                        </div>
-                      ) : (
-                        formatCurrency(product?.price)
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="row py-2">
-                    <div className="col-md-3 fw-bold">Kategori</div>
-                    <div className="col-md-9">{product?.category?.name}</div>
-                  </div>
-
-                  <div className="row py-2">
-                    <div className="col-md-3 fw-bold">Brand</div>
-                    <div className="col-md-9">{product?.brand?.name}</div>
-                  </div>
-
-                  <div className="row py-2">
-                    <div className="col-md-3 fw-bold">Gender</div>
-                    <div className="col-md-9">
-                      {getGenderLabel(product?.sex) || "-"}
-                    </div>
-                  </div>
-
-                  <div className="row py-2">
-                    <div className="col-md-3 fw-bold">Jumlah</div>
-                    <div className="col-md-9">
-                      <QuantityInput
-                        onChange={handleQuantityChange}
-                        size="sm"
-                        maxValue={product?.stock}
-                      />
-                      <span className="text-gray-700 ms-3">
-                        {product?.stock} stok tersedia
+                {/* Product Price */}
+                <div className="mt-3">
+                  {isDiscounted ? (
+                    <div className="d-flex align-items-center gap-2">
+                      <span className="fs-2 fw-bold text-danger">
+                        {formatCurrency(discountedPrice)}
                       </span>
+                      <div className="fs-6 text-muted">
+                        (
+                        <span className="text-decoration-line-through text-muted">
+                          {formatCurrency(originalPrice)}
+                        </span>
+                        {hasDiscountLabel && (
+                          <span className="ms-2">{discountLabel}</span>
+                        )}
+                        )
+                      </div>
+                    </div>
+                  ) : (
+                    <span className="fs-2 fw-bold text-danger">
+                      {formatCurrency(originalPrice)}
+                    </span>
+                  )}
+                </div>
+
+                {/* Product Info */}
+                <div className="mt-3">
+                  <div className="d-flex flex-column gap-4">
+                    <div className="row">
+                      <div className="col-md-3 col-4 fw-semibold text-muted">
+                        Kategori
+                      </div>
+                      <div className="col-md-9 col-6">
+                        {product?.category?.name ?? "-"}
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-3 col-4 fw-semibold text-muted">
+                        Brand
+                      </div>
+                      <div className="col-md-9 col-6">
+                        {product?.brand?.name ?? "-"}
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-3 col-4 fw-semibold text-muted">
+                        Gender
+                      </div>
+                      <div className="col-md-9 col-6">
+                        {getGenderLabel(product?.sex) || "-"}
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-3 col-4 fw-semibold text-muted">
+                        SKU
+                      </div>
+                      <div className="col-md-9 col-6">
+                        {product?.sku || "-"}
+                      </div>
+                    </div>
+
+                    <div className="row align-items-center">
+                      <div className="col-md-3 col-4 fw-semibold text-muted mb-2 mb-md-0">
+                        Jumlah
+                      </div>
+                      <div className="col-md-9 col-6">
+                        <div className="d-flex flex-wrap align-items-center gap-3">
+                          <QuantityInput
+                            onChange={handleQuantityChange}
+                            size="sm"
+                            maxValue={product?.stock}
+                          />
+
+                          <span className="text-muted small d-none d-md-block">
+                            {product?.stock > 0 ? "TERSEDIA" : "HABIS"}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="d-flex gap-2 mt-3 mb-3 fs-6 fw-bold text-gray-600 align-items-center ">
+                  <div className="d-flex flex-row gap-2 mt-4">
                     <Button
                       variant="primary"
-                      className="py-2 px-5 flex-grow-1 flex-md-grow-0"
-                      disabled={cartMutation.isPending}
+                      className="py-2 px-5 flex-fill flex-md-grow-0"
+                      disabled={cartMutation.isPending || product?.stock <= 0}
                       onClick={handleAddToCart}
+                      title="Tambah ke Keranjang"
                     >
                       <i className="bi bi-cart-plus me-2"></i> Tambah ke
                       Keranjang
                     </Button>
+
                     <Button
                       variant="outline-primary"
-                      className="py-2"
+                      className="py-2 px-3"
                       onClick={handleAddToWishlist}
+                      title="Tambah ke Wishlist"
                       disabled={createWishlistMutation.isPending}
                     >
                       <i className="bi bi-heart"></i>
@@ -220,92 +279,92 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
 
-            <div className="row">
-              <div className="col-12">
-                <Tabs defaultActiveKey={"description"}>
-                  <Tab
-                    eventKey="description"
-                    title="Deskripsi"
-                    dangerouslySetInnerHTML={{
-                      __html: product?.description || "",
-                    }}
-                    className="p-3 border text-break"
-                  ></Tab>
-                  <Tab
-                    eventKey="reviews"
-                    title="Ulasan"
-                    className="p-3 border text-break"
-                  >
-                    {product?.ratings && product.ratings.length > 0 ? (
-                      <div className="list-group list-group-flush">
-                        {product.ratings.map((rating, idx) => (
-                          <div
-                            className="list-group-item py-3 px-0 border-0 border-bottom"
-                            key={rating.order_item_id || idx}
-                          >
-                            <div className="d-flex align-items-center mb-2">
-                              <div
-                                className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3"
-                                style={{
-                                  width: 44,
-                                  height: 44,
-                                  fontWeight: 600,
-                                  fontSize: 18,
-                                  textTransform: "uppercase",
-                                }}
-                              >
-                                {rating.is_anonymous
-                                  ? "A"
-                                  : rating.username?.charAt(0) || "U"}
+            {/* Product Description & Reviews */}
+            <section className="mt-5">
+              <h2 id="product-details-tabs">Detail Produk</h2>
+
+              <Tabs defaultActiveKey={"description"}>
+                <Tab
+                  eventKey="description"
+                  title="Deskripsi"
+                  dangerouslySetInnerHTML={{
+                    __html: product?.description || "",
+                  }}
+                  className="p-3 border text-break"
+                ></Tab>
+                <Tab
+                  eventKey="reviews"
+                  title="Ulasan"
+                  className="p-3 border text-break"
+                >
+                  {product?.ratings && product.ratings.length > 0 ? (
+                    <div className="list-group list-group-flush">
+                      {product.ratings.map((rating, idx) => (
+                        <div
+                          className="list-group-item py-3 px-0 border-0 border-bottom"
+                          key={rating.order_item_id || idx}
+                        >
+                          <div className="d-flex align-items-center mb-2">
+                            <div
+                              className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3"
+                              style={{
+                                width: 44,
+                                height: 44,
+                                fontWeight: 600,
+                                fontSize: 18,
+                                textTransform: "uppercase",
+                              }}
+                            >
+                              {rating.is_anonymous
+                                ? "A"
+                                : rating.username?.charAt(0) || "U"}
+                            </div>
+                            <div>
+                              <div className="fw-semibold">
+                                {rating.username}
                               </div>
                               <div>
-                                <div className="fw-semibold">
-                                  {rating.username}
-                                </div>
-                                <div>
-                                  <StarRating rate={rating.rating} />
-                                </div>
-                                <div className="text-muted small">
-                                  {new Date(rating.created_at)
-                                    .toLocaleString("sv-SE", {
-                                      year: "numeric",
-                                      month: "2-digit",
-                                      day: "2-digit",
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                      hour12: false,
-                                      timeZone: "Asia/Jakarta",
-                                    })
-                                    .replace(",", "") // hilangkan koma
-                                    .replace(/\./g, ":") // ganti titik menjadi titik dua pada jam
-                                    .slice(0, 16)}
-                                </div>
-                                <div className="mb-1">
-                                  {rating.comment || "-"}
-                                </div>
+                                <StarRating rate={rating.rating} />
+                              </div>
+                              <div className="text-muted small">
+                                {new Date(rating.created_at)
+                                  .toLocaleString("sv-SE", {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: false,
+                                    timeZone: "Asia/Jakarta",
+                                  })
+                                  .replace(",", "")
+                                  .replace(/\./g, ":")
+                                  .slice(0, 16)}
+                              </div>
+                              <div className="mb-1">
+                                {rating.comment || "-"}
                               </div>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center text-muted py-4">
-                        Belum ada ulasan untuk produk ini.
-                      </div>
-                    )}
-                  </Tab>
-                </Tabs>
-              </div>
-            </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center text-muted py-4">
+                      Belum ada ulasan untuk produk ini.
+                    </div>
+                  )}
+                </Tab>
+              </Tabs>
+            </section>
 
-            <section className="mt-5">
-              <h2 className="section-title">Produk Terkait</h2>
+            {/* Related Products */}
+            {relatedProducts && relatedProducts.length > 0 && (
+              <section className="mt-5">
+                <h2 className="section-title h3">Produk Terkait</h2>
 
-              {relatedProducts?.length === 0 && <NoData />}
-
-              {relatedProducts && relatedProducts.length > 0 && (
                 <div className="row g-3">
                   {relatedProducts.map((product) => (
                     <div
@@ -316,8 +375,8 @@ export default function ProductDetailPage() {
                     </div>
                   ))}
                 </div>
-              )}
-            </section>
+              </section>
+            )}
           </div>
         </>
       )}

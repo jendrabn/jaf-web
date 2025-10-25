@@ -1,4 +1,10 @@
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import fetchApi from "@/utils/api";
 
@@ -18,6 +24,10 @@ const SearchBar = ({ className }: SearchBarProps) => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,7 +68,7 @@ const SearchBar = ({ className }: SearchBarProps) => {
           }
         }
         setSuggestions(data);
-        setShowSuggestions(true);
+        setShowSuggestions(isFocused && data.length > 0);
       } catch {
         setSuggestions([]);
         setShowSuggestions(false);
@@ -68,26 +78,49 @@ const SearchBar = ({ className }: SearchBarProps) => {
     }, 250);
 
     return () => clearTimeout(timer);
-  }, [searchTerm]);
+  }, [searchTerm, isFocused]);
+
+  // Close suggestions when clicking outside the search bar
+  useEffect(() => {
+    const onDocMouseDown = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", onDocMouseDown);
+    return () => {
+      document.removeEventListener("mousedown", onDocMouseDown);
+    };
+  }, []);
 
   return (
     <form
       className={`search-bar d-flex flex-row ${className}`}
       onSubmit={handleSubmit}
     >
-      <div className="input-group position-relative">
+      <div ref={containerRef} className="input-group position-relative">
         <input
+          ref={inputRef}
           type="search"
           className="form-control"
           placeholder="Cari parfum disini..."
           value={searchTerm}
-          onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+          onFocus={() => {
+            setIsFocused(true);
+            if (suggestions.length > 0) setShowSuggestions(true);
+          }}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setSearchTerm(e.target.value)
           }
           onBlur={() => {
-            // Delay closing to allow click on items
-            setTimeout(() => setShowSuggestions(false), 150);
+            // Biarkan listener klik-luar yang menutup dropdown
+            setTimeout(() => setIsFocused(false), 0);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setShowSuggestions(false);
           }}
         />
         <button className="btn" type="submit" aria-label="Cari">

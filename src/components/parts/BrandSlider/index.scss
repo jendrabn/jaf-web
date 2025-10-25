@@ -1,0 +1,206 @@
+@font-face {
+  src: url("../../../assets/fonts/didot-2/Didot\ Bold.otf");
+  font-family: "DidotBold";
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+.brand-title {
+  font-family: DidotBold !important;
+  font-size: 2rem !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  letter-spacing: 3px;
+  max-width: 100%;
+  // font-size: clamp(
+  //   12px,
+  //   2vw,
+  //   24px
+  // ); /* responsif: minimal 12px, maksimal 24px */
+}
+
+// Brand slider wrapper: control gaps and arrow behavior
+.brand-slider-wrapper {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: visible;
+  z-index: 10;
+  --brand-slider-v-offset: 9px;
+
+  // Ensure arrows position relative to wrapper (not Slick’s internal container)
+  .slick-slider {
+    position: relative !important;
+  }
+
+  // Gap between slides using padding on slides and negative margin on list
+  .slick-list {
+    margin: 0 -8px;
+    padding-top: 18px;
+    padding-bottom: 0;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+  .slick-slide {
+    padding: 0 8px;
+    overflow: visible;
+    position: relative;
+  }
+  .slick-slide:hover {
+    z-index: 5;
+  }
+  .slick-track {
+    overflow-x: hidden;
+    overflow-y: visible;
+    position: relative;
+  }
+
+  // Smoothly reveal arrows on hover (desktop-like behavior)
+  .slick-prev,
+  .slick-next {
+    font-size: 16px !important; // fix slick font-size:0 issue
+    line-height: 1 !important;
+    z-index: 3;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+
+    // Hard-center vertically regardless of Slick's inline styles
+    position: absolute;
+    top: 50% !important;
+    transform: translateY(
+      calc(-50% + var(--brand-slider-v-offset, 9px))
+    ) !important;
+    width: 44px;
+    height: 44px;
+
+    // Ensure button box doesn't shift and centers its content
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  // Hide default Slick theme arrow pseudo-elements to prevent double icons
+  .slick-prev::before,
+  .slick-next::before {
+    content: "" !important;
+    display: none !important;
+  }
+
+  .slick-prev {
+    left: 12px;
+  }
+  .slick-next {
+    right: 12px;
+  }
+
+  &:hover {
+    .slick-prev,
+    .slick-next {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+// Slightly larger gaps on sm+ and lg+
+@media (min-width: 576px) {
+  .brand-slider-wrapper {
+    .slick-list {
+      margin: 0 -10px;
+      padding-top: 18px;
+      padding-bottom: 0;
+    }
+    .slick-slide {
+      padding: 0 10px;
+    }
+  }
+}
+@media (min-width: 992px) {
+  .brand-slider-wrapper {
+    .slick-list {
+      margin: 0 -12px;
+      padding-top: 18px;
+      padding-bottom: 0;
+    }
+    .slick-slide {
+      padding: 0 12px;
+    }
+  }
+}
+
+// Hide arrows entirely on extra small screens
+@media (max-width: 575.98px) {
+  .brand-slider-wrapper {
+    .slick-prev,
+    .slick-next {
+      display: none !important;
+    }
+  }
+}
+
+// Card aesthetics: subtle elevation, rounded corners, and consistent height
+.brand-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96px;
+  padding: 12px;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.75rem;
+  background: var(--bs-body-bg, #fff);
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+  transition: transform 200ms ease, box-shadow 200ms ease,
+    border-color 200ms ease;
+
+  &:hover {
+    z-index: 4;
+    transform: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border-color: var(--bs-primary, #0d6efd);
+  }
+
+  // No-logo fallback title in center
+  .brand-title {
+    margin: 0;
+  }
+}
+
+// Logo sizing: keep consistent heights and crisp scaling
+.brand-logo {
+  max-height: 56px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: saturate(1);
+  transition: filter 160ms ease;
+}
+
+.brand-card:hover .brand-logo {
+  filter: saturate(1.1);
+}
+
+// Responsive tuning for card sizing and logo height
+@media (max-width: 575.98px) {
+  .brand-card {
+    height: 84px;
+    padding: 10px;
+  }
+  .brand-logo {
+    max-height: 48px;
+  }
+}
+
+@media (min-width: 992px) {
+  .brand-card {
+    height: 112px;
+    padding: 16px;
+  }
+  .brand-logo {
+    max-height: 64px;
+  }
+}

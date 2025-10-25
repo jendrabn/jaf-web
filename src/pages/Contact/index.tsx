@@ -29,7 +29,6 @@ function ContactPage() {
     defaultValues: { name: "", email: "", phone: "", message: "" },
   });
 
-  // Tipe request/response sesuai spesifikasi API (tanpa wrapper "request")
   type ContactPayload = {
     name: string;
     email: string;

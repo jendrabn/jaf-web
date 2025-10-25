@@ -57,7 +57,12 @@ const AccountLayout = ({ children, title }: AuthLayoutProps) => {
     <>
       <Navbar />
 
-      <main className="main-content">
+      <main
+        id="main-content"
+        className="main-content"
+        role="main"
+        tabIndex={-1}
+      >
         <div className="container">
           <div className="row">
             <div className="col-lg-2 mb-3 ">

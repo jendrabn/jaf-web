@@ -1,12 +1,14 @@
 import { Modal } from "react-bootstrap";
-import type { BlogDetailTypes } from "@/types/blog";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
 
 interface ShareModalProps {
   show: boolean;
   onHide: () => void;
-  blog: BlogDetailTypes;
+  data: {
+    title: string;
+    url: string;
+  };
 }
 
 type SocialPlatform = {
@@ -81,11 +83,11 @@ const urlReplace = (template: string, url: string, title: string) => {
     .replace("{title}", encodeURIComponent(title));
 };
 
-const ShareModal = ({ show, onHide, blog }: ShareModalProps) => {
+const ShareModal = ({ show, onHide, data }: ShareModalProps) => {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton className="border-bottom-0">
-        <Modal.Title>Bagikan Artikel</Modal.Title>
+        <Modal.Title className="h5 line-clamp-2">{data.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="d-flex flex-wrap justify-content-center gap-3">
@@ -96,11 +98,7 @@ const ShareModal = ({ show, onHide, blog }: ShareModalProps) => {
               style={{ width: 72 }}
             >
               <Link
-                to={urlReplace(
-                  platform.shareUrl,
-                  window.location.href,
-                  blog.title
-                )}
+                to={urlReplace(platform.shareUrl, data.url, data.title)}
                 className="d-inline-block"
                 style={{ borderColor: platform.color }}
                 target={platform.name === "Copy Link" ? undefined : "_blank"}
@@ -112,7 +110,7 @@ const ShareModal = ({ show, onHide, blog }: ShareModalProps) => {
                 onClick={(e) => {
                   if (platform.name === "Copy Link") {
                     e.preventDefault();
-                    navigator.clipboard.writeText(window.location.href);
+                    navigator.clipboard.writeText(data.url);
 
                     toast.success("Link copied to clipboard!");
                   }

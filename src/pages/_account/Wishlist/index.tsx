@@ -40,7 +40,14 @@ const WishlistPage = () => {
         />
       </Helmet>
 
-      {wishlists && wishlists?.length > 0 ? (
+      {wishlists && wishlists?.length === 0 && (
+        <NoData
+          title="Wishlist Kosong"
+          message="Tambahkan parfum favorit Anda ke daftar keinginan agar mudah ditemukan nanti."
+        />
+      )}
+
+      {wishlists && wishlists?.length > 0 && (
         <>
           {/* Desktop Only */}
           <div className="d-flex align-items-center px-2 py-3 mb-2 fw-bold border shadow-sm d-none d-lg-flex">
@@ -103,8 +110,6 @@ const WishlistPage = () => {
           </div>
           {/* End Desktop Only */}
         </>
-      ) : (
-        <NoData />
       )}
     </AccountLayout>
   );

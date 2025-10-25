@@ -26,7 +26,10 @@ function DeliveryAddress({
               {`${address?.subdistrict?.name}, ${address?.district?.name}, ${address?.city?.name}, ${address?.province?.name}, ${address.zip_code}`}
             </address>
           ) : (
-            <NoData className="flex-grow-1 w-auto" />
+            <NoData
+              title="Belum Ada Alamat Tersimpan"
+              message="Anda belum menambahkan alamat pengiriman. Tambahkan alamat terlebih dahulu untuk melanjutkan proses pemesanan."
+            />
           )}
           <div className="mt-3 mt-lg-0 align-self-start">
             <Button

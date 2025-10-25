@@ -54,7 +54,7 @@ const OurMarketplace = () => {
     <div className="our-marketplace-container">
       <div className="row g-3">
         {available.map((m) => (
-          <div className="col-6 col-md-4 col-lg-3" key={m.key}>
+          <div className="col-12 col-md-6 col-lg-3" key={m.key}>
             <a
               href={String(m.url)}
               target="_blank"

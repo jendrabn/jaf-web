@@ -8,7 +8,7 @@ import type { ProductParamsTypes } from "@/types/product";
 import useFilters from "@/hooks/useFilters";
 import { SEXS } from "@/utils/constans";
 
-function ProductFilters() {
+const ProductFilters = () => {
   const { params, setFilter, clearFilters } = useFilters<ProductParamsTypes>();
 
   const [minPrice, setMinPrice] = useState<string>("");
@@ -19,7 +19,6 @@ function ProductFilters() {
 
   return (
     <aside>
-      {/* only show on desktop */}
       <h5 className="mb-4 d-none d-lg-block">
         <i className="bi bi-funnel"></i> Filter
       </h5>
@@ -171,6 +170,6 @@ function ProductFilters() {
       </div>
     </aside>
   );
-}
+};
 
 export default ProductFilters;

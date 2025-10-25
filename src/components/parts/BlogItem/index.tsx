@@ -2,6 +2,7 @@ import { type BlogItemTypes } from "@/types/blog";
 import { Badge, Card, Col, Image, Row } from "react-bootstrap";
 import { formatDiffForHumans } from "@/utils/format";
 import { Link } from "react-router";
+import { words } from "@/utils/functions";
 
 type Props = { blog: BlogItemTypes };
 
@@ -63,7 +64,7 @@ const BlogItem = ({ blog }: Props) => (
                   height={32}
                   className="d-none d-md-inline-block me-2"
                 />
-                <span className="fw-semibold">{blog.author}</span>
+                <span className="fw-semibold">{words(blog.author, 2, "")}</span>
               </Link>
             ) : (
               <span className="text-body-secondary fw-semibold">

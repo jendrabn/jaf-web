@@ -3,37 +3,38 @@ import { useFetchBlogCategories, useFetchBlogTags } from "@/hooks/api/blog";
 import useFilters from "@/hooks/useFilters";
 import type { BlogParamsTypes } from "@/types/blog";
 
-export default function BlogHeader() {
+const TagBadge = ({ id, onClear }: { id: number; onClear: () => void }) => {
+  const { data: tags } = useFetchBlogTags();
+  const t = tags?.find((tg) => tg.id === id);
+
+  if (!t) return null;
+
+  return (
+    <Badge
+      bg="light"
+      text="dark"
+      className="d-inline-flex align-items-center me-2"
+    >
+      <span className="me-2">{t.name}</span>
+      <Button
+        variant="link"
+        size="sm"
+        className="p-0 ms-1 text-dark"
+        onClick={onClear}
+        aria-label={`Clear tag ${t.name}`}
+      >
+        <i className="bi bi-x-lg" />
+      </Button>
+    </Badge>
+  );
+};
+
+const BlogHeader = () => {
   const { params, setFilter, clearFilters } = useFilters<BlogParamsTypes>();
   const { data: categories } = useFetchBlogCategories();
 
-  function TagBadge({ id, onClear }: { id: number; onClear: () => void }) {
-    const { data: tags } = useFetchBlogTags();
-    const t = tags?.find((tg) => tg.id === id);
-    if (!t) return null;
-    return (
-      <Badge
-        bg="light"
-        text="dark"
-        className="d-inline-flex align-items-center me-2"
-      >
-        <span className="me-2">{t.name}</span>
-        <Button
-          variant="link"
-          size="sm"
-          className="p-0 ms-1 text-dark"
-          onClick={onClear}
-          aria-label={`Clear tag ${t.name}`}
-        >
-          <i className="bi bi-x-lg" />
-        </Button>
-      </Badge>
-    );
-  }
-
   return (
     <div className="blog-header rounded-4 p-4 text-center mb-4">
-      {/* decorative bubbles - purely visual */}
       <span className="bubble b1" aria-hidden="true" />
       <span className="bubble b2" aria-hidden="true" />
       <span className="bubble b3" aria-hidden="true" />
@@ -81,4 +82,6 @@ export default function BlogHeader() {
       ) : null}
     </div>
   );
-}
+};
+
+export default BlogHeader;

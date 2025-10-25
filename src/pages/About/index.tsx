@@ -199,7 +199,6 @@ const AboutPage = () => {
             </p>
           </div>
         </section>
-        {/* End Google Business Review Section */}
       </div>
     </Layout>
   );

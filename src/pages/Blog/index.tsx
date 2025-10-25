@@ -28,7 +28,7 @@ const SORT_OPTIONS: { label: string; value: string }[] = [
   },
 ];
 
-function BlogPage() {
+const BlogPage = () => {
   const { params, setFilter, queryString, clearFilters } =
     useFilters<BlogParamsTypes>();
   const [searchTerm, setSearchTerm] = useState<string>(params.search || "");
@@ -65,10 +65,9 @@ function BlogPage() {
         <div className="row justify-content-center">
           <div className="col-12 col-md-10">
             <BlogHeader />
-
             <div className="d-flex align-items-center justify-content-between gap-2 mb-4">
               <div className="d-flex gap-2">
-                {/* Sort dropdown */}
+                {/* Sort Dropdown */}
                 <Dropdown>
                   <Dropdown.Toggle
                     as={Button}
@@ -97,7 +96,7 @@ function BlogPage() {
                   </Dropdown.Menu>
                 </Dropdown>
 
-                {/* Filter Offcanvas */}
+                {/* Filter Button */}
                 <Button
                   variant="outline-dark"
                   title="Filter"
@@ -122,7 +121,7 @@ function BlogPage() {
                 </Offcanvas>
               </div>
 
-              {/* Search form */}
+              {/* Search Form */}
               <form
                 className="blog-search-form w-100"
                 onSubmit={handleSearchSubmit}
@@ -143,16 +142,25 @@ function BlogPage() {
                 </InputGroup>
               </form>
 
-              <p className="text-secondary-emphasis mb-0 d-none d-lg-block">
+              {/* Page Count */}
+              <div className="text-secondary-emphasis mb-0 d-none d-lg-block">
                 {blogs?.page?.from || 0} - {blogs?.page?.to || 0} dari{" "}
                 {blogs?.page?.total || 0} artikel
-              </p>
+              </div>
             </div>
 
+            {/* Loading */}
             {isLoading && <Loading className="py-5" />}
 
-            {blogs?.data?.length === 0 && <NoData />}
+            {/* No Data */}
+            {blogs?.data?.length === 0 && (
+              <NoData
+                title="Belum Ada Artikel"
+                message="Kami sedang menyiapkan tulisan menarik untuk Anda. Nantikan insight, tips, dan inspirasi parfum terbaru dari kami."
+              />
+            )}
 
+            {/* Blog List */}
             {blogs?.data && blogs?.data?.length > 0 && (
               <>
                 <div className="row g-4">
@@ -179,6 +187,6 @@ function BlogPage() {
       </div>
     </Layout>
   );
-}
+};
 
 export default BlogPage;

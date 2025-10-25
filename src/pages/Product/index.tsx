@@ -6,13 +6,12 @@ import Loading from "@/components/ui/Loading";
 import Pagination from "@/components/ui/Pagination";
 import useFilters from "@/hooks/useFilters";
 import Layout from "@/components/layouts/Layout";
-import { Button, Form, Offcanvas } from "react-bootstrap";
+import { Button, Offcanvas, Dropdown } from "react-bootstrap";
 import { useState } from "react";
 import NoData from "@/components/ui/NoData";
 import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 
-// filter options
 const FILTER_OPTIONS: { label: string; value: string }[] = [
   {
     label: "Relevansi",
@@ -40,18 +39,6 @@ const FILTER_OPTIONS: { label: string; value: string }[] = [
   },
 ];
 
-// sort options
-const SORT_OPTIONS: { label: string; value: string }[] = [
-  {
-    label: "Terbaru",
-    value: "newest",
-  },
-  {
-    label: "Terlama",
-    value: "oldest",
-  },
-];
-
 const ProductPage = () => {
   const { params, queryString, setFilter, clearFilters } =
     useFilters<ProductParamsTypes>();
@@ -59,7 +46,6 @@ const ProductPage = () => {
   const { data: products, isLoading } = useFetchProducts(queryString);
 
   const [showFilters, setShowFilters] = useState(false);
-  const [showSort, setShowSort] = useState(false);
 
   const handlePageClick = (page: number) => {
     setFilter("page", page);
@@ -87,101 +73,87 @@ const ProductPage = () => {
             <ProductFilters />
           </div>
           <div className="col-lg-10">
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              {/* Sort Dropdown */}
+              <Dropdown>
+                <Dropdown.Toggle
+                  id="sort-btn-desktop"
+                  variant="outline-dark"
+                  aria-label="Urutkan"
+                  title="Urutkan"
+                >
+                  Urutkan:{" "}
+                  {FILTER_OPTIONS.find(
+                    (o) => o.value === (params.sort_by || "")
+                  )?.label || "Relevansi"}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {FILTER_OPTIONS.map((option) => (
+                    <Dropdown.Item
+                      key={option.value}
+                      active={params.sort_by === option.value}
+                      onClick={() => {
+                        setFilter("sort_by", option.value);
+                        clearFilters("page");
+                      }}
+                    >
+                      {option.label}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+
+              {/* Filter Button */}
+              <Button
+                variant="outline-dark"
+                className="d-lg-none"
+                onClick={() => setShowFilters(true)}
+              >
+                <i className="bi bi-funnel"></i>
+              </Button>
+
+              <Offcanvas
+                show={showFilters}
+                onHide={() => setShowFilters(false)}
+                placement="end"
+              >
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title>
+                    <i className="bi bi-funnel"></i> Filter
+                  </Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                  <ProductFilters />
+                </Offcanvas.Body>
+              </Offcanvas>
+
+              {/* Product Count */}
+              <div className="text-secondary-emphasis mb-0 d-none d-lg-block">
+                {products?.page?.from || 0} - {products?.page?.to || 0} dari{" "}
+                {products?.page?.total || 0} produk
+              </div>
+            </div>
+
+            {/* Search Message */}
             {params.search && (
-              <div className="d-flex align-items-center justify-content-start mb-3">
-                <p className="text-body-emphasis mb-0">
-                  <i className="bi bi-search me-2"></i>Hasil pencarian untuk "
-                  <span className="fw-bold text-body">{params.search}</span>"
-                </p>
+              <div className="text-body-emphasis line-clamp-1 mb-4">
+                <i className="bi bi-search me-2"></i>Hasil pencarian untuk{" "}
+                <span className="fw-bold text-body">{params.search}</span>
               </div>
             )}
 
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              {/* Desktop Only */}
-              <div className="d-none d-lg-block">
-                <span className="text-secondary-emphasis mb-0 me-2">
-                  Urutkan:
-                </span>
-                <Form.Select
-                  className="w-auto d-inline-block cursor-pointer"
-                  onChange={(e) => {
-                    setFilter("sort_by", e.target.value);
-                    clearFilters("page");
-                  }}
-                >
-                  {FILTER_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </Form.Select>
-              </div>
-
-              {/* Mobile Only */}
-              <div className="d-flex align-items-center gap-2 d-lg-none">
-                <Button
-                  variant="outline-dark"
-                  onClick={() => setShowSort(true)}
-                >
-                  <i className="bi bi-arrow-down-up"></i>
-                </Button>
-
-                <Button
-                  variant="outline-dark"
-                  onClick={() => setShowFilters(true)}
-                >
-                  <i className="bi bi-funnel"></i>
-                </Button>
-
-                <Offcanvas
-                  show={showFilters}
-                  onHide={() => setShowFilters(false)}
-                  placement="end"
-                >
-                  <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>
-                      <i className="bi bi-funnel"></i> Filter
-                    </Offcanvas.Title>
-                  </Offcanvas.Header>
-                  <Offcanvas.Body>
-                    <ProductFilters />
-                  </Offcanvas.Body>
-                </Offcanvas>
-
-                <Offcanvas
-                  show={showSort}
-                  onHide={() => setShowSort(false)}
-                  placement="end"
-                >
-                  <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>
-                      <i className="bi bi-arrow-down-up"></i> Urutkan
-                    </Offcanvas.Title>
-                  </Offcanvas.Header>
-                  <Offcanvas.Body>
-                    <Form.Select
-                      onChange={(e) => setFilter("sort_by", e.target.value)}
-                    >
-                      {SORT_OPTIONS.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </Offcanvas.Body>
-                </Offcanvas>
-              </div>
-
-              <p className="text-secondary-emphasis mb-0 d-none d-lg-block">
-                {products?.page?.from || 0} - {products?.page?.to || 0} dari{" "}
-                {products?.page?.total || 0} produk
-              </p>
-            </div>
-
+            {/* Loading */}
             {isLoading && <Loading className="py-5" />}
 
-            {products?.data?.length === 0 && <NoData />}
+            {/* No Data */}
+            {products?.data?.length === 0 && (
+              <NoData
+                title="Belum Ada Produk"
+                message="Kami belum menemukan produk untuk ditampilkan. Yuk, periksa kembali nanti!"
+              />
+            )}
 
+            {/* Product List */}
             {products?.data && products?.data?.length > 0 && (
               <>
                 <div className="row g-4">

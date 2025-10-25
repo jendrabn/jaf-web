@@ -14,7 +14,14 @@ function Layout({ children }: PropsWithChildren) {
   return (
     <>
       <Navbar />
-      <main className="main-content">{children}</main>
+      <main
+        id="main-content"
+        className="main-content"
+        role="main"
+        tabIndex={-1}
+      >
+        {children}
+      </main>
       <Footer />
     </>
   );

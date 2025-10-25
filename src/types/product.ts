@@ -4,12 +4,14 @@ export interface ProductCategoryTypes {
   id: number;
   name: string;
   slug: string;
+  logo: string;
 }
 
 export interface ProductBrandTypes {
   id: number;
   name: string;
   slug: string;
+  logo: string;
 }
 
 export interface ProductParamsTypes {
@@ -80,5 +82,5 @@ export interface ProductDetailTypes {
   is_discounted?: boolean;
   discount_in_percent?: number | null;
   ratings: RatingTypes[];
+  sku: string;
 }
-

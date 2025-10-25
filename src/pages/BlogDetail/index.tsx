@@ -7,12 +7,11 @@ import { Helmet } from "react-helmet";
 import { Badge, Breadcrumb, Button, Image } from "react-bootstrap";
 import { formatDateTime } from "@/utils/format";
 import { useState } from "react";
-import ShareModal from "./ShareModal";
 import { env } from "@/utils/config";
+import ShareModal from "@/components/parts/ShareModal";
 
 function BlogDetailPage() {
   const { slug } = useParams();
-
   const { data: blog, isLoading } = useFetchBlog(slug);
   const [showShareModal, setShowShareModal] = useState(false);
 
@@ -28,6 +27,7 @@ function BlogDetailPage() {
             <title>
               {blog.title} | {env.APP_NAME}
             </title>
+            <meta name="description" content={blog.title} />
           </Helmet>
 
           <div className="container">
@@ -169,7 +169,10 @@ function BlogDetailPage() {
         <ShareModal
           show={showShareModal}
           onHide={() => setShowShareModal(false)}
-          blog={blog}
+          data={{
+            title: blog.title,
+            url: window.location.href,
+          }}
         />
       )}
     </Layout>

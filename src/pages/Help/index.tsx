@@ -3,7 +3,7 @@ import Layout from "@/components/layouts/Layout";
 import CustomerServiceContact from "@/components/parts/CustomerServiceContact";
 import { env } from "@/utils/config";
 
-function HelpPage() {
+const HelpPage = () => {
   return (
     <Layout>
       <Helmet>
@@ -71,6 +71,6 @@ function HelpPage() {
       </div>
     </Layout>
   );
-}
+};
 
 export default HelpPage;

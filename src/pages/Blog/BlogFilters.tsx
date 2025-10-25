@@ -5,7 +5,6 @@ import { useFetchBlogCategories, useFetchBlogTags } from "@/hooks/api/blog";
 
 function BlogFilters() {
   const { setFilter, clearFilters, params } = useFilters();
-
   const { data: categories } = useFetchBlogCategories();
   const { data: tags } = useFetchBlogTags();
 

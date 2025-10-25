@@ -14,7 +14,25 @@ const NotFoundPage = () => {
         />
       </Helmet>
 
-      <main className="d-flex align-items-center min-dvh-100">
+      <a
+        href="#main-content"
+        className="skip-link"
+        onClick={() => {
+          const el = document.getElementById("main-content");
+          if (el) {
+            el.focus();
+          }
+        }}
+      >
+        Lewati ke konten utama
+      </a>
+
+      <main
+        id="main-content"
+        className="d-flex align-items-center min-dvh-100"
+        role="main"
+        tabIndex={-1}
+      >
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-12 col-md-6 col-lg-4">

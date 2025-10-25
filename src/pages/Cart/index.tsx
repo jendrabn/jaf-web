@@ -52,7 +52,14 @@ function CartPage() {
       <div className="container">
         <h2 className="section-title">Keranjang Belanja</h2>
 
-        {carts.length > 0 ? (
+        {carts.length === 0 && (
+          <NoData
+            title="Keranjang Belanja Kosong"
+            message="Belum ada produk di keranjang Anda. Yuk, temukan parfum favorit Anda dan mulai berbelanja sekarang!"
+          />
+        )}
+
+        {carts.length > 0 && (
           <>
             {/* Dekstop */}
             <div className="d-flex px-2 py-3 d-none d-lg-flex fw-bold shadow-sm border mb-3">
@@ -171,8 +178,6 @@ function CartPage() {
             </div>
             {/* End Mobile Only */}
           </>
-        ) : (
-          <NoData />
         )}
       </div>
     </Layout>
