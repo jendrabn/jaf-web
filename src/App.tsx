@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoute from "@/components/parts/ProtectedRoute";
@@ -15,6 +15,7 @@ import "@/styles/style.scss";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { env } from "./utils/config";
+import { subscribeToForegroundMessages } from "./lib/firebase";
 
 const HomePage = lazy(() => import("@/pages/Home"));
 const ProductDetailPage = lazy(() => import("@/pages/ProductDetail"));
@@ -61,6 +62,101 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    let mounted = true;
+
+    subscribeToForegroundMessages((payload) => {
+      const notification = payload.notification ?? {};
+      const title = notification.title || "JAF Parfum's";
+      const body = notification.body;
+      const tag = payload.collapseKey || payload.messageId || undefined;
+
+      if ("Notification" in window && Notification.permission === "granted") {
+        navigator.serviceWorker.ready
+          .then((registration) => {
+            if (!registration) {
+              throw new Error("Service worker registration belum siap.");
+            }
+
+            const notificationOptions: NotificationOptions = {
+              body,
+              icon: notification.icon || "/images/favicon-96x96.png",
+              data: payload.data,
+              tag,
+            };
+
+            if (notification.image) {
+              (notificationOptions as NotificationOptions & {
+                image?: string;
+              }).image = notification.image;
+            }
+
+            if (tag) {
+              (notificationOptions as NotificationOptions & {
+                renotify?: boolean;
+              }).renotify = true;
+            }
+
+            return registration.showNotification(title, notificationOptions);
+          })
+          .catch((error) => {
+            console.error(
+              "[Firebase] Gagal menampilkan Chrome notification:",
+              error,
+              payload,
+            );
+          });
+      } else {
+        console.warn(
+          "[Firebase] Notifikasi foreground diterima tetapi izin belum granted atau Notification API tidak tersedia.",
+          payload,
+        );
+      }
+    })
+      .then((unsub) => {
+        if (!mounted) {
+          unsub();
+          return;
+        }
+        unsubscribe = unsub;
+      })
+      .catch((error) => {
+        console.error("Failed to subscribe to foreground messages", error);
+      });
+
+    return () => {
+      mounted = false;
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) {
+      return;
+    }
+
+    const handleSwMessage = (event: MessageEvent) => {
+      const data = event.data;
+      if (!data || typeof data !== "object") {
+        return;
+      }
+
+      if (data.type === "FCM_NOTIFICATION_SHOWN") {
+        console.info("[Firebase] Notifikasi OS ditampilkan:", data);
+      } else if (data.type === "FCM_NOTIFICATION_ERROR") {
+        console.error("[Firebase] Gagal menampilkan notifikasi OS:", data);
+      }
+    };
+
+    navigator.serviceWorker.addEventListener("message", handleSwMessage);
+    return () => {
+      navigator.serviceWorker.removeEventListener("message", handleSwMessage);
+    };
+  }, []);
+
   return (
     <>
       <ToastContainer

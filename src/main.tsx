@@ -7,3 +7,16 @@ createRoot(document.getElementById("root")!).render(
     <App />
   </StrictMode>
 );
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/firebase-messaging-sw.js")
+      .catch((error) => {
+        console.error(
+          "Failed to register Firebase messaging service worker",
+          error,
+        );
+      });
+  });
+}

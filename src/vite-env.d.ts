@@ -42,4 +42,8 @@ declare module "virtual:pwa-register" {
   }): void;
 }
 
+interface ImportMetaEnv {
+  readonly VITE_FIREBASE_VAPID_KEY?: string;
+}
+
 export {};

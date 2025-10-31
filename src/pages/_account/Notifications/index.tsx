@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AccountLayout from "@/components/layouts/AccountLayout";
 import NotificationItem from "@/components/parts/NotificationItem";
 import {
@@ -8,9 +8,26 @@ import {
 } from "@/hooks/api/notification/useFetchNotifications";
 import { Button, Badge, Spinner, Alert, Pagination } from "react-bootstrap";
 import Loading from "@/components/ui/Loading";
+import { requestFcmToken } from "@/lib/firebase";
+import {
+  updateFcmToken as updateFcmTokenRequest,
+  removeFcmToken as removeFcmTokenRequest,
+} from "@/hooks/api/notification";
 
 const NotificationsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [pushPermission, setPushPermission] = useState<
+    NotificationPermission | "unsupported"
+  >(
+    typeof window !== "undefined" && "Notification" in window
+      ? Notification.permission
+      : "unsupported"
+  );
+  const [syncedToken, setSyncedToken] = useState<string | null>(null);
+  const [isRequestingPush, setIsRequestingPush] = useState(false);
+  const [isSyncingToken, setIsSyncingToken] = useState(false);
+  const [pushError, setPushError] = useState<string | null>(null);
+  const [pushSuccess, setPushSuccess] = useState<string | null>(null);
 
   const {
     data: notificationsData,
@@ -39,6 +56,137 @@ const NotificationsPage = () => {
   };
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
+
+  const syncTokenWithServer = useCallback(
+    async (
+      token: string | null,
+      options: { silent?: boolean } = {}
+    ): Promise<void> => {
+      const { silent = false } = options;
+
+      const reportSuccess = (message: string | null) => {
+        if (!silent) {
+          setPushSuccess(message);
+          if (message) {
+            setPushError(null);
+          }
+        }
+      };
+
+      const reportError = (message: string) => {
+        if (!silent) {
+          setPushError(message);
+        }
+      };
+
+      try {
+        if (token) {
+          if (token === syncedToken) {
+            reportSuccess("Push notification berhasil diaktifkan.");
+            return;
+          }
+          setIsSyncingToken(true);
+          await updateFcmTokenRequest(token);
+          setSyncedToken(token);
+          reportSuccess("Push notification berhasil diaktifkan.");
+        } else if (syncedToken) {
+          setIsSyncingToken(true);
+          await removeFcmTokenRequest(syncedToken);
+          setSyncedToken(null);
+          reportSuccess(null);
+        }
+      } catch (error) {
+        console.error("Failed to sync FCM token with server", error);
+        reportError(
+          token
+            ? "Gagal mendaftarkan token notifikasi ke server."
+            : "Gagal menghapus token notifikasi di server."
+        );
+      } finally {
+        setIsSyncingToken(false);
+      }
+    },
+    [syncedToken, updateFcmTokenRequest, removeFcmTokenRequest]
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if (!("Notification" in window)) {
+      setPushPermission("unsupported");
+      return;
+    }
+
+    let isMounted = true;
+
+    const initializeToken = async () => {
+      const permission = Notification.permission;
+      if (!isMounted) {
+        return;
+      }
+
+      setPushPermission(permission);
+
+      if (permission === "granted") {
+        try {
+          const token = await requestFcmToken();
+          if (!isMounted) {
+            return;
+          }
+          await syncTokenWithServer(token ?? null, { silent: true });
+        } catch (error) {
+          console.error("Gagal mengambil token FCM awal", error);
+        }
+      } else {
+        await syncTokenWithServer(null, { silent: true });
+      }
+    };
+
+    void initializeToken();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [syncTokenWithServer]);
+
+  const handleEnablePush = async () => {
+    if (typeof window === "undefined" || !("Notification" in window)) {
+      setPushError("Browser Anda belum mendukung push notification.");
+      return;
+    }
+
+    setIsRequestingPush(true);
+    setPushError(null);
+    setPushSuccess(null);
+
+    try {
+      const token = await requestFcmToken();
+      const permission = Notification.permission;
+      setPushPermission(permission);
+
+      if (permission !== "granted") {
+        await syncTokenWithServer(null);
+        setPushError("Izin notifikasi belum diberikan.");
+        return;
+      }
+
+      if (token) {
+        await syncTokenWithServer(token);
+      } else {
+        await syncTokenWithServer(null);
+        setPushError(
+          "Token perangkat tidak dapat diperoleh. Silakan coba lagi."
+        );
+      }
+    } catch (err) {
+      setPushError("Terjadi kesalahan saat mengaktifkan push notification.");
+      console.error(err);
+    } finally {
+      setIsRequestingPush(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -70,6 +218,72 @@ const NotificationsPage = () => {
 
   return (
     <AccountLayout title="Notifikasi">
+      <div className="mb-4">
+        {pushPermission === "unsupported" ? (
+          <Alert variant="warning" className="mb-0">
+            <i className="bi bi-exclamation-triangle me-2"></i>
+            Browser Anda belum mendukung push notification.
+          </Alert>
+        ) : (
+          <Alert variant="light" className="border mb-0">
+            <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+              <div className="flex-grow-1">
+                <div className="fw-semibold mb-1">Notifikasi Browser</div>
+                <div className="text-muted small">
+                  {pushPermission === "granted"
+                    ? "Notifikasi browser aktif. Anda akan menerima pembaruan secara otomatis."
+                    : "Aktifkan notifikasi untuk menerima pemberitahuan pesanan dan promo secara real-time."}
+                </div>
+                {pushSuccess && (
+                  <div className="text-success small mt-2">
+                    <i className="bi bi-check-circle me-1"></i>
+                    {pushSuccess}
+                  </div>
+                )}
+                {pushError && (
+                  <div className="text-danger small mt-2">
+                    <i className="bi bi-exclamation-circle me-1"></i>
+                    {pushError}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                {pushPermission === "granted" ? (
+                  <Badge bg="success" pill>
+                    Notifikasi aktif
+                  </Badge>
+                ) : (
+                  <Button
+                    variant="primary"
+                    onClick={handleEnablePush}
+                    disabled={isRequestingPush || isSyncingToken}
+                  >
+                    {isRequestingPush || isSyncingToken ? (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        <span className="ms-2">Memproses...</span>
+                      </>
+                    ) : (
+                      <>
+                        <i className="bi bi-bell me-1"></i>
+                        Izinkan Notifikasi
+                      </>
+                    )}
+                  </Button>
+                )}
+              </div>
+            </div>
+          </Alert>
+        )}
+      </div>
+
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           {unreadCount > 0 && (

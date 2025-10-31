@@ -26,3 +26,13 @@ export const getUnreadCount = async (): Promise<UnreadCountResponse> => {
   const response = await fetchApi2("/notifications/unread-count");
   return response as UnreadCountResponse;
 };
+
+export const updateFcmToken = async (token: string) => {
+  return fetchApi().post("/fcm/token", { fcm_token: token });
+};
+
+export const removeFcmToken = async (token?: string) => {
+  return fetchApi().delete("/fcm/token", {
+    ...(token ? { data: { fcm_token: token } } : {}),
+  });
+};
