@@ -9,7 +9,7 @@ import {
 import { Button, Badge, Spinner, Alert, Pagination } from "react-bootstrap";
 import Loading from "@/components/ui/Loading";
 import { requestFcmToken } from "@/lib/firebase";
-import { updateFcmToken as updateFcmTokenRequest } from "@/hooks/api/notification";
+import { updateFcmToken } from "@/hooks/api/notification";
 
 const NotificationsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,10 +21,11 @@ const NotificationsPage = () => {
       : "unsupported"
   );
   const [syncedToken, setSyncedToken] = useState<string | null>(null);
-  const [isRequestingPush, setIsRequestingPush] = useState(false);
-  const [isSyncingToken, setIsSyncingToken] = useState(false);
-  const [pushError, setPushError] = useState<string | null>(null);
-  const [pushSuccess, setPushSuccess] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string | null;
+  }>({ type: "success", text: null });
 
   const {
     data: notificationsData,
@@ -32,131 +33,81 @@ const NotificationsPage = () => {
     error,
     refetch,
   } = useFetchNotifications(currentPage);
-
   const markAsReadMutation = useMarkNotificationAsRead();
   const markAllAsReadMutation = useMarkAllNotificationsAsRead();
   const notifications = notificationsData?.data ?? [];
   const pagination = notificationsData?.page;
-
-  const handleMarkAsRead = (id: number) => {
-    markAsReadMutation.mutate(id);
-  };
-
-  const handleMarkAllAsRead = () => {
-    if (notifications.length > 0) {
-      markAllAsReadMutation.mutate();
-    }
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
-  const syncTokenWithServer = useCallback(
-    async (
-      token: string | null,
-      options: { silent?: boolean } = {}
-    ): Promise<void> => {
-      const { silent = false } = options;
+  const handleMarkAsRead = (id: number) => markAsReadMutation.mutate(id);
+  const handleMarkAllAsRead = () =>
+    notifications.length > 0 && markAllAsReadMutation.mutate();
+  const handlePageChange = (page: number) => setCurrentPage(page);
 
-      const reportSuccess = (message: string | null) => {
-        if (!silent) {
-          setPushSuccess(message);
-          if (message) {
-            setPushError(null);
-          }
-        }
-      };
-
-      const reportError = (message: string) => {
-        if (!silent) {
-          setPushError(message);
-        }
-      };
-
+  const syncToken = useCallback(
+    async (token: string | null, silent = false) => {
       try {
-        if (token) {
-          if (token === syncedToken) {
-            reportSuccess("Push notification berhasil diaktifkan.");
-            return;
-          }
-          setIsSyncingToken(true);
-          await updateFcmTokenRequest(token);
+        if (token && token !== syncedToken) {
+          setIsProcessing(true);
+          await updateFcmToken(token);
           setSyncedToken(token);
-          reportSuccess("Push notification berhasil diaktifkan.");
-        } else if (syncedToken) {
-          setIsSyncingToken(true);
-          await updateFcmTokenRequest(null);
+          if (!silent)
+            setMessage({
+              type: "success",
+              text: "Push notification berhasil diaktifkan.",
+            });
+        } else if (!token && syncedToken) {
+          setIsProcessing(true);
+          await updateFcmToken(null);
           setSyncedToken(null);
-          reportSuccess(null);
         }
-      } catch (error) {
-        console.error("Failed to sync FCM token with server", error);
-        reportError(
-          token
-            ? "Gagal mendaftarkan token notifikasi ke server."
-            : "Gagal menghapus token notifikasi di server."
-        );
+      } catch {
+        if (!silent)
+          setMessage({
+            type: "error",
+            text: token
+              ? "Gagal mendaftarkan token notifikasi."
+              : "Gagal menghapus token notifikasi.",
+          });
       } finally {
-        setIsSyncingToken(false);
+        setIsProcessing(false);
       }
     },
     [syncedToken]
   );
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    if (!("Notification" in window)) {
+    if (typeof window === "undefined" || !("Notification" in window)) {
       setPushPermission("unsupported");
       return;
     }
 
-    let isMounted = true;
-
-    const initializeToken = async () => {
+    const init = async () => {
       const permission = Notification.permission;
-      if (!isMounted) {
-        return;
-      }
-
       setPushPermission(permission);
 
       if (permission === "granted") {
-        try {
-          const token = await requestFcmToken();
-          if (!isMounted) {
-            return;
-          }
-          await syncTokenWithServer(token ?? null, { silent: true });
-        } catch (error) {
-          console.error("Gagal mengambil token FCM awal", error);
-        }
+        const token = await requestFcmToken();
+        await syncToken(token ?? null, true);
       } else {
-        await syncTokenWithServer(null, { silent: true });
+        await syncToken(null, true);
       }
     };
 
-    void initializeToken();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [syncTokenWithServer]);
+    init();
+  }, [syncToken]);
 
   const handleEnablePush = async () => {
     if (typeof window === "undefined" || !("Notification" in window)) {
-      setPushError("Browser Anda belum mendukung push notification.");
+      setMessage({
+        type: "error",
+        text: "Browser tidak mendukung push notification.",
+      });
       return;
     }
 
-    setIsRequestingPush(true);
-    setPushError(null);
-    setPushSuccess(null);
+    setIsProcessing(true);
+    setMessage({ type: "success", text: null });
 
     try {
       const token = await requestFcmToken();
@@ -164,24 +115,24 @@ const NotificationsPage = () => {
       setPushPermission(permission);
 
       if (permission !== "granted") {
-        await syncTokenWithServer(null);
-        setPushError("Izin notifikasi belum diberikan.");
-        return;
-      }
-
-      if (token) {
-        await syncTokenWithServer(token);
+        await syncToken(null);
+        setMessage({ type: "error", text: "Izin notifikasi belum diberikan." });
+      } else if (token) {
+        await syncToken(token);
       } else {
-        await syncTokenWithServer(null);
-        setPushError(
-          "Token perangkat tidak dapat diperoleh. Silakan coba lagi."
-        );
+        await syncToken(null);
+        setMessage({
+          type: "error",
+          text: "Token tidak dapat diperoleh. Silakan coba lagi.",
+        });
       }
-    } catch (err) {
-      setPushError("Terjadi kesalahan saat mengaktifkan push notification.");
-      console.error(err);
+    } catch {
+      setMessage({
+        type: "error",
+        text: "Terjadi kesalahan saat mengaktifkan push notification.",
+      });
     } finally {
-      setIsRequestingPush(false);
+      setIsProcessing(false);
     }
   };
 
@@ -198,7 +149,7 @@ const NotificationsPage = () => {
       <AccountLayout title="Notifikasi">
         <Alert variant="danger">
           <i className="bi bi-exclamation-triangle me-2"></i>
-          Terjadi kesalahan saat memuat notifikasi. Silakan coba lagi.
+          Terjadi kesalahan saat memuat notifikasi.
           <Button
             variant="outline-danger"
             size="sm"
@@ -217,12 +168,12 @@ const NotificationsPage = () => {
     <AccountLayout title="Notifikasi">
       <div className="mb-4">
         {pushPermission === "unsupported" ? (
-          <Alert variant="warning" className="mb-0">
+          <Alert variant="warning">
             <i className="bi bi-exclamation-triangle me-2"></i>
-            Browser Anda belum mendukung push notification.
+            Browser tidak mendukung push notification.
           </Alert>
         ) : (
-          <Alert variant="light" className="border mb-0">
+          <Alert variant="light" className="border">
             <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
               <div className="flex-grow-1">
                 <div className="fw-semibold mb-1">Notifikasi Browser</div>
@@ -231,20 +182,17 @@ const NotificationsPage = () => {
                     ? "Notifikasi browser aktif. Anda akan menerima pembaruan secara otomatis."
                     : "Aktifkan notifikasi untuk menerima pemberitahuan pesanan dan promo secara real-time."}
                 </div>
-                {pushSuccess && (
-                  <div className="text-success small mt-2">
-                    <i className="bi bi-check-circle me-1"></i>
-                    {pushSuccess}
-                  </div>
-                )}
-                {pushError && (
-                  <div className="text-danger small mt-2">
-                    <i className="bi bi-exclamation-circle me-1"></i>
-                    {pushError}
+                {message.text && (
+                  <div className={`text-${message.type} small mt-2`}>
+                    <i
+                      className={`bi bi-${
+                        message.type === "success" ? "check" : "exclamation"
+                      }-circle me-1`}
+                    ></i>
+                    {message.text}
                   </div>
                 )}
               </div>
-
               <div>
                 {pushPermission === "granted" ? (
                   <Badge bg="success" pill>
@@ -254,17 +202,11 @@ const NotificationsPage = () => {
                   <Button
                     variant="primary"
                     onClick={handleEnablePush}
-                    disabled={isRequestingPush || isSyncingToken}
+                    disabled={isProcessing}
                   >
-                    {isRequestingPush || isSyncingToken ? (
+                    {isProcessing ? (
                       <>
-                        <Spinner
-                          as="span"
-                          animation="border"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
+                        <Spinner as="span" animation="border" size="sm" />
                         <span className="ms-2">Memproses...</span>
                       </>
                     ) : (
@@ -282,14 +224,7 @@ const NotificationsPage = () => {
       </div>
 
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          {/* {unreadCount > 0 && (
-            <Badge bg="primary" pill>
-              {unreadCount} belum dibaca
-            </Badge>
-          )} */}
-        </div>
-
+        <div></div>
         {unreadCount > 0 && (
           <Button
             variant="outline-primary"
@@ -299,13 +234,7 @@ const NotificationsPage = () => {
           >
             {markAllAsReadMutation.isPending ? (
               <>
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
+                <Spinner as="span" animation="border" size="sm" />
                 <span className="ms-2">Memproses...</span>
               </>
             ) : (
@@ -329,7 +258,6 @@ const NotificationsPage = () => {
               />
             ))}
           </div>
-
           {pagination && pagination.last_page > 1 && (
             <div className="d-flex justify-content-center mt-4">
               <Pagination>
@@ -337,7 +265,6 @@ const NotificationsPage = () => {
                   disabled={currentPage === 1}
                   onClick={() => handlePageChange(currentPage - 1)}
                 />
-
                 {Array.from(
                   { length: pagination.last_page },
                   (_, i) => i + 1
@@ -350,7 +277,6 @@ const NotificationsPage = () => {
                     {page}
                   </Pagination.Item>
                 ))}
-
                 <Pagination.Next
                   disabled={currentPage === pagination.last_page}
                   onClick={() => handlePageChange(currentPage + 1)}

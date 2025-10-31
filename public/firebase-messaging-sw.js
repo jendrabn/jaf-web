@@ -13,118 +13,55 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const messaging = firebase.messaging.isSupported()
-  ? firebase.messaging()
-  : null;
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', (event) => event.waitUntil(clients.claim()));
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+});
 
-const broadcastToClients = async (message) => {
-  const clientList = await self.clients.matchAll({
-    type: "window",
-    includeUncontrolled: true,
-  });
+const messaging = firebase.messaging.isSupported() ? firebase.messaging() : null;
 
-  for (const client of clientList) {
-    client.postMessage(message);
-  }
-
-  if (clientList.length === 0) {
-    console.info("[Firebase][SW] Tidak ada window client untuk menerima broadcast:", message.type);
-  }
-};
-
-const displayNotification = async (payload) => {
-  console.info("[Firebase][SW] Pesan background diterima:", payload);
-  const notification = payload.notification ?? {};
-
-  const fallbackTag = `fcm-${Date.now()}`;
+const showNotification = (payload) => {
+  const notification = payload.notification || {};
   const title = notification.title || "JAF Parfum's";
-  const tag =
-    notification.tag ||
-    payload.collapseKey ||
-    payload.collapse_key ||
-    payload.messageId ||
-    fallbackTag;
+  const tag = notification.tag || payload.messageId || `fcm-${Date.now()}`;
 
-  const notificationOptions = {
+  const options = {
     body: notification.body,
     icon: notification.icon || "/images/favicon-96x96.png",
+    badge: "/images/favicon-96x96.png",
+    tag,
     data: {
       ...payload.data,
       _fcmMessageId: payload.messageId,
-      _receivedAt: Date.now(),
     },
-    tag,
-    badge: notification.badge || "/images/favicon-96x96.png",
+    renotify: tag !== `fcm-${Date.now()}`,
   };
 
-  if (notification.image) {
-    notificationOptions.image = notification.image;
-  }
+  if (notification.image) options.image = notification.image;
 
-  if (tag !== fallbackTag) {
-    notificationOptions.renotify = true;
-  }
-
-  try {
-    await self.registration.showNotification(title, notificationOptions);
-    const activeNotifications = await self.registration.getNotifications({
-      includeTriggered: true,
-    });
-    console.info("[Firebase][SW] Notifikasi OS dipicu:", {
-      title,
-      tag: notificationOptions.tag,
-      activeNotificationCount: activeNotifications.length,
-      activeNotificationTitles: activeNotifications.map((item) => item.title),
-    });
-    await broadcastToClients({
-      type: "FCM_NOTIFICATION_SHOWN",
-      title,
-      tag: notificationOptions.tag ?? null,
-      payload,
-    });
-  } catch (error) {
-    console.error("[Firebase][SW] Gagal menampilkan notifikasi:", error);
-    await broadcastToClients({
-      type: "FCM_NOTIFICATION_ERROR",
-      error: error instanceof Error ? error.message : String(error),
-      payload,
-    });
-  }
+  self.registration.showNotification(title, options);
 };
 
 if (messaging) {
-  messaging.onBackgroundMessage((payload) => {
-    void displayNotification(payload);
-  });
-} else {
-  console.warn("[Firebase][SW] Messaging tidak didukung di lingkungan ini.");
+  messaging.onBackgroundMessage(showNotification);
 }
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-
-  const targetUrl =
-    event.notification?.data?.click_action ||
-    event.notification?.data?.link ||
-    "/";
+  const url = event.notification?.data?.click_action || event.notification?.data?.link || "/";
 
   event.waitUntil(
-    self.clients
-      .matchAll({ type: "window", includeUncontrolled: true })
+    clients.matchAll({ type: "window", includeUncontrolled: true })
       .then((clientList) => {
         for (const client of clientList) {
-          if ("focus" in client) {
+          if (client.focus) {
             client.focus();
-            if ("navigate" in client && targetUrl) {
-              client.navigate(targetUrl);
-            }
+            if (client.navigate && url !== "/") client.navigate(url);
             return;
           }
         }
-        if (self.clients.openWindow && targetUrl) {
-          return self.clients.openWindow(targetUrl);
-        }
-        return undefined;
-      }),
+        return clients.openWindow(url);
+      })
   );
 });

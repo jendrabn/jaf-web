@@ -2,16 +2,12 @@ import { initializeApp } from "firebase/app";
 import {
   getMessaging,
   getToken,
-  isSupported as isMessagingSupported,
+  isSupported,
   onMessage,
   type MessagePayload,
   type Messaging,
 } from "firebase/messaging";
-import {
-  getAnalytics,
-  isSupported as isAnalyticsSupported,
-  type Analytics,
-} from "firebase/analytics";
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDnJmWPU10PyZInD7g3FdXki2AA8apGl2M",
@@ -24,95 +20,55 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-let analyticsInstance: Analytics | null = null;
-let messagingPromise: Promise<Messaging | null> | null = null;
+let messagingInstance: Messaging | null = null;
 
 export const initAnalytics = async () => {
-  if (typeof window === "undefined") {
-    return null;
+  if (typeof window !== "undefined") {
+    try {
+      return await getAnalytics(app);
+    } catch {
+      return null;
+    }
   }
-
-  if (!analyticsInstance && (await isAnalyticsSupported())) {
-    analyticsInstance = getAnalytics(app);
-  }
-
-  return analyticsInstance;
+  return null;
 };
 
 export const getFirebaseMessaging = async () => {
-  if (!messagingPromise) {
-    messagingPromise = (async () => {
-      const supported = await isMessagingSupported();
-      if (!supported) {
-        return null;
-      }
-      return getMessaging(app);
-    })();
+  if (!messagingInstance) {
+    const supported = await isSupported();
+    messagingInstance = supported ? getMessaging(app) : null;
   }
-
-  return messagingPromise;
+  return messagingInstance;
 };
 
 export const requestFcmToken = async () => {
-  if (typeof window === "undefined") {
+  if (typeof window === "undefined" || !("Notification" in window)) {
     return null;
   }
 
-  if (!("Notification" in window)) {
-    console.warn("[Firebase] Browser tidak mendukung Notification API.");
-    return null;
-  }
+  const permission =
+    Notification.permission === "default"
+      ? await Notification.requestPermission()
+      : Notification.permission;
 
-  let permission = Notification.permission;
-  if (permission === "default") {
-    permission = await Notification.requestPermission();
-    if (import.meta.env.DEV) {
-      console.info("[Firebase] Status izin notifikasi sesudah request:", permission);
-    }
-  } else if (import.meta.env.DEV) {
-    console.info("[Firebase] Status izin notifikasi saat ini:", permission);
-  }
-
-  if (permission !== "granted") {
-    console.warn("[Firebase] Izin notifikasi belum diberikan.");
-    return null;
-  }
+  if (permission !== "granted") return null;
 
   const messaging = await getFirebaseMessaging();
-  if (!messaging) {
-    console.warn("[Firebase] Messaging belum tersedia di lingkungan ini.");
-    return null;
-  }
-
-  const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY as
-    | string
-    | undefined;
+  if (!messaging) return null;
 
   try {
-    let serviceWorkerRegistration: ServiceWorkerRegistration | undefined;
-    if ("serviceWorker" in navigator) {
-      try {
-        serviceWorkerRegistration = await navigator.serviceWorker.ready;
-      } catch (error) {
-        console.warn("[Firebase] Gagal mendapatkan service worker yang aktif:", error);
-      }
-    }
+    const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+    const serviceWorkerRegistration =
+      "serviceWorker" in navigator
+        ? await navigator.serviceWorker.ready
+        : undefined;
 
     const token = await getToken(messaging, {
-      vapidKey: vapidKey && vapidKey.length > 0 ? vapidKey : undefined,
+      vapidKey: vapidKey || undefined,
       serviceWorkerRegistration,
     });
 
-    if (token) {
-      if (import.meta.env.DEV) {
-        console.info("[Firebase] Token FCM berhasil didapatkan:", token);
-      }
-      return token;
-    }
-
-    console.warn("[Firebase] getToken tidak mengembalikan token.");
-    return null;
+    return token || null;
   } catch (error) {
     console.error("[Firebase] Gagal mendapatkan token FCM:", error);
     return null;
@@ -120,19 +76,12 @@ export const requestFcmToken = async () => {
 };
 
 export const subscribeToForegroundMessages = async (
-  callback: (payload: MessagePayload) => void,
-): Promise<() => void> => {
+  callback: (payload: MessagePayload) => void
+) => {
   const messaging = await getFirebaseMessaging();
-  if (!messaging) {
-    return () => {};
-  }
+  if (!messaging) return () => {};
 
-  return onMessage(messaging, (payload) => {
-    if (import.meta.env.DEV) {
-      console.info("[Firebase] Pesan foreground diterima:", payload);
-    }
-    callback(payload);
-  });
+  return onMessage(messaging, callback);
 };
 
 export default app;
