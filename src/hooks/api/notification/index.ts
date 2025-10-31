@@ -27,12 +27,6 @@ export const getUnreadCount = async (): Promise<UnreadCountResponse> => {
   return response as UnreadCountResponse;
 };
 
-export const updateFcmToken = async (token: string) => {
-  return fetchApi().post("/fcm/token", { fcm_token: token });
-};
-
-export const removeFcmToken = async (token?: string) => {
-  return fetchApi().delete("/fcm/token", {
-    ...(token ? { data: { fcm_token: token } } : {}),
-  });
+export const updateFcmToken = async (token: string | null) => {
+  return fetchApi().put("/user/fcm-token", { fcm_token: token });
 };

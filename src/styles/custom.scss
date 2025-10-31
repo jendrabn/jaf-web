@@ -836,3 +836,18 @@ footer {
     transition: none;
   }
 }
+
+.notification-item {
+  &.border-primary {
+    border-left: 4px solid var(--bs-primary) !important;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .btn-sm {
+    font-size: 0.8rem;
+  }
+}

@@ -9,10 +9,7 @@ import {
 import { Button, Badge, Spinner, Alert, Pagination } from "react-bootstrap";
 import Loading from "@/components/ui/Loading";
 import { requestFcmToken } from "@/lib/firebase";
-import {
-  updateFcmToken as updateFcmTokenRequest,
-  removeFcmToken as removeFcmTokenRequest,
-} from "@/hooks/api/notification";
+import { updateFcmToken as updateFcmTokenRequest } from "@/hooks/api/notification";
 
 const NotificationsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,7 +88,7 @@ const NotificationsPage = () => {
           reportSuccess("Push notification berhasil diaktifkan.");
         } else if (syncedToken) {
           setIsSyncingToken(true);
-          await removeFcmTokenRequest(syncedToken);
+          await updateFcmTokenRequest(null);
           setSyncedToken(null);
           reportSuccess(null);
         }
@@ -106,7 +103,7 @@ const NotificationsPage = () => {
         setIsSyncingToken(false);
       }
     },
-    [syncedToken, updateFcmTokenRequest, removeFcmTokenRequest]
+    [syncedToken]
   );
 
   useEffect(() => {
@@ -286,11 +283,11 @@ const NotificationsPage = () => {
 
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          {unreadCount > 0 && (
+          {/* {unreadCount > 0 && (
             <Badge bg="primary" pill>
               {unreadCount} belum dibaca
             </Badge>
-          )}
+          )} */}
         </div>
 
         {unreadCount > 0 && (

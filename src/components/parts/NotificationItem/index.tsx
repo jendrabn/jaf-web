@@ -81,7 +81,7 @@ const NotificationItem = ({
   return (
     <Card
       className={`mb-3 notification-item ${
-        !notification.is_read ? "border-primary bg-light" : ""
+        !notification.is_read ? "border-primary" : ""
       }`}
       style={{ cursor: isNavigable ? "pointer" : "default" }}
       onClick={handleNavigate}
@@ -94,7 +94,7 @@ const NotificationItem = ({
           <div className="flex-grow-1">
             <div className="d-flex justify-content-between align-items-start mb-2">
               <div className="flex-grow-1">
-                <h6 className="fw-semibold mb-1">
+                <h6 className="fw-semibold mb-2">
                   {headline(notification.title)}
                 </h6>
                 <Badge

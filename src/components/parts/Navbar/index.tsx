@@ -283,19 +283,6 @@ const Navbar = () => {
                           </Link>
                         </li>
                         <li>
-                          <Link
-                            className="dropdown-item text-muted fs-6 d-flex gap-3 position-relative"
-                            to="/account/notifications"
-                          >
-                            <i className="bi bi-bell"></i>Notifikasi
-                            {unreadCount && unreadCount > 0 && (
-                              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ms-1">
-                                {unreadCount > 99 ? "99+" : unreadCount}
-                              </span>
-                            )}
-                          </Link>
-                        </li>
-                        <li>
                           <a
                             href={`https://wa.me/${env.STORE_WHATSAPP}?text=Hai,%20Admin%20JAF,%20Saya%20ingin%20bertanya%20tentang%20sesuatu%20bisakah%20kamu%20membantu?`}
                             className="dropdown-item text-muted fs-6 d-flex gap-3"
