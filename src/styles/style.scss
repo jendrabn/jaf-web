@@ -197,6 +197,8 @@ $body-bg-dark: #212121;
 
 @import "theme.scss";
 
+@import "notifications.scss";
+
 /* Smooth transition for theme changes and image swaps */
 :root {
   --theme-transition-duration: 200ms;

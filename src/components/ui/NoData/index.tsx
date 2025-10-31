@@ -6,6 +6,7 @@ interface NoDataProps {
   title?: string;
   message?: string | ReactNode;
   icon?: string;
+  showIcon?: boolean;
 }
 
 const NoData = ({
@@ -13,6 +14,7 @@ const NoData = ({
   title = "Data Tidak Tersedia",
   message = "Kami tidak menemukan data untuk ditampilkan saat ini. Silakan periksa kembali atau coba beberapa saat lagi.",
   icon = EmptyFolder,
+  showIcon = true,
 }: NoDataProps) => {
   return (
     <section
@@ -21,12 +23,14 @@ const NoData = ({
       role="status"
     >
       <div className="text-center">
-        <img
-          src={icon}
-          alt="No Data"
-          style={{ maxWidth: 100 }}
-          className="mb-3"
-        />
+        {showIcon && (
+          <img
+            src={icon}
+            alt="No Data"
+            style={{ maxWidth: 100 }}
+            className="mb-3"
+          />
+        )}
         <h2 id="no-data-title" className="h5 fw-semibold text-dark mb-2">
           {title}
         </h2>

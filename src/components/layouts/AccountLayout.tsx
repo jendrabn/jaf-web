@@ -16,6 +16,7 @@ const NavAccount = () => {
     { to: "/account/orders", label: "Pesanan" },
     { to: "/account/wishlist", label: "Wishlist" },
     { to: "/account/address", label: "Alamat" },
+    { to: "/account/notifications", label: "Notifikasi" },
     { to: "/account/change-password", label: "Ubah Password" },
   ];
 

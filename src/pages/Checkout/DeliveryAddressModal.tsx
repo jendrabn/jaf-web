@@ -250,7 +250,7 @@ function DeliveryAddressModal({
 
   return (
     <Modal show={show} onHide={handleClose} backdrop="static">
-      <Modal.Header>
+      <Modal.Header className="border-bottom-0">
         <Modal.Title>Alamat Pengiriman</Modal.Title>
       </Modal.Header>
       <Modal.Body>

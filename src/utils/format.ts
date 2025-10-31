@@ -68,3 +68,10 @@ export const formatCurrency = (value: number) => {
     minimumFractionDigits: 0,
   }).format(value);
 };
+
+export const headline = (value: string) => {
+  return value
+    .split(" ")
+    .map((word) => word[0].toUpperCase() + word.slice(1))
+    .join(" ");
+};

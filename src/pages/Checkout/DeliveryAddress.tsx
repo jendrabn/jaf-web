@@ -16,7 +16,12 @@ function DeliveryAddress({
   return (
     <Card className={className}>
       <Card.Body>
-        <Card.Title>Alamat Pengiriman</Card.Title>
+        <Card.Title className="d-flex justify-content-between">
+          <span>Alamat Pengiriman</span>
+          <Button variant="outline-primary" onClick={handleShowAddressModal}>
+            {address ? "Ubah Alamat" : "Tambah Alamat"}
+          </Button>
+        </Card.Title>
         <div className="d-flex flex-column flex-lg-row align-items-center">
           {address ? (
             <address className="flex-grow-1 mb-0 pe-2 lh-sm">
@@ -31,15 +36,6 @@ function DeliveryAddress({
               message="Anda belum menambahkan alamat pengiriman. Tambahkan alamat terlebih dahulu untuk melanjutkan proses pemesanan."
             />
           )}
-          <div className="mt-3 mt-lg-0 align-self-start">
-            <Button
-              variant="outline-primary"
-              onClick={handleShowAddressModal}
-              size="sm"
-            >
-              <i className="bi bi-pencil-square"></i> Ubah
-            </Button>
-          </div>
         </div>
       </Card.Body>
     </Card>

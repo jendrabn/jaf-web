@@ -6,6 +6,7 @@ import {
   useFetchProductCategories,
 } from "@/hooks/api/product";
 import { useLogout } from "@/hooks/api/auth";
+import { useGetUnreadCount } from "@/hooks/api/notification/useFetchNotifications";
 import type { MouseEvent } from "react";
 import { useCartState } from "@/contexts/CartContext";
 import { removeAuthToken } from "@/utils/functions";
@@ -22,6 +23,8 @@ const Navbar = () => {
   const { data: categories } = useFetchProductCategories();
   const { data: brands } = useFetchProductBrands();
   const { carts } = useCartState();
+  const { data: unreadCount } = useGetUnreadCount();
+  const unreadTotal = typeof unreadCount === "number" ? unreadCount : 0;
 
   const handleLogout = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -189,6 +192,22 @@ const Navbar = () => {
                     <li className="nav-item me-2">
                       <NavLink
                         className="nav-link"
+                        to={"/account/notifications"}
+                        title="Notifikasi"
+                      >
+                        <div className="position-relative d-inline-block">
+                          <i className="bi bi-bell fs-5"></i>
+                          {unreadTotal > 0 && (
+                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                              {unreadTotal > 99 ? "99+" : unreadTotal}
+                            </span>
+                          )}
+                        </div>
+                      </NavLink>
+                    </li>
+                    <li className="nav-item me-2">
+                      <NavLink
+                        className="nav-link"
                         to={"/cart"}
                         title="Keranjang Belanja"
                       >
@@ -261,6 +280,19 @@ const Navbar = () => {
                             to="/account/orders"
                           >
                             <i className="bi bi-box-seam"></i>Pesanan Saya
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="dropdown-item text-muted fs-6 d-flex gap-3 position-relative"
+                            to="/account/notifications"
+                          >
+                            <i className="bi bi-bell"></i>Notifikasi
+                            {unreadCount && unreadCount > 0 && (
+                              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ms-1">
+                                {unreadCount > 99 ? "99+" : unreadCount}
+                              </span>
+                            )}
                           </Link>
                         </li>
                         <li>

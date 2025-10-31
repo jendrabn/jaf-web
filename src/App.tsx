@@ -39,6 +39,7 @@ const ContactPage = lazy(() => import("@/pages/Contact"));
 const AboutPage = lazy(() => import("@/pages/About"));
 const FaqPage = lazy(() => import("@/pages/Faq"));
 const HelpPage = lazy(() => import("@/pages/Help"));
+const NotificationsPage = lazy(() => import("@/pages/_account/Notifications"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -128,6 +129,10 @@ function App() {
                             <Route
                               path="account/change-password"
                               element={<ChangePassword />}
+                            />
+                            <Route
+                              path="account/notifications"
+                              element={<NotificationsPage />}
                             />
                           </Route>
 
