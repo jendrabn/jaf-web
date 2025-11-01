@@ -12,7 +12,8 @@ export const useFetchNotifications = (page = 1) => {
   return useQuery<NotificationListResponse>({
     queryKey: ["notifications", page],
     queryFn: () => fetchNotifications(page),
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60, // 1 minute
+    refetchInterval: 1000 * 60, // Auto refresh every 1 minute
   });
 };
 
@@ -75,6 +76,7 @@ export const useGetUnreadCount = () => {
 
       return 0;
     },
-    staleTime: 1000 * 60 * 2, // 2 minutes
+    staleTime: 1000 * 60, // 1 minute
+    refetchInterval: 1000 * 60, // Auto refresh every 1 minute
   });
 };
