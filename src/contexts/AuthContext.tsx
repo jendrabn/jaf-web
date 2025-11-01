@@ -4,6 +4,7 @@ import type { UserTypes } from "@/types/user";
 import { useFetchUser } from "@/hooks/api/user";
 import { getAuthToken } from "@/utils/functions";
 import { useLocation } from "react-router";
+import { initializeFcmToken } from "@/utils/fcm";
 
 // Action type
 type AuthAction =
@@ -63,6 +64,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const token = getAuthToken();
     if (token) {
       dispatch({ type: "SET_AUTHENTICATED", payload: true });
+      // Initialize FCM token when user is authenticated
+      initializeFcmToken(true).catch((error) => {
+        console.error("[AuthContext] Gagal menginisialisasi FCM token:", error);
+      });
     } else {
       dispatch({ type: "SET_AUTHENTICATED", payload: false });
     }

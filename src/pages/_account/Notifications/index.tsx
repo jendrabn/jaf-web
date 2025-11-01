@@ -8,8 +8,7 @@ import {
 } from "@/hooks/api/notification/useFetchNotifications";
 import { Button, Badge, Spinner, Alert, Pagination } from "react-bootstrap";
 import Loading from "@/components/ui/Loading";
-import { requestFcmToken } from "@/lib/firebase";
-import { updateFcmToken } from "@/hooks/api/notification";
+import { initializeFcmToken, refreshFcmToken } from "@/utils/fcm";
 
 const NotificationsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +48,6 @@ const NotificationsPage = () => {
       try {
         if (token && token !== syncedToken) {
           setIsProcessing(true);
-          await updateFcmToken(token);
           setSyncedToken(token);
           if (!silent)
             setMessage({
@@ -58,7 +56,6 @@ const NotificationsPage = () => {
             });
         } else if (!token && syncedToken) {
           setIsProcessing(true);
-          await updateFcmToken(null);
           setSyncedToken(null);
         }
       } catch {
@@ -87,8 +84,9 @@ const NotificationsPage = () => {
       setPushPermission(permission);
 
       if (permission === "granted") {
-        const token = await requestFcmToken();
-        await syncToken(token ?? null, true);
+        // Refresh FCM token to ensure we have the latest one
+        const token = await refreshFcmToken();
+        await syncToken(token, true);
       } else {
         await syncToken(null, true);
       }
@@ -110,7 +108,7 @@ const NotificationsPage = () => {
     setMessage({ type: "success", text: null });
 
     try {
-      const token = await requestFcmToken();
+      const token = await initializeFcmToken();
       const permission = Notification.permission;
       setPushPermission(permission);
 
