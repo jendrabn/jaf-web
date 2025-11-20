@@ -84,11 +84,41 @@ const BrandSlider = ({ brands }: { brands: ProductBrandTypes[] }) => {
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
     responsive: [
-      { breakpoint: 1400, settings: { slidesToShow: 4, slidesToScroll: 4 } },
-      { breakpoint: 1200, settings: { slidesToShow: 4, slidesToScroll: 4 } },
-      { breakpoint: 992, settings: { slidesToShow: 4, slidesToScroll: 4 } },
-      { breakpoint: 768, settings: { slidesToShow: 3, slidesToScroll: 2 } },
-      { breakpoint: 576, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+      {
+        breakpoint: 1400, // <= 1400px
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+        },
+      },
+      {
+        breakpoint: 1200, // <= 1200px
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 992, // <= 992px
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 768, // <= 768px
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 576, // <= 576px
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
     ],
   };
 

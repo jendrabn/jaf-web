@@ -22,6 +22,9 @@ function PaymentMethod({ className }: PaymentMethodProps) {
   const banks = checkout?.payment_methods?.bank;
   const ewallets = checkout?.payment_methods?.ewallet;
   const gateway = checkout?.payment_methods?.gateway;
+  const gatewayRadioId = "payment-method-gateway";
+  const bankRadioId = "payment-method-bank";
+  const ewalletRadioId = "payment-method-ewallet";
 
   const handlePaymentMethodChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -71,6 +74,7 @@ function PaymentMethod({ className }: PaymentMethodProps) {
                 <Form.Check
                   inline
                   type="radio"
+                  id={gatewayRadioId}
                   label="Midtrans (Otomatis)"
                   name="payment_method"
                   value={PAYMENT_METHOD_GATEWAY}
@@ -82,6 +86,7 @@ function PaymentMethod({ className }: PaymentMethodProps) {
               <Form.Check
                 inline
                 type="radio"
+                id={bankRadioId}
                 label="Bank (Manual)"
                 name="payment_method"
                 value={PAYMENT_METHOD_BANK}
@@ -91,6 +96,7 @@ function PaymentMethod({ className }: PaymentMethodProps) {
               <Form.Check
                 inline
                 type="radio"
+                id={ewalletRadioId}
                 label="E-Wallet (Manual)"
                 name="payment_method"
                 value={PAYMENT_METHOD_EWALLET}

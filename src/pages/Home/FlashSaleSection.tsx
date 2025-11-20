@@ -85,26 +85,34 @@ const FlashSaleSection = () => {
     infinite: products.length > 6,
     speed: 400,
     swipeToSlide: true,
-    slidesToShow: Math.min(6, products.length || 6),
+    slidesToShow: Math.min(6, products.length),
     slidesToScroll: 2,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
     responsive: [
       {
-        breakpoint: 1200,
-        settings: { slidesToShow: Math.min(4, products.length || 4) },
+        breakpoint: 1200, // <= 1200px
+        settings: {
+          slidesToShow: Math.min(4, products.length),
+        },
       },
       {
-        breakpoint: 992,
-        settings: { slidesToShow: Math.min(4, products.length || 4) },
+        breakpoint: 992, // <= 992px
+        settings: {
+          slidesToShow: Math.min(3, products.length),
+        },
       },
       {
-        breakpoint: 768,
-        settings: { slidesToShow: Math.min(4, products.length || 4) },
+        breakpoint: 768, // <= 768px
+        settings: {
+          slidesToShow: Math.min(2, products.length),
+        },
       },
       {
-        breakpoint: 576,
-        settings: { slidesToShow: Math.min(2, products.length || 2) },
+        breakpoint: 576, // <= 576px
+        settings: {
+          slidesToShow: Math.min(2, products.length),
+        },
       },
     ],
   };
