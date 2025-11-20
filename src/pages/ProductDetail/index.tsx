@@ -17,6 +17,8 @@ import { Helmet } from "react-helmet";
 import { env } from "@/utils/config";
 import ProductImageSlider from "./ProductImageSlider";
 import ShareModal from "@/components/parts/ShareModal";
+import CountdownBlocks from "@/components/ui/CountdownBlocks";
+import { getProductPricingInfo } from "@/utils/pricing";
 
 export default function ProductDetailPage() {
   const { slug } = useParams();
@@ -67,28 +69,16 @@ export default function ProductDetailPage() {
     );
   };
 
-  const isDiscounted = !!(
-    product?.is_discounted && product?.price_after_discount != null
-  );
-
-  const originalPrice = product?.price ?? 0;
-
-  const discountedPrice = product?.price_after_discount ?? originalPrice;
-
-  const discountPercent =
-    typeof product?.discount_in_percent === "number"
-      ? Math.max(Math.round(product.discount_in_percent), 0)
-      : originalPrice > 0 && discountedPrice < originalPrice
-      ? Math.max(
-          Math.round(((originalPrice - discountedPrice) / originalPrice) * 100),
-          0
-        )
-      : null;
-
+  const pricingInfo = product ? getProductPricingInfo(product) : null;
+  const priceToDisplay = pricingInfo?.currentPrice ?? product?.price ?? 0;
+  const showStrikeThrough =
+    Boolean(pricingInfo?.strikeThroughPrice) &&
+    pricingInfo?.strikeThroughPrice !== priceToDisplay;
   const discountLabel =
-    discountPercent && discountPercent > 0 ? `-${discountPercent}%` : null;
-
-  const hasDiscountLabel = !!discountLabel;
+    pricingInfo?.discountPercent && pricingInfo.discountPercent > 0
+      ? `-${pricingInfo.discountPercent}%`
+      : null;
+  const isFlashSaleRunning = Boolean(pricingInfo?.isFlashSale);
 
   if (!isLoading && !product) return <NotFoundPage />;
 
@@ -172,28 +162,39 @@ export default function ProductDetailPage() {
                 </div>
 
                 {/* Product Price */}
+                {isFlashSaleRunning && (
+                  <div className="d-flex align-items-center gap-2 mt-3 flex-wrap">
+                    <span className="badge bg-primary d-inline-flex align-items-center gap-1">
+                      <i className="bi bi-lightning-charge-fill"></i> Flash Sale
+                    </span>
+                    {product.flash_sale_end_at && (
+                      <CountdownBlocks
+                        targetDate={product.flash_sale_end_at}
+                        size="sm"
+                      />
+                    )}
+                  </div>
+                )}
                 <div className="mt-3">
-                  {isDiscounted ? (
-                    <div className="d-flex align-items-center gap-2">
-                      <span className="fs-2 fw-bold text-danger">
-                        {formatCurrency(discountedPrice)}
-                      </span>
+                  <div className="d-flex align-items-center gap-2 flex-wrap">
+                    <span className="fs-2 fw-bold text-danger">
+                      {formatCurrency(priceToDisplay)}
+                    </span>
+                    {showStrikeThrough && (
                       <div className="fs-6 text-muted">
                         (
                         <span className="text-decoration-line-through text-muted">
-                          {formatCurrency(originalPrice)}
+                          {formatCurrency(
+                            pricingInfo?.strikeThroughPrice ?? product?.price ?? 0
+                          )}
                         </span>
-                        {hasDiscountLabel && (
+                        {discountLabel && (
                           <span className="ms-2">{discountLabel}</span>
                         )}
                         )
                       </div>
-                    </div>
-                  ) : (
-                    <span className="fs-2 fw-bold text-danger">
-                      {formatCurrency(originalPrice)}
-                    </span>
-                  )}
+                    )}
+                  </div>
                 </div>
 
                 {/* Product Info */}

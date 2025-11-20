@@ -6,6 +6,7 @@ import {
   useCheckoutDispatch,
   useCheckoutState,
 } from "@/contexts/CheckoutContext";
+import { getProductPricingInfo } from "@/utils/pricing";
 
 interface ProductOrderedListProps {
   className?: string;
@@ -49,37 +50,18 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
             <tbody>
               {carts.map((cart) => {
                 const { product, quantity } = cart;
-                const {
-                  price,
-                  price_after_discount,
-                  is_discounted,
-                  discount_in_percent,
-                } = product;
-
-                const isDiscounted = Boolean(
-                  is_discounted && price_after_discount != null
-                );
-                const unitPrice = isDiscounted
-                  ? price_after_discount ?? price
-                  : price;
+                const pricing = getProductPricingInfo(product);
+                const unitPrice = pricing.currentPrice ?? product.price;
                 const subtotal = unitPrice * quantity;
-                const originalSubtotal = price * quantity;
-
-                const discountPercent =
-                  typeof discount_in_percent === "number"
-                    ? Math.max(Math.round(discount_in_percent), 0)
-                    : price > 0 && price_after_discount != null
-                    ? Math.max(
-                        Math.round(
-                          ((price - price_after_discount) / price) * 100
-                        ),
-                        0
-                      )
-                    : null;
+                const originalSubtotal =
+                  (pricing.strikeThroughPrice ?? product.price) * quantity;
+                const showStrikeThrough =
+                  Boolean(pricing.strikeThroughPrice) &&
+                  pricing.strikeThroughPrice !== unitPrice;
 
                 const discountLabel =
-                  discountPercent && discountPercent > 0
-                    ? `-${discountPercent}%`
+                  pricing.discountPercent && pricing.discountPercent > 0
+                    ? `-${pricing.discountPercent}%`
                     : null;
 
                 return (
@@ -93,13 +75,15 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
                       {product.name}
                     </td>
                     <td className="text-center">
-                      {isDiscounted ? (
+                      {showStrikeThrough ? (
                         <div className="d-flex flex-column align-items-center">
                           <span>{formatCurrency(unitPrice)}</span>
                           <small className="text-secondary-emphasis">
                             (
                             <span className="text-decoration-line-through text-muted">
-                              {formatCurrency(price)}
+                              {formatCurrency(
+                                pricing.strikeThroughPrice ?? product.price
+                              )}
                             </span>
                             {discountLabel && (
                               <span className="ms-1">{discountLabel}</span>
@@ -113,7 +97,7 @@ function ProductOrderedList({ className }: ProductOrderedListProps) {
                     </td>
                     <td className="text-center">{quantity}</td>
                     <td className="text-end">
-                      {isDiscounted ? (
+                      {showStrikeThrough ? (
                         <div className="d-flex flex-column align-items-end">
                           <span>{formatCurrency(subtotal)}</span>
                           <small className="text-secondary-emphasis">

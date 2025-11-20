@@ -10,6 +10,7 @@ import { useFetchCarts } from "@/hooks/api/cart";
 import { type CartItemTypes } from "@/types/cart";
 import { getSelectedCartIds, setSelectedCartIds } from "@/utils/functions";
 import { useLocation } from "react-router";
+import { getProductFinalPrice } from "@/utils/pricing";
 
 // Action type
 type CartAction =
@@ -140,8 +141,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         .reduce(
           (total, cart) =>
             total +
-            (cart.product.price_after_discount || cart.product.price) *
-              cart.quantity,
+            getProductFinalPrice(cart.product) * cart.quantity,
           0
         ),
     [state.carts, state.selectedIds]

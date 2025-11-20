@@ -41,6 +41,7 @@ const AboutPage = lazy(() => import("@/pages/About"));
 const FaqPage = lazy(() => import("@/pages/Faq"));
 const HelpPage = lazy(() => import("@/pages/Help"));
 const NotificationsPage = lazy(() => import("@/pages/_account/Notifications"));
+const FlashSalePage = lazy(() => import("@/pages/FlashSale"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -180,10 +181,11 @@ function App() {
                   <Suspense fallback={<Loading className="min-dvh-100" />}>
                     <ThemeProvider>
                       <GoogleOAuthProvider clientId={env.GOOGLE_CLIENT_ID}>
-                        <Routes>
-                          <Route path="*" element={<NotFoundPage />} />
-                          <Route index element={<HomePage />} />
-                          <Route path="products" element={<ProductPage />} />
+            <Routes>
+              <Route path="*" element={<NotFoundPage />} />
+              <Route index element={<HomePage />} />
+              <Route path="flash-sale" element={<FlashSalePage />} />
+              <Route path="products" element={<ProductPage />} />
                           <Route
                             path="products/:slug"
                             element={<ProductDetailPage />}

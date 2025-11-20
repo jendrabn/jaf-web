@@ -1,0 +1,51 @@
+.countdown-blocks {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+
+  .countdown-block {
+    background-color: #0f172a;
+    color: #fff;
+    border-radius: 6px;
+    padding: 6px 8px;
+    min-width: 42px;
+    text-align: center;
+    line-height: 1.1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .countdown-value {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .countdown-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  &.countdown-sm {
+    gap: 2px;
+    .countdown-block {
+      padding: 4px 6px;
+      min-width: 36px;
+    }
+    .countdown-value {
+      font-size: 0.8rem;
+    }
+  }
+
+  &.countdown-lg {
+    .countdown-block {
+      padding: 8px 12px;
+      min-width: 52px;
+    }
+    .countdown-value {
+      font-size: 1.1rem;
+    }
+  }
+}

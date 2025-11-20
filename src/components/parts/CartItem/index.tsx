@@ -5,6 +5,7 @@ import ProductImage from "@/components/parts/ProductImage";
 import QuantityInput from "@/components/ui/QuantityInput";
 import { useUpdateCart, useDeleteCart } from "@/hooks/api/cart";
 import { useCartDispatch, useCartState } from "@/contexts/CartContext";
+import { getProductPricingInfo } from "@/utils/pricing";
 
 interface CartItemProps {
   cart: CartItemTypes;
@@ -18,21 +19,17 @@ function CartItem({ cart }: CartItemProps) {
 
   const { id, product, quantity } = cart;
 
-  const { price, price_after_discount, discount_in_percent, is_discounted } =
-    product;
-
-  const isDiscounted = Boolean(is_discounted && price_after_discount != null);
-  const unitPrice = isDiscounted ? price_after_discount ?? price : price;
+  const pricing = getProductPricingInfo(product);
+  const unitPrice = pricing.currentPrice ?? product.price;
   const subtotal = unitPrice * quantity;
-  const originalSubtotal = price * quantity;
-  const discountPercent =
-    typeof discount_in_percent === "number"
-      ? Math.max(Math.round(discount_in_percent), 0)
-      : price > 0 && price_after_discount != null
-      ? Math.max(Math.round(((price - price_after_discount) / price) * 100), 0)
-      : null;
+  const originalSubtotal = (pricing.strikeThroughPrice ?? product.price) * quantity;
+  const showStrikeThrough =
+    Boolean(pricing.strikeThroughPrice) &&
+    pricing.strikeThroughPrice !== unitPrice;
   const discountLabel =
-    discountPercent && discountPercent > 0 ? `-${discountPercent}%` : null;
+    pricing.discountPercent && pricing.discountPercent > 0
+      ? `-${pricing.discountPercent}%`
+      : null;
 
   const handleSelect = () => {
     dispatch({ type: "SELECT", payload: id });
@@ -88,20 +85,20 @@ function CartItem({ cart }: CartItemProps) {
         </div>
 
         <div style={{ width: "15%" }} className="text-center my-auto">
-          {isDiscounted ? (
+          {showStrikeThrough ? (
             <div className="d-flex flex-column align-items-center">
               <span>{formatCurrency(unitPrice)}</span>
               <small className="text-gray-600">
                 (
                 <span className="text-decoration-line-through text-muted">
-                  {formatCurrency(price)}
+                  {formatCurrency(pricing.strikeThroughPrice ?? product.price)}
                 </span>
                 {discountLabel && <span className="ms-1">{discountLabel}</span>}
                 )
               </small>
             </div>
           ) : (
-            formatCurrency(price)
+            formatCurrency(unitPrice)
           )}
         </div>
 
@@ -116,7 +113,7 @@ function CartItem({ cart }: CartItemProps) {
         </div>
 
         <div style={{ width: "15%" }} className="text-center my-auto">
-          {isDiscounted ? (
+          {showStrikeThrough ? (
             <div className="d-flex flex-column align-items-center">
               <span>{formatCurrency(subtotal)}</span>
               <small className="text-gray-600">
@@ -164,7 +161,7 @@ function CartItem({ cart }: CartItemProps) {
             {product.name}
           </p>
           <p className="mb-1 text-gray-700">
-            {isDiscounted ? (
+            {showStrikeThrough ? (
               <>
                 <span className="text-danger me-2">
                   {formatCurrency(unitPrice)}
@@ -172,7 +169,7 @@ function CartItem({ cart }: CartItemProps) {
                 <small className="text-gray-600">
                   (
                   <span className="text-decoration-line-through text-muted">
-                    {formatCurrency(price)}
+                    {formatCurrency(pricing.strikeThroughPrice ?? product.price)}
                   </span>
                   {discountLabel && (
                     <span className="ms-1">{discountLabel}</span>
@@ -181,7 +178,7 @@ function CartItem({ cart }: CartItemProps) {
                 </small>
               </>
             ) : (
-              formatCurrency(price)
+              formatCurrency(unitPrice)
             )}
           </p>
           <div className="d-flex justify-content-between mb-2">
@@ -201,7 +198,7 @@ function CartItem({ cart }: CartItemProps) {
             </div>
           </div>
           <p className="mb-0 text-end fw-bold">
-            {isDiscounted ? (
+            {showStrikeThrough ? (
               <>
                 <span>{formatCurrency(subtotal)}</span>
                 <small className="text-gray-600 ms-2">

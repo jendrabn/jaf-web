@@ -4,14 +4,14 @@ export interface ProductCategoryTypes {
   id: number;
   name: string;
   slug: string;
-  logo: string;
+  logo: string | null;
 }
 
 export interface ProductBrandTypes {
   id: number;
   name: string;
   slug: string;
-  logo: string;
+  logo: string | null;
 }
 
 export interface ProductParamsTypes {
@@ -42,7 +42,21 @@ export interface ProductDiscountTypes {
   pivot?: { product_id: number; coupon_id: number } | null;
 }
 
-export interface ProductItemTypes {
+export interface ProductFlashSaleMeta {
+  flash_sale_price?: number | null;
+  flash_sale_end_at?: string | null;
+  final_price?: number | null;
+  is_in_flash_sale?: boolean;
+  flash_price?: number | null;
+  flash_price_display?: string | null;
+  flash_stock?: number | null;
+  flash_sold?: number | null;
+  flash_stock_remaining?: number | null;
+  max_qty_per_user?: number | null;
+  is_flash_price_masked?: boolean;
+}
+
+export interface ProductItemTypes extends ProductFlashSaleMeta {
   id: number;
   name: string;
   slug: string;
@@ -62,7 +76,7 @@ export interface ProductItemTypes {
   discount_in_percent?: number | null;
 }
 
-export interface ProductDetailTypes {
+export interface ProductDetailTypes extends ProductFlashSaleMeta {
   id: number;
   name: string;
   slug: string;

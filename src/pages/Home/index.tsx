@@ -14,6 +14,7 @@ import Navbar from "@/components/parts/Navbar";
 import BrandSlider from "@/components/parts/BrandSlider";
 import { useFetchProductBrands } from "@/hooks/api/product";
 import { Link } from "react-router";
+import FlashSaleSection from "./FlashSaleSection";
 
 function HomePage() {
   const { data: landing, isLoading } = useFetchLanding();
@@ -56,6 +57,8 @@ function HomePage() {
             <BrandSlider brands={brands || []} />
           </div>
         </section>
+
+        <FlashSaleSection />
 
         {/* New arrivals */}
         <section className="mt-5 mt-lg-5">

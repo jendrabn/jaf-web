@@ -32,6 +32,7 @@ export const QUERY_KEYS = {
   USER: "user",
   PRODUCTS: "products",
   PRODUCT: "product",
+  FLASH_SALES: "flash_sales",
   PRODUCT_CATEGORIES: "product_categories",
   PRODUCT_BRANDS: "product_brands",
   RELATED_PRODUCTS: "related_products",
