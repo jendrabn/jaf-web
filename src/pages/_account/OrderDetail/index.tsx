@@ -3,7 +3,6 @@ import AccountLayout from "../../../components/layouts/AccountLayout";
 import { useFetchOrder } from "../../../hooks/api/order";
 import NotFoundPage from "../../NotFound";
 import Loading from "../../../components/ui/Loading";
-import { formatDateTime } from "../../../utils/functions";
 import { Alert, Button } from "react-bootstrap";
 import {
   ORDER_STATUS_COLORS,
@@ -26,6 +25,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/utils/constans";
 import PayNowButton from "../../../components/parts/Order/PayNowButton";
 import TrackingModal from "../../../components/parts/Order/TrackingModal";
+import dayjs from "@/utils/dayjs";
 
 const OrderDetailPage = () => {
   const { id } = useParams();
@@ -193,7 +193,8 @@ const OrderDetailPage = () => {
               </div>
               <div>Pesanan Dibuat</div>
               <div className="timestamp">
-                {formatDateTime(order.created_at)}
+                {order.created_at &&
+                  dayjs(order.created_at).format("DD-MM-YYYY HH:mm")}
               </div>
             </div>
             <div
@@ -212,7 +213,8 @@ const OrderDetailPage = () => {
                 Pesanan Dibayar <br /> ({formatCurrency(order.total_amount)})
               </div>
               <div className="timestamp">
-                {formatDateTime(order.confirmed_at)}
+                {order.confirmed_at &&
+                  dayjs(order.confirmed_at).format("DD-MM-YYYY HH:mm")}
               </div>
             </div>
             <div
@@ -225,7 +227,8 @@ const OrderDetailPage = () => {
               </div>
               <div>Pesanan Dikirim</div>
               <div className="timestamp">
-                {formatDateTime(order.shipped_at)}
+                {order.shipped_at &&
+                  dayjs(order.shipped_at).format("DD-MM-YYYY HH:mm")}
               </div>
             </div>
             <div
@@ -238,7 +241,8 @@ const OrderDetailPage = () => {
               </div>
               <div>Pesanan Selesai</div>
               <div className="timestamp">
-                {formatDateTime(order.completed_at)}
+                {order.completed_at &&
+                  dayjs(order.completed_at).format("DD-MM-YYYY HH:mm")}
               </div>
             </div>
           </div>
@@ -260,7 +264,8 @@ const OrderDetailPage = () => {
                 <div className="row">
                   <div className="col">
                     <strong>Tanggal Pesanan</strong> <br />{" "}
-                    {formatDateTime(order.created_at)}
+                    {order.created_at &&
+                      dayjs(order.created_at).format("DD-MM-YYYY HH:mm")}
                   </div>
                   <div className="col border-start border-end">
                     <strong>ID Pesanan</strong> <br /> {order.id}
@@ -335,7 +340,7 @@ const OrderDetailPage = () => {
                       <>
                         <br />
                         <span className="text-danger">
-                          {`Batas waktu pembayaran ${formatDateTime(
+                          {`Batas waktu pembayaran ${dayjs(
                             order.payment_due_date
                           )}`}
                         </span>

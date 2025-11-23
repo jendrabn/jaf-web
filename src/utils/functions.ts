@@ -9,21 +9,6 @@ export const formatCurrency = (value: number = 0) => {
   }).format(value);
 };
 
-export const formatDate = (date: string) => new Date(date).toLocaleString();
-
-export const formatDateTime = (date: string) => {
-  if (!date) return "";
-
-  const d = new Date(date);
-  const day = d.getDate();
-  const month = d.toLocaleString("default", { month: "2-digit" });
-  const year = d.getFullYear();
-  const hours = d.getHours();
-  const minutes = d.getMinutes();
-
-  return `${day}-${month}-${year} ${hours}:${minutes}`;
-};
-
 export const getGenderLabel = (gender: number) => {
   switch (gender) {
     case 1:

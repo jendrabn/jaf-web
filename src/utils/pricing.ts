@@ -27,7 +27,7 @@ const isAfterNow = (value?: string | null) => {
 
 export const getProductFinalPrice = (
   product: ProductPricingSource,
-  flashSaleStatus?: FlashSaleStatusOverride,
+  flashSaleStatus?: FlashSaleStatusOverride
 ) => {
   const price = product.price ?? 0;
   const priceAfterDiscount = product.price_after_discount ?? null;
@@ -48,7 +48,7 @@ export const getProductFinalPrice = (
       : Boolean(
           product.is_in_flash_sale &&
             (flashPrice != null || finalPriceField != null) &&
-            isAfterNow(product.flash_sale_end_at),
+            isAfterNow(product.flash_sale_end_at)
         );
 
   if (isFlashSaleRunning) {
@@ -85,7 +85,7 @@ export const getProductFinalPrice = (
 
 export const getProductPricingInfo = (
   product: ProductPricingSource,
-  flashSaleStatus?: FlashSaleStatusOverride,
+  flashSaleStatus?: FlashSaleStatusOverride
 ): ProductPricingInfo => {
   const price = product.price ?? 0;
   const priceAfterDiscount = product.price_after_discount ?? null;
@@ -106,13 +106,15 @@ export const getProductPricingInfo = (
       : Boolean(
           product.is_in_flash_sale &&
             (flashPrice != null || finalPriceField != null) &&
-            isAfterNow(product.flash_sale_end_at),
+            isAfterNow(product.flash_sale_end_at)
         );
 
   if (isFlashSaleRunning && (flashPrice != null || finalPriceField != null)) {
     const current = flashPrice ?? finalPriceField ?? price;
     const discountPercent =
-      price > 0 ? Math.max(Math.round(((price - current) / price) * 100), 0) : null;
+      price > 0
+        ? Math.max(Math.round(((price - current) / price) * 100), 0)
+        : null;
     return {
       currentPrice: current,
       originalPrice: price,
@@ -130,11 +132,7 @@ export const getProductPricingInfo = (
         ? `Rp${product.flash_price_display}`
         : null;
     const scheduledPrice =
-      flashPrice ??
-      finalPriceField ??
-      priceAfterDiscount ??
-      product.price ??
-      0;
+      flashPrice ?? finalPriceField ?? priceAfterDiscount ?? product.price ?? 0;
     const discountPercent =
       price > 0 && flashPrice
         ? Math.max(Math.round(((price - flashPrice) / price) * 100), 0)
@@ -191,7 +189,11 @@ export const getProductPricingInfo = (
     };
   }
 
-  if (finalPriceField != null && finalPriceField > 0 && finalPriceField < price) {
+  if (
+    finalPriceField != null &&
+    finalPriceField > 0 &&
+    finalPriceField < price
+  ) {
     const discountPercent =
       price > 0
         ? Math.max(Math.round(((price - finalPriceField) / price) * 100), 0)

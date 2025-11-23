@@ -88,15 +88,19 @@ function App() {
             };
 
             if (notification.image) {
-              (notificationOptions as NotificationOptions & {
-                image?: string;
-              }).image = notification.image;
+              (
+                notificationOptions as NotificationOptions & {
+                  image?: string;
+                }
+              ).image = notification.image;
             }
 
             if (tag) {
-              (notificationOptions as NotificationOptions & {
-                renotify?: boolean;
-              }).renotify = true;
+              (
+                notificationOptions as NotificationOptions & {
+                  renotify?: boolean;
+                }
+              ).renotify = true;
             }
 
             return registration.showNotification(title, notificationOptions);
@@ -105,13 +109,13 @@ function App() {
             console.error(
               "[Firebase] Gagal menampilkan Chrome notification:",
               error,
-              payload,
+              payload
             );
           });
       } else {
         console.warn(
           "[Firebase] Notifikasi foreground diterima tetapi izin belum granted atau Notification API tidak tersedia.",
-          payload,
+          payload
         );
       }
     })
@@ -181,11 +185,14 @@ function App() {
                   <Suspense fallback={<Loading className="min-dvh-100" />}>
                     <ThemeProvider>
                       <GoogleOAuthProvider clientId={env.GOOGLE_CLIENT_ID}>
-            <Routes>
-              <Route path="*" element={<NotFoundPage />} />
-              <Route index element={<HomePage />} />
-              <Route path="flash-sale" element={<FlashSalePage />} />
-              <Route path="products" element={<ProductPage />} />
+                        <Routes>
+                          <Route path="*" element={<NotFoundPage />} />
+                          <Route index element={<HomePage />} />
+                          <Route
+                            path="flash-sale"
+                            element={<FlashSalePage />}
+                          />
+                          <Route path="products" element={<ProductPage />} />
                           <Route
                             path="products/:slug"
                             element={<ProductDetailPage />}

@@ -14,11 +14,21 @@ import Navbar from "@/components/parts/Navbar";
 import BrandSlider from "@/components/parts/BrandSlider";
 import { useFetchProductBrands } from "@/hooks/api/product";
 import { Link } from "react-router";
-import FlashSaleSection from "./FlashSaleSection";
+import { useFetchFlashSales } from "@/hooks/api/flash-sale";
+import type { FlashSaleScheduleTypes } from "@/types/flash-sale";
+import FlashSaleSlider from "@/components/parts/FlashSaleSlider";
+import CountdownBlocks from "@/components/ui/CountdownBlocks";
 
 function HomePage() {
   const { data: landing, isLoading } = useFetchLanding();
-  const { data: brands } = useFetchProductBrands();
+  const { data: brands, isLoading: isLoadingBrands } = useFetchProductBrands();
+  const { data: flashSales, isLoading: isLoadingFlashSales } =
+    useFetchFlashSales();
+
+  const getRunningFlashSale = (flashSales?: FlashSaleScheduleTypes[]) =>
+    flashSales?.find((sale) => sale.status === "running");
+
+  const runningFlashSale = getRunningFlashSale(flashSales);
 
   return (
     <>
@@ -44,7 +54,7 @@ function HomePage() {
         </section>
 
         {/* Brand section */}
-        <section className="mt-5">
+        <section className="mt-5 mt-lg-6">
           <div className="container">
             <div className="d-flex justify-content-between align-items-end mb-3">
               <div>
@@ -54,14 +64,52 @@ function HomePage() {
                 </p>
               </div>
             </div>
-            <BrandSlider brands={brands || []} />
+
+            {isLoadingBrands && <Loading className="py-4" />}
+
+            {brands && brands.length > 0 && <BrandSlider brands={brands} />}
           </div>
         </section>
 
-        <FlashSaleSection />
+        {/* Flash Sale section */}
+        <section className="mt-5 mt-lg-6">
+          <div className="container">
+            <div className="flash-sale-home-header mb-4">
+              <div className="d-flex flex-column gap-1">
+                <span className="text-primary fw-semibold text-uppercase small flash-sale-home-label">
+                  Promo Terbatas
+                </span>
+                <div className="d-flex align-items-center flex-wrap gap-3 flash-sale-home-meta">
+                  <h2 className="h4 mb-0">Flash Sale Eksklusif</h2>
+                  {runningFlashSale?.end_at && (
+                    <div className="flash-sale-home-countdown">
+                      <CountdownBlocks
+                        targetDate={runningFlashSale.end_at}
+                        size="sm"
+                      />
+                    </div>
+                  )}
+                </div>
+                <p className="text-secondary mb-0">
+                  Kejar diskon tercepat sebelum waktunya habis!
+                </p>
+              </div>
+              <Link to="/flash-sale" className="flash-sale-home-cta">
+                Lihat Semua <i className="bi bi-arrow-right ms-1"></i>
+              </Link>
+            </div>
+
+            {isLoadingFlashSales && <Loading className="py-4" />}
+
+            {flashSales && flashSales.length > 0 && (
+              <FlashSaleSlider products={runningFlashSale?.products || []} />
+            )}
+          </div>
+        </section>
+        {/* End Flash Sale section */}
 
         {/* New arrivals */}
-        <section className="mt-5 mt-lg-5">
+        <section className="mt-5 mt-lg-6">
           <div className="container">
             <div className="d-flex justify-content-between align-items-end mb-3">
               <div>
@@ -78,7 +126,7 @@ function HomePage() {
               </Link>
             </div>
 
-            {isLoading && <Loading className="py-5" />}
+            {isLoading && <Loading className="py-4" />}
 
             {landing?.products.length === 0 && (
               <p className="text-center text-secondary py-5">
@@ -109,7 +157,7 @@ function HomePage() {
         </section>
 
         {/* Services */}
-        <section className="mt-5">
+        <section className="mt-5 mt-lg=6">
           <div className="container">
             <div className="text-center mb-4">
               <h2 className="h4 mb-1">Kenapa Pilih JAF Parfum's ?</h2>
@@ -122,7 +170,7 @@ function HomePage() {
         </section>
 
         {/* Outlet banner with overlay CTA */}
-        <section className="mt-5">
+        <section className="mt-5 mt-lg-6">
           <div className="container">
             <div className="overflow-hidden rounded-3 position-relative">
               <img
@@ -161,7 +209,7 @@ function HomePage() {
         </section>
 
         {/* Blogs */}
-        <section className="mt-5">
+        <section className="mt-5 mt-lg-6">
           <div className="container">
             <div className="d-flex justify-content-between align-items-end mb-3">
               <div>
@@ -202,7 +250,7 @@ function HomePage() {
         </section>
 
         {/* Marketplace */}
-        <section className="mt-5">
+        <section className="mt-5 mt-lg-6">
           <div className="container">
             <div className="text-center mb-4">
               <h2 className="h4 mb-1">Belanja di Marketplace Favorit Anda</h2>
@@ -213,11 +261,13 @@ function HomePage() {
             <OurMarketplace />
           </div>
         </section>
+        {/* End Marketplace */}
 
         {/* Newsletter */}
-        <section className="mt-5">
+        <section className="mt-5 mt-lg-6">
           <Newsletter />
         </section>
+        {/* End Newsletter */}
       </main>
 
       <Footer />

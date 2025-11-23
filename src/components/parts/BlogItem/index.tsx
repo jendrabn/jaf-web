@@ -1,6 +1,6 @@
 import { type BlogItemTypes } from "@/types/blog";
 import { Badge, Card, Col, Image, Row } from "react-bootstrap";
-import { formatDiffForHumans } from "@/utils/format";
+import dayjs from "@/utils/dayjs";
 import { Link } from "react-router";
 import { words } from "@/utils/functions";
 
@@ -78,7 +78,7 @@ const BlogItem = ({ blog }: Props) => (
               dateTime={new Date(blog.created_at).toISOString()}
               title={new Date(blog.created_at).toLocaleString()}
             >
-              {formatDiffForHumans(blog.created_at)}
+              {dayjs(blog.created_at).fromNow()}
             </time>
           </Card.Text>
         </Card.Body>

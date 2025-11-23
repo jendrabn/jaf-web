@@ -193,10 +193,6 @@ $body-bg-dark: #212121;
   font-size: 0.75rem !important;
 }
 
-@import "custom.scss";
-
-@import "theme.scss";
-
 /* Smooth transition for theme changes and image swaps */
 :root {
   --theme-transition-duration: 200ms;
@@ -214,28 +210,91 @@ img,
     transform var(--theme-transition-duration) ease;
 }
 
-@for $i from 6 through 10 {
-  .mt-#{$i} {
-    margin-top: $i * 0.5rem !important;
+// 1. Custom spacing 6–10
+$custom-spacers: (
+  6: 4rem,
+  7: 5rem,
+  8: 6rem,
+  9: 7rem,
+  10: 8rem,
+);
+
+// 2. Breakpoints
+$breakpoints: (
+  "": null,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+);
+
+@mixin spacing-generator($prefix) {
+  @each $size, $value in $custom-spacers {
+    // Margin
+    .m#{$prefix}-#{$size} {
+      margin: $value !important;
+    }
+    .mt#{$prefix}-#{$size} {
+      margin-top: $value !important;
+    }
+    .mb#{$prefix}-#{$size} {
+      margin-bottom: $value !important;
+    }
+    .ms#{$prefix}-#{$size} {
+      margin-left: $value !important;
+    }
+    .me#{$prefix}-#{$size} {
+      margin-right: $value !important;
+    }
+    .mx#{$prefix}-#{$size} {
+      margin-left: $value !important;
+      margin-right: $value !important;
+    }
+    .my#{$prefix}-#{$size} {
+      margin-top: $value !important;
+      margin-bottom: $value !important;
+    }
+
+    // Padding
+    .p#{$prefix}-#{$size} {
+      padding: $value !important;
+    }
+    .pt#{$prefix}-#{$size} {
+      padding-top: $value !important;
+    }
+    .pb#{$prefix}-#{$size} {
+      padding-bottom: $value !important;
+    }
+    .ps#{$prefix}-#{$size} {
+      padding-left: $value !important;
+    }
+    .pe#{$prefix}-#{$size} {
+      padding-right: $value !important;
+    }
+    .px#{$prefix}-#{$size} {
+      padding-left: $value !important;
+      padding-right: $value !important;
+    }
+    .py#{$prefix}-#{$size} {
+      padding-top: $value !important;
+      padding-bottom: $value !important;
+    }
   }
 }
 
-@for $i from 6 through 10 {
-  .mb-#{$i} {
-    margin-bottom: $i * 0.5rem !important;
+@each $bp, $bp-width in $breakpoints {
+  // prefix responsive
+  $prefix: if($bp == "", "", "-#{$bp}");
+
+  @if $bp-width != null {
+    @media (min-width: #{$bp-width}) {
+      @include spacing-generator($prefix);
+    }
+  } @else {
+    @include spacing-generator($prefix);
   }
 }
 
-@for $i from 6 through 10 {
-  .my-#{$i} {
-    margin-top: $i * 0.5rem !important;
-    margin-bottom: $i * 0.5rem !important;
-  }
-}
-
-@for $i from 6 through 10 {
-  .mx-#{$i} {
-    margin-left: $i * 0.5rem !important;
-    margin-right: $i * 0.5rem !important;
-  }
-}
+@import "custom.scss";
+@import "theme.scss";

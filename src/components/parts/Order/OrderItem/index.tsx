@@ -1,11 +1,12 @@
 import { Link } from "react-router";
 import { type OrderTypes } from "@/types/order";
 import { ORDER_STATUS_COLORS, ORDER_STATUSES } from "@/utils/constans";
-import { formatCurrency, formatSimpleDateTime } from "@/utils/format";
+import { formatCurrency } from "@/utils/format";
 import { Alert, Badge, Button } from "react-bootstrap";
 import ProductImage from "@/components/parts/ProductImage";
 import AddRatingModal from "@/components/parts/Order/AddRatingModal";
 import { useState } from "react";
+import dayjs from "@/utils/dayjs";
 
 interface OrderItemProps {
   order: OrderTypes;
@@ -38,7 +39,7 @@ const OrderItem = (props: OrderItemProps) => {
             <div>
               {/* <span className="fw-semibold me-2">Order #{id}</span> */}
               <small className="text-muted">
-                {formatSimpleDateTime(created_at)}
+                {dayjs(created_at).format("DD-MM-YYYY HH:mm")}
               </small>
             </div>
             <div>
@@ -55,7 +56,7 @@ const OrderItem = (props: OrderItemProps) => {
                 Bayar Sebelum
                 <span className="ms-2 fw-semibold text-danger">
                   <i className="bi bi-stopwatch me-1"></i>
-                  {formatSimpleDateTime(payment_due_date)}
+                  {dayjs(payment_due_date).format("DD-MM-YYYY HH:mm")}
                 </span>
               </p>
             </Alert>

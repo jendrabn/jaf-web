@@ -2,8 +2,8 @@ import type { KeyboardEvent } from "react";
 import { Card, Badge, Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import type { Notification } from "@/types/notification";
-import { formatDateTime } from "@/utils/functions";
 import { headline } from "@/utils/format";
+import dayjs from "@/utils/dayjs";
 
 interface NotificationItemProps {
   notification: Notification;
@@ -119,7 +119,7 @@ const NotificationItem = ({
 
               <div className="text-end ms-2">
                 <small className="text-muted d-block">
-                  {formatDateTime(notification.created_at)}
+                  {dayjs(notification.created_at).format("DD-MM-YYYY HH:mm")}
                 </small>
               </div>
             </div>

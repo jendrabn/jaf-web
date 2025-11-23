@@ -580,103 +580,7 @@ footer {
   }
 }
 
-// /* Remove default slick arrow glyphs inside slider box */
-// .product-image-slider .slider-box .slick-prev:before,
-// .product-image-slider .slider-box .slick-next:before {
-//   display: none;
-// }
-
-// /* Hover-only arrows (only inside main slider box) */
-// .product-image-slider .slider-box .slick-prev,
-// .product-image-slider .slider-box .slick-next {
-//   opacity: 0;
-//   pointer-events: none;
-//   transition: opacity 0.2s ease;
-//   width: 44px;
-//   height: 44px;
-//   z-index: 3;
-//   /* Fix Slick sets font-size: 0; ensure Bootstrap Icons render */
-//   font-size: 16px !important;
-//   line-height: 1 !important;
-// }
-// .product-image-slider .slider-box:hover .slick-prev,
-// .product-image-slider .slider-box:hover .slick-next {
-//   opacity: 1;
-//   pointer-events: auto;
-// }
-// .product-image-slider .slider-box .slick-prev {
-//   left: 16px;
-// }
-// .product-image-slider .slider-box .slick-next {
-//   right: 16px;
-// }
-
-// /* Ensure arrow inner circle and icon sizing */
-// .product-image-slider .slider-box .slick-prev span,
-// .product-image-slider .slider-box .slick-next span {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// }
-// .product-image-slider .slider-box .slick-prev .bi,
-// .product-image-slider .slider-box .slick-next .bi {
-//   font-size: 20px;
-//   line-height: 1;
-//   width: 1em;
-//   height: 1em;
-// }
-
-// /* Gradient side masks only on slider box (not on thumbs) */
-// .product-image-slider .slider-box::before,
-// .product-image-slider .slider-box::after {
-//   content: "";
-//   position: absolute;
-//   top: 0;
-//   bottom: 0;
-//   width: 88px;
-//   pointer-events: none;
-//   z-index: 2;
-// }
-// .product-image-slider .slider-box::before {
-//   left: 0;
-//   background: linear-gradient(90deg, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0) 80%);
-// }
-// .product-image-slider .slider-box::after {
-//   right: 0;
-//   background: linear-gradient(
-//     270deg,
-//     rgba(0, 0, 0, 0.38),
-//     rgba(0, 0, 0, 0) 80%
-//   );
-// }
-
-// /* Slide container */
-// .product-image-slider .product-image-slide {
-//   position: relative;
-// }
-
-// /* Thumbnails in separate container */
-// .product-image-slider .product-image-thumbs .thumb-item {
-//   width: 72px;
-//   height: 72px;
-//   border-radius: 0.5rem;
-//   overflow: hidden;
-//   border: 1px solid var(--bs-border-color, #dee2e6);
-//   opacity: 0.8;
-//   transition: opacity 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-// }
-// .product-image-slider .product-image-thumbs .thumb-item.active {
-//   opacity: 1;
-//   border-color: var(--bs-primary, #0d6efd);
-// }
-// .product-image-slider .product-image-thumbs .thumb-item img {
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover;
-//   display: block;
-// }
-
-/* Accessibility: Skip to content link */
+// Skip link
 .skip-link {
   position: absolute;
   left: 12px;
@@ -707,7 +611,9 @@ footer {
     transition: none;
   }
 }
+// End Skip link
 
+// Notification
 .notification-item {
   &.border-primary {
     border-left: 4px solid var(--bs-primary) !important;
@@ -722,7 +628,9 @@ footer {
     font-size: 0.8rem;
   }
 }
+// End Notification
 
+// Flash Sale Stock
 .flash-sale-stock {
   .flash-sale-stock-progress {
     width: 100%;
@@ -737,7 +645,9 @@ footer {
     background: linear-gradient(90deg, #ef4444, #f97316);
   }
 }
+// End Flash Sale Stock
 
+// Flash Sale Slider
 .flash-sale-home-header {
   padding: 1.25rem 1.5rem;
   border-radius: 1rem;
@@ -792,13 +702,14 @@ footer {
   }
 }
 
-/* Mobile: sembunyikan panah jika ingin */
 @media (max-width: 575.98px) {
   .flash-sale-slider-wrapper .flash-sale-arrow {
     display: none;
   }
 }
+// End Flash Sale Slider
 
+// Brand Slider
 @font-face {
   src: url("../assets/fonts/didot-2/Didot\ Bold.otf");
   font-family: "DidotBold";
@@ -815,11 +726,7 @@ footer {
     text-transform: uppercase !important;
     letter-spacing: 3px;
     max-width: 100%;
-    font-size: clamp(
-      12px,
-      2vw,
-      24px
-    ); /* responsif: minimal 12px, maksimal 24px */
+    font-size: clamp(12px, 2vw, 24px);
   }
 
   .brand-card {
@@ -885,7 +792,9 @@ footer {
     }
   }
 }
+// End Brand Slider
 
+// Banner Slider
 .banner-swiper-wrapper {
   position: relative;
 
@@ -1001,7 +910,9 @@ footer {
     }
   }
 }
+// End Banner Slider
 
+// Product Image Slider
 .product-image-slider {
   .slider-box {
     position: relative;
@@ -1105,3 +1016,4 @@ footer {
     }
   }
 }
+// End Product Image Slider

@@ -5,10 +5,10 @@ import NotFoundPage from "@/pages/NotFound";
 import Loading from "@/components/ui/Loading";
 import { Helmet } from "react-helmet";
 import { Badge, Breadcrumb, Button, Image } from "react-bootstrap";
-import { formatDateTime } from "@/utils/format";
 import { useState } from "react";
 import { env } from "@/utils/config";
 import ShareModal from "@/components/parts/ShareModal";
+import dayjs from "@/utils/dayjs";
 
 function BlogDetailPage() {
   const { slug } = useParams();
@@ -82,7 +82,9 @@ function BlogDetailPage() {
                           dateTime={blog.created_at}
                         >
                           <i className="bi bi-clock me-1"></i>
-                          {formatDateTime(blog.created_at)}
+                          {dayjs(blog.created_at).format(
+                            "dddd, D MMMM YYYY - HH:mm [WIB]"
+                          )}
                         </time>
                       </div>
                     </div>

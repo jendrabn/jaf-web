@@ -1,4 +1,4 @@
-import React, { useRef, useState, type CSSProperties } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperRef } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -67,7 +67,6 @@ const ProductImageSlider = ({ images }: { images: string[] }) => {
         <Swiper
           ref={swiperRef}
           modules={[Navigation]}
-          // MATIKAN LOOP supaya index Swiper == index thumbnails
           loop={false}
           speed={500}
           slidesPerView={1}
