@@ -204,135 +204,6 @@ footer {
 }
 // End Footer
 
-// Banner Slider
-.banner-slider-container {
-  max-height: 450px;
-
-  .banner-slide {
-    height: clamp(215px, 42.857vw, 450px);
-    position: relative;
-  }
-
-  .slick-slider,
-  .slick-list,
-  .banner-slide {
-    border-radius: 20px;
-    overflow: hidden;
-  }
-
-  .slick-dots {
-    bottom: 12px;
-  }
-
-  .slick-dots li {
-    margin: 0 4px;
-  }
-
-  .slick-dots li button {
-    padding: 0;
-  }
-
-  .slick-dots li button:before {
-    content: "";
-    display: none;
-  }
-
-  .slick-prev:before,
-  .slick-next:before {
-    display: none;
-  }
-
-  .slick-prev,
-  .slick-next {
-    width: 44px;
-    height: 44px;
-    z-index: 3;
-  }
-
-  .slick-prev {
-    left: 24px;
-  }
-
-  .slick-next {
-    right: 24px;
-  }
-
-  @media (max-width: 575.98px) {
-    .slick-prev,
-    .slick-next {
-      display: none !important;
-    }
-  }
-
-  // Hide arrows by default
-  .slick-prev,
-  .slick-next {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-  }
-
-  // Reveal arrows when hovering the banner wrapper
-  &:hover {
-    .slick-prev,
-    .slick-next {
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-
-  // Dot styling to match design
-  .slick-dots {
-    bottom: 16px;
-  }
-
-  .slick-dots li {
-    margin: 0 6px;
-  }
-
-  .slick-dots li button {
-    width: 10px;
-    height: 10px;
-    padding: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.45);
-  }
-
-  // Remove default pseudo dot so our background applies
-  .slick-dots li button::before {
-    content: "";
-    display: none;
-  }
-
-  .slick-dots li.slick-active button {
-    background: rgba(255, 255, 255, 0.95);
-  }
-
-  .slick-prev,
-  .slick-next {
-    font-size: 16px !important;
-    line-height: 1 !important;
-  }
-
-  // Ensure inner circle centers the icon properly
-  .slick-prev span,
-  .slick-next span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  // Size the Bootstrap Icon glyph inside arrows
-  .slick-prev .bi,
-  .slick-next .bi {
-    font-size: 20px; // adjust as needed to match design
-    line-height: 1;
-    width: 1em;
-    height: 1em;
-  }
-}
-// End Banner Slider
-
 // Section Title
 .section-title {
   font-weight: 700;
@@ -709,101 +580,101 @@ footer {
   }
 }
 
-/* Remove default slick arrow glyphs inside slider box */
-.product-image-slider .slider-box .slick-prev:before,
-.product-image-slider .slider-box .slick-next:before {
-  display: none;
-}
+// /* Remove default slick arrow glyphs inside slider box */
+// .product-image-slider .slider-box .slick-prev:before,
+// .product-image-slider .slider-box .slick-next:before {
+//   display: none;
+// }
 
-/* Hover-only arrows (only inside main slider box) */
-.product-image-slider .slider-box .slick-prev,
-.product-image-slider .slider-box .slick-next {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  width: 44px;
-  height: 44px;
-  z-index: 3;
-  /* Fix Slick sets font-size: 0; ensure Bootstrap Icons render */
-  font-size: 16px !important;
-  line-height: 1 !important;
-}
-.product-image-slider .slider-box:hover .slick-prev,
-.product-image-slider .slider-box:hover .slick-next {
-  opacity: 1;
-  pointer-events: auto;
-}
-.product-image-slider .slider-box .slick-prev {
-  left: 16px;
-}
-.product-image-slider .slider-box .slick-next {
-  right: 16px;
-}
+// /* Hover-only arrows (only inside main slider box) */
+// .product-image-slider .slider-box .slick-prev,
+// .product-image-slider .slider-box .slick-next {
+//   opacity: 0;
+//   pointer-events: none;
+//   transition: opacity 0.2s ease;
+//   width: 44px;
+//   height: 44px;
+//   z-index: 3;
+//   /* Fix Slick sets font-size: 0; ensure Bootstrap Icons render */
+//   font-size: 16px !important;
+//   line-height: 1 !important;
+// }
+// .product-image-slider .slider-box:hover .slick-prev,
+// .product-image-slider .slider-box:hover .slick-next {
+//   opacity: 1;
+//   pointer-events: auto;
+// }
+// .product-image-slider .slider-box .slick-prev {
+//   left: 16px;
+// }
+// .product-image-slider .slider-box .slick-next {
+//   right: 16px;
+// }
 
-/* Ensure arrow inner circle and icon sizing */
-.product-image-slider .slider-box .slick-prev span,
-.product-image-slider .slider-box .slick-next span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.product-image-slider .slider-box .slick-prev .bi,
-.product-image-slider .slider-box .slick-next .bi {
-  font-size: 20px;
-  line-height: 1;
-  width: 1em;
-  height: 1em;
-}
+// /* Ensure arrow inner circle and icon sizing */
+// .product-image-slider .slider-box .slick-prev span,
+// .product-image-slider .slider-box .slick-next span {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+// .product-image-slider .slider-box .slick-prev .bi,
+// .product-image-slider .slider-box .slick-next .bi {
+//   font-size: 20px;
+//   line-height: 1;
+//   width: 1em;
+//   height: 1em;
+// }
 
-/* Gradient side masks only on slider box (not on thumbs) */
-.product-image-slider .slider-box::before,
-.product-image-slider .slider-box::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 88px;
-  pointer-events: none;
-  z-index: 2;
-}
-.product-image-slider .slider-box::before {
-  left: 0;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0) 80%);
-}
-.product-image-slider .slider-box::after {
-  right: 0;
-  background: linear-gradient(
-    270deg,
-    rgba(0, 0, 0, 0.38),
-    rgba(0, 0, 0, 0) 80%
-  );
-}
+// /* Gradient side masks only on slider box (not on thumbs) */
+// .product-image-slider .slider-box::before,
+// .product-image-slider .slider-box::after {
+//   content: "";
+//   position: absolute;
+//   top: 0;
+//   bottom: 0;
+//   width: 88px;
+//   pointer-events: none;
+//   z-index: 2;
+// }
+// .product-image-slider .slider-box::before {
+//   left: 0;
+//   background: linear-gradient(90deg, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0) 80%);
+// }
+// .product-image-slider .slider-box::after {
+//   right: 0;
+//   background: linear-gradient(
+//     270deg,
+//     rgba(0, 0, 0, 0.38),
+//     rgba(0, 0, 0, 0) 80%
+//   );
+// }
 
-/* Slide container */
-.product-image-slider .product-image-slide {
-  position: relative;
-}
+// /* Slide container */
+// .product-image-slider .product-image-slide {
+//   position: relative;
+// }
 
-/* Thumbnails in separate container */
-.product-image-slider .product-image-thumbs .thumb-item {
-  width: 72px;
-  height: 72px;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  border: 1px solid var(--bs-border-color, #dee2e6);
-  opacity: 0.8;
-  transition: opacity 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-.product-image-slider .product-image-thumbs .thumb-item.active {
-  opacity: 1;
-  border-color: var(--bs-primary, #0d6efd);
-}
-.product-image-slider .product-image-thumbs .thumb-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+// /* Thumbnails in separate container */
+// .product-image-slider .product-image-thumbs .thumb-item {
+//   width: 72px;
+//   height: 72px;
+//   border-radius: 0.5rem;
+//   overflow: hidden;
+//   border: 1px solid var(--bs-border-color, #dee2e6);
+//   opacity: 0.8;
+//   transition: opacity 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+// }
+// .product-image-slider .product-image-thumbs .thumb-item.active {
+//   opacity: 1;
+//   border-color: var(--bs-primary, #0d6efd);
+// }
+// .product-image-slider .product-image-thumbs .thumb-item img {
+//   width: 100%;
+//   height: 100%;
+//   object-fit: cover;
+//   display: block;
+// }
 
 /* Accessibility: Skip to content link */
 .skip-link {
@@ -864,5 +735,373 @@ footer {
   .flash-sale-stock-progress-bar {
     height: 100%;
     background: linear-gradient(90deg, #ef4444, #f97316);
+  }
+}
+
+.flash-sale-home-header {
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 166, 0, 0.1),
+    rgba(99, 102, 241, 0.08)
+  );
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+
+  .flash-sale-home-label {
+    letter-spacing: 0.08em;
+  }
+
+  .flash-sale-home-meta {
+    gap: 0.75rem;
+  }
+
+  .flash-sale-home-countdown {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 6px;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.06);
+    backdrop-filter: blur(6px);
+  }
+
+  .flash-sale-home-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    background: #0f172a;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+
+    &:hover {
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18);
+      opacity: 0.92;
+    }
+  }
+}
+
+/* Mobile: sembunyikan panah jika ingin */
+@media (max-width: 575.98px) {
+  .flash-sale-slider-wrapper .flash-sale-arrow {
+    display: none;
+  }
+}
+
+@font-face {
+  src: url("../assets/fonts/didot-2/Didot\ Bold.otf");
+  font-family: "DidotBold";
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+.brand-swiper-wrapper {
+  .brand-title {
+    font-family: DidotBold !important;
+    font-size: 2rem !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    letter-spacing: 3px;
+    max-width: 100%;
+    font-size: clamp(
+      12px,
+      2vw,
+      24px
+    ); /* responsif: minimal 12px, maksimal 24px */
+  }
+
+  .brand-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 96px;
+    padding: 12px;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: 0.75rem;
+    background: var(--bs-body-bg, #fff);
+    position: relative;
+    z-index: 0;
+    overflow: visible;
+    transition: transform 200ms ease, box-shadow 200ms ease,
+      border-color 200ms ease;
+
+    &:hover {
+      z-index: 4;
+      transform: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      border-color: var(--bs-primary, #0d6efd);
+    }
+
+    // No-logo fallback title in center
+    .brand-title {
+      margin: 0;
+    }
+  }
+
+  // Logo sizing: keep consistent heights and crisp scaling
+  .brand-logo {
+    max-height: 56px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: saturate(1);
+    transition: filter 160ms ease;
+  }
+
+  .brand-card:hover .brand-logo {
+    filter: saturate(1.1);
+  }
+
+  // Responsive tuning for card sizing and logo height
+  @media (max-width: 575.98px) {
+    .brand-card {
+      height: 84px;
+      padding: 10px;
+    }
+    .brand-logo {
+      max-height: 48px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .brand-card {
+      height: 112px;
+      padding: 16px;
+    }
+    .brand-logo {
+      max-height: 64px;
+    }
+  }
+}
+
+.banner-swiper-wrapper {
+  position: relative;
+
+  .banner-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    // awalnya disembunyikan
+    opacity: 0;
+    pointer-events: none;
+
+    // posisi default (di tengah vertikal)
+    transform: translateY(-50%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+
+    &-prev {
+      left: 12px;
+      // geser sedikit ke kiri saat hidden
+      transform: translate(-16px, -50%);
+    }
+
+    &-next {
+      right: 12px;
+      // geser sedikit ke kanan saat hidden
+      transform: translate(16px, -50%);
+    }
+
+    // styling lingkaran panah (bisa override circleStyle kalau mau full di SCSS)
+    span {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease,
+        background-color 0.2s ease;
+    }
+
+    // efek hover di button
+    &:hover span {
+      transform: scale(1.05) translateX(1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    // efek ketika di klik
+    &:active span {
+      transform: scale(0.97);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  // saat wrapper di-hover, munculin tombol + animasi slide masuk
+  &:hover {
+    .banner-arrow {
+      opacity: 1;
+      pointer-events: auto;
+
+      &-prev {
+        transform: translate(0, -50%);
+      }
+
+      &-next {
+        transform: translate(0, -50%);
+      }
+    }
+  }
+
+  .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    opacity: 1; // override default swiper
+    margin: 0; // karena kita sudah pakai gap di parent
+
+    transition: width 0.25s ease, border-radius 0.25s ease,
+      background-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .swiper-pagination-bullet-active {
+    width: 24px; // jadi kapsul memanjang
+    border-radius: 999px;
+    background-color: #ffffff; // putih seperti gambar
+    transform: translateY(-0.5px); // dikit biar lebih “hidup”
+  }
+
+  // biar bisa diklik (kadang perlu override)
+  .swiper-pagination-clickable .swiper-pagination-bullet {
+    cursor: pointer;
+  }
+}
+
+// optional: di device touch (hp), tombol selalu kelihatan
+@media (hover: none) and (pointer: coarse) {
+  .banner-swiper-wrapper {
+    .banner-arrow {
+      opacity: 1;
+      pointer-events: auto;
+
+      &-prev,
+      &-next {
+        transform: translate(0, -50%);
+      }
+    }
+  }
+}
+
+.product-image-slider {
+  .slider-box {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-image-swiper {
+    width: 100%;
+    height: 100%;
+
+    .product-image-slide {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  /* ARROWS */
+  .product-image-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+
+    /* awalnya disembunyikan */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition: opacity 0.35s ease, transform 0.35s ease;
+
+    span {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      font-size: 20px;
+    }
+
+    &-prev {
+      left: 12px;
+      transform: translateY(-50%) translateX(-10px);
+    }
+
+    &-next {
+      right: 12px;
+      transform: translateY(-50%) translateX(10px);
+    }
+  }
+
+  /* saat hover area gambar → panah muncul + slide masuk */
+  .slider-box:hover {
+    .product-image-arrow {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+
+      &-prev,
+      &-next {
+        transform: translateY(-50%) translateX(0);
+      }
+    }
+  }
+
+  /* THUMBNAILS */
+  .product-image-thumbs {
+    .thumb-item {
+      width: 70px;
+      height: 70px;
+      border-radius: 0.25rem;
+      overflow: hidden;
+      border: 1px solid transparent;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      &.active {
+        border-color: $primary; // sesuaikan warna utama kamu
+      }
+    }
+  }
+}
+
+/* kalau mau panah disembunyiin di layar kecil, opsional */
+@media (max-width: 575.98px) {
+  .product-image-slider {
+    .product-image-arrow {
+      display: none;
+    }
   }
 }

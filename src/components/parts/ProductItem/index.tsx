@@ -71,7 +71,7 @@ const ProductItem = (props: ProductItemProps) => {
   return (
     <Card className="h-100 text-decoration-none border-0 hover-up position-relative">
       {(isFlashSale || flashSaleStatus === "scheduled") && (
-        <span className="badge bg-primary position-absolute top-0 start-0 m-2 z-1">
+        <span className="badge text-bg-light text-danger position-absolute top-0 start-0 m-2 z-1">
           Flash Sale
         </span>
       )}

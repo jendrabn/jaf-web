@@ -1,13 +1,18 @@
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import type { Swiper as SwiperClass } from "swiper";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 import { Link } from "react-router";
 import type { BannerTypes } from "@/types/banner";
 
-type ArrowProps = {
-  className?: string;
-  style?: React.CSSProperties;
-  onClick?: () => void;
+type ArrowButtonProps = {
+  direction: "prev" | "next";
+  onClick: () => void;
 };
 
 const circleStyle: React.CSSProperties = {
@@ -22,79 +27,69 @@ const circleStyle: React.CSSProperties = {
   boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
 };
 
-function PrevArrow({ className, style, onClick }: ArrowProps) {
+function ArrowButton({ direction, onClick }: ArrowButtonProps) {
   return (
     <button
       type="button"
-      aria-label="Previous"
-      className={className}
+      aria-label={direction === "prev" ? "Previous" : "Next"}
       onClick={onClick}
+      className={`banner-arrow banner-arrow-${direction}`}
       style={{
-        ...style,
+        position: "absolute",
+        top: "50%",
+        zIndex: 10,
         border: "none",
         background: "transparent",
         cursor: "pointer",
+        ...(direction === "prev" ? { left: 12 } : { right: 12 }),
       }}
     >
       <span style={circleStyle}>
-        <i className="bi bi-chevron-left"></i>
-      </span>
-    </button>
-  );
-}
-
-function NextArrow({ className, style, onClick }: ArrowProps) {
-  return (
-    <button
-      type="button"
-      aria-label="Next"
-      className={className}
-      onClick={onClick}
-      style={{
-        ...style,
-        border: "none",
-        background: "transparent",
-        cursor: "pointer",
-      }}
-    >
-      <span style={circleStyle}>
-        <i className="bi bi-chevron-right"></i>
+        <i
+          className={
+            direction === "prev" ? "bi bi-chevron-left" : "bi bi-chevron-right"
+          }
+        ></i>
       </span>
     </button>
   );
 }
 
 const BannerSlider = ({ banners }: { banners: BannerTypes[] }) => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
-    arrows: true,
-    adaptiveHeight: true, // keep a stable container height
-    lazyLoad: "progressive" as const, // avoid layout jumps on slow image loads
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
-    // Hide dots on widths < 992px, keep arrows behavior controlled via CSS
-    responsive: [
-      {
-        breakpoint: 992,
-        settings: {
-          dots: false,
-        },
-      },
-    ],
-  };
+  const swiperRef = useRef<SwiperClass | null>(null);
 
   return (
-    <div className="banner-slider-container position-relative rounded-4 overflow-hidden">
-      <Slider {...settings}>
+    <div className="banner-swiper-wrapper position-relative rounded-4 overflow-hidden">
+      <ArrowButton
+        direction="prev"
+        onClick={() => swiperRef.current?.slidePrev()}
+      />
+      <ArrowButton
+        direction="next"
+        onClick={() => swiperRef.current?.slideNext()}
+      />
+
+      <Swiper
+        modules={[Autoplay, Navigation, Pagination]}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
+        loop={true}
+        speed={500}
+        slidesPerView={1}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
+        pagination={{
+          clickable: true, // <- cukup ini
+        }}
+        navigation={false}
+        className="banner-swiper"
+      >
         {banners.map((banner) => (
-          <div key={`banner-${banner.id}`} className="banner-slide">
+          <SwiperSlide key={`banner-${banner.id}`}>
             <Link to={banner.url} aria-label={banner.image_description}>
               <img
                 src={banner.image}
@@ -104,9 +99,9 @@ const BannerSlider = ({ banners }: { banners: BannerTypes[] }) => {
                 loading="lazy"
               />
             </Link>
-          </div>
+          </SwiperSlide>
         ))}
-      </Slider>
+      </Swiper>
     </div>
   );
 };

@@ -1,15 +1,17 @@
-import React, { useRef, useState } from "react";
-import Slider, { type Settings } from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React, { useRef, useState, type CSSProperties } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { SwiperRef } from "swiper/react";
+import { Navigation } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
 
 type ArrowProps = {
-  className?: string;
-  style?: React.CSSProperties;
-  onClick?: () => void;
+  direction: "prev" | "next";
+  onClick: () => void;
 };
 
-const circleStyle: React.CSSProperties = {
+const circleStyle: CSSProperties = {
   width: 44,
   height: 44,
   borderRadius: "50%",
@@ -21,83 +23,60 @@ const circleStyle: React.CSSProperties = {
   boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
 };
 
-function PrevArrow({ className, style, onClick }: ArrowProps) {
+function ArrowButton({ direction, onClick }: ArrowProps) {
   return (
     <button
       type="button"
-      aria-label="Previous"
-      className={className}
+      aria-label={direction === "prev" ? "Previous" : "Next"}
+      className={`product-image-arrow product-image-arrow-${direction}`}
       onClick={onClick}
-      style={{
-        ...style,
-        border: "none",
-        background: "transparent",
-        cursor: "pointer",
-      }}
     >
       <span style={circleStyle}>
-        <i className="bi bi-chevron-left"></i>
-      </span>
-    </button>
-  );
-}
-
-function NextArrow({ className, style, onClick }: ArrowProps) {
-  return (
-    <button
-      type="button"
-      aria-label="Next"
-      className={className}
-      onClick={onClick}
-      style={{
-        ...style,
-        border: "none",
-        background: "transparent",
-        cursor: "pointer",
-      }}
-    >
-      <span style={circleStyle}>
-        <i className="bi bi-chevron-right"></i>
+        <i
+          className={
+            direction === "prev" ? "bi bi-chevron-left" : "bi bi-chevron-right"
+          }
+        ></i>
       </span>
     </button>
   );
 }
 
 const ProductImageSlider = ({ images }: { images: string[] }) => {
-  const sliderRef = useRef<Slider>(null);
+  const swiperRef = useRef<SwiperRef | null>(null);
   const [activeIdx, setActiveIdx] = useState(0);
 
-  const settings: Settings = {
-    customPaging: (index) => (
-      <button type="button" className="p-0 border-0 bg-transparent">
-        <img
-          src={images[index]}
-          alt={`Thumbnail ${index + 1}`}
-          loading="lazy"
-        />
-      </button>
-    ),
-    dots: false,
-    dotsClass:
-      "slick-dots slick-thumb product-thumbs d-flex justify-content-center mt-3",
-    infinite: (images?.length ?? 0) > 1,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: (images?.length ?? 0) > 1,
-    adaptiveHeight: false,
-    lazyLoad: "progressive",
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
-    afterChange: (index: number) => setActiveIdx(index),
-  };
+  const hasMultiple = (images?.length ?? 0) > 1;
 
   return (
     <div className="product-image-slider">
       <div className="slider-box position-relative rounded-3 overflow-hidden bg-body-tertiary">
-        <Slider ref={sliderRef} {...settings}>
+        {hasMultiple && (
+          <>
+            <ArrowButton
+              direction="prev"
+              onClick={() => swiperRef.current?.swiper.slidePrev()}
+            />
+            <ArrowButton
+              direction="next"
+              onClick={() => swiperRef.current?.swiper.slideNext()}
+            />
+          </>
+        )}
+
+        <Swiper
+          ref={swiperRef}
+          modules={[Navigation]}
+          // MATIKAN LOOP supaya index Swiper == index thumbnails
+          loop={false}
+          speed={500}
+          slidesPerView={1}
+          navigation={false}
+          onSlideChange={(swiper) => setActiveIdx(swiper.activeIndex)}
+          className="product-image-swiper"
+        >
           {(images || []).map((src, idx) => (
-            <div key={`image-${idx}`} className="product-image-slide">
+            <SwiperSlide key={`image-${idx}`} className="product-image-slide">
               <div className="ratio ratio-4x3">
                 <img
                   src={src}
@@ -106,9 +85,9 @@ const ProductImageSlider = ({ images }: { images: string[] }) => {
                   loading="lazy"
                 />
               </div>
-            </div>
+            </SwiperSlide>
           ))}
-        </Slider>
+        </Swiper>
       </div>
 
       {(images?.length ?? 0) > 0 && (
@@ -123,7 +102,7 @@ const ProductImageSlider = ({ images }: { images: string[] }) => {
                   type="button"
                   className="btn p-0 border-0 bg-transparent w-100 h-100"
                   aria-label={`Slide ${idx + 1}`}
-                  onClick={() => sliderRef.current?.slickGoTo(idx)}
+                  onClick={() => swiperRef.current?.swiper.slideTo(idx)}
                 >
                   <img src={src} alt={`Thumbnail ${idx + 1}`} />
                 </button>
